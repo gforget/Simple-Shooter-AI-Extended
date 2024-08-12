@@ -1,19 +1,27 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\killemallgamemode.gen.cpp",
+        "Source": "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\killemallgamemode.gen.cpp",
         "ProvidedModule": "",
-        "PCH": "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\x64\\simpleshootereditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "PCH": "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\x64\\simpleshootereditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
         "Includes": [
-            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\simpleshooter\\definitions.simpleshooter.h",
-            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\source\\simpleshooter\\public\\gamemode\\killemallgamemode.h",
-            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\source\\simpleshooter\\public\\gamemode\\simpleshootergamemodebase.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\simpleshooter\\definitions.simpleshooter.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\gamemode\\killemallgamemode.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\gamemode\\simpleshootergamemodebase.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\actors\\healthpack.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\components\\boxcomponent.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\components\\shapecomponent.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\shapecomponent.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\boxcomponent.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\healthpack.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\actors\\waypoint.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\waypoint.generated.h",
             "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
             "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
             "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\serverstatreplicator.generated.h",
             "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemodebase.generated.h",
-            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\simpleshootergamemodebase.generated.h",
-            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\killemallgamemode.generated.h"
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\simpleshootergamemodebase.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\killemallgamemode.generated.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

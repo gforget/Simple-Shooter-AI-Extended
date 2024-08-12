@@ -71,7 +71,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &AShooterCharacter::LookRightRate);
 	
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump); // already define in character class
-	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AShooterCharacter::Shoot);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AShooterCharacter::PullTrigger);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Released, this, &AShooterCharacter::ReleaseTrigger);
 	PlayerInputComponent->BindAction(TEXT("Reload"), IE_Pressed, this, &AShooterCharacter::Reload);
 
 	PlayerInputComponent->BindAction(TEXT("SelfDamage"), IE_Pressed, this, &AShooterCharacter::SelfDamage);
@@ -147,20 +148,26 @@ void AShooterCharacter::LookRightRate(float AxisValue)
 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
 }
 
-void AShooterCharacter::Shoot()
+void AShooterCharacter::PullTrigger()
 {
 	Gun->PullTrigger();
 }
 
-void AShooterCharacter::Shoot(float AIOffsetRadius)
+void AShooterCharacter::PullTrigger(float AIOffsetRadius)
 {
 	Gun->PullTrigger(AIOffsetRadius);
+}
+
+void AShooterCharacter::ReleaseTrigger()
+{
+	Gun->ReleaseTrigger();
 }
 
 void AShooterCharacter::Reload()
 {
 	if (AmmoReserve > 0)
 	{
+		int ReloadAmount = Gun->GetMaxAmmo();
 		int CurrentReloadAmount = ReloadAmount;
 		if (AmmoReserve - ReloadAmount < 0)
 		{

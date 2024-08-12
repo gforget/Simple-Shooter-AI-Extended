@@ -58,16 +58,6 @@ void ASimpleShooterGameModeBase::AddWayPoint(AWaypoint* Waypoint)
 	AllWayPoints.Add(Waypoint);
 }
 
-TArray<AFleePoint*> ASimpleShooterGameModeBase::GetAllFleePoints()
-{
-	return AllFleePoints;
-}
-
-void ASimpleShooterGameModeBase::AddFleePoint(AFleePoint* FleePoint)
-{
-	AllFleePoints.Add(FleePoint);
-}
-
 TArray<AAmmoPack*> ASimpleShooterGameModeBase::GetAllAmmoPacks()
 {
 	return AllAmmoPacks;

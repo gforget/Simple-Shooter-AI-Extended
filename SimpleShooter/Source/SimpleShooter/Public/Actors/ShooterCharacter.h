@@ -50,8 +50,9 @@ public:
 
 	int AddAmmoReserve(int AmmoAmount);
 
-	void Shoot();
-	void Shoot(float AIOffsetRadius);
+	void PullTrigger();
+	void PullTrigger(float AIOffsetRadius);
+	void ReleaseTrigger();
 	
 	void Reload();
 
@@ -77,10 +78,7 @@ private:
 	int MaxAmmoReserve = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	int AmmoReserve = 20;
-
-	UPROPERTY(EditDefaultsOnly)
-	int ReloadAmount = 10;
+	int AmmoReserve = 20;;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGun> GunClass;

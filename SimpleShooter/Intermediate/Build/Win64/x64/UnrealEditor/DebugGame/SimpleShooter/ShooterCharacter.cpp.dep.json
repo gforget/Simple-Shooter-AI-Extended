@@ -1,0 +1,41 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\private\\actors\\shootercharacter.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\x64\\simpleshootereditor\\debuggame\\unrealed\\sharedpch.unrealed.nonoptimized.cpp20.h.pch",
+        "Includes": [
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\simpleshooter\\definitions.simpleshooter.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\actors\\shootercharacter.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\character.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\charactermovementreplication.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\experimental\\iris\\core\\public\\iris\\serialization\\irisobjectreferencepackagemap.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\iriscore\\uht\\irisobjectreferencepackagemap.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\charactermovementreplication.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\rootmotionsource.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\rootmotionsource.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\character.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\shootercharacter.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\actors\\gun.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\gun.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\gamemode\\simpleshootergamemodebase.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\actors\\healthpack.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\components\\boxcomponent.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\components\\shapecomponent.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\shapecomponent.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\boxcomponent.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\healthpack.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\source\\simpleshooter\\public\\actors\\waypoint.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\waypoint.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\serverstatreplicator.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\gamemodebase.generated.h",
+            "c:\\gabriel\\unreal project\\simpleshooteraiextendedgit\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\simpleshootergamemodebase.generated.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\source\\runtime\\engine\\classes\\components\\capsulecomponent.h",
+            "c:\\unreal engine\\ue_5.3\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\capsulecomponent.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -14,7 +14,7 @@ class SIMPLESHOOTER_API AGun : public AActor
 public:
 	// Sets default values for this actor's properties
 	AGun();
-	void PullTrigger(float AIOffsetRadius = 0.0f);
+
 	
 protected:
 	// Called when the game starts or when spawned
@@ -24,6 +24,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void Fire(float AIOffsetRadius = 0.0f);
+	FTimerDelegate FireTimerTimerDel;
+	FTimerHandle FireTimerHandle;
+	
+	void PullTrigger(float AIOffsetRadius = 0.0f);
+	void ReleaseTrigger();
+	
 	int Reload (int AmmoAmount);
 
 	UFUNCTION(BlueprintCallable)
@@ -34,6 +42,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	int GetAmmoAmount() const;
+
+	UFUNCTION(BlueprintCallable)
+	int GetMaxAmmo() const;
 	
 private:
 	
@@ -68,11 +79,19 @@ private:
 	int Ammo = 10;
 
 	UPROPERTY(EditAnywhere)
+	int NbRoundsPerShot = -1;
+
+	UPROPERTY(EditAnywhere)
+	float TimeBetweenRound = 0.15f;
+	
+	UPROPERTY(EditAnywhere)
 	float BaseOffsetRadius = 1000.0f;
 	
 	bool GunTrace(FHitResult& Hit, FVector& ShotDirection, float AIOffsetRadius = 0.0f);
-
+	
 	bool UseAmmo();
 
 	AController* GetOwnerController() const;
 };
+
+

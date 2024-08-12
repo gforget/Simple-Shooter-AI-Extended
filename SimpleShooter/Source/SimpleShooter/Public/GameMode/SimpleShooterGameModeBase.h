@@ -13,6 +13,9 @@
  */
 
 class AShooterCharacter;
+class AAmmoPack;
+class AEnemySpawnPoint;
+class AHealthPack;
 
 UCLASS()
 class SIMPLESHOOTER_API ASimpleShooterGameModeBase : public AGameModeBase
@@ -28,9 +31,6 @@ public:
 	
 	TArray<AWaypoint*> GetAllWayPoints();
 	void AddWayPoint(AWaypoint* WayPoint);
-
-	TArray<AFleePoint*> GetAllFleePoints();
-	void AddFleePoint(AFleePoint* FleePoint);
 	
 	TArray<AAmmoPack*> GetAllAmmoPacks();
 	void AddAmmoPack(AAmmoPack* AmmoPack);
@@ -50,9 +50,6 @@ protected:
 	
 	UPROPERTY()
 	TArray<AWaypoint*> AllWayPoints;
-	
-	UPROPERTY()
-	TArray<AFleePoint*> AllFleePoints;
 	
 	UPROPERTY()
 	TArray<AAmmoPack*> AllAmmoPacks;

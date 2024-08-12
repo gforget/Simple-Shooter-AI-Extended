@@ -19,9 +19,11 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Actors_Gun_h_12_EDITOR_ONLY_SPARSE_DATA_PROPERTY_ACCESSORS
 #define FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Actors_Gun_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
  \
+	DECLARE_FUNCTION(execGetMaxAmmo); \
 	DECLARE_FUNCTION(execGetAmmoAmount); \
 	DECLARE_FUNCTION(execGetAmmoPercent); \
-	DECLARE_FUNCTION(execGetAmmoRatio);
+	DECLARE_FUNCTION(execGetAmmoRatio); \
+	DECLARE_FUNCTION(execFire);
 
 
 #define FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Actors_Gun_h_12_ACCESSORS

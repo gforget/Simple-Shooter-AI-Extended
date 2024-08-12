@@ -17,11 +17,6 @@ AFleePoint::AFleePoint()
 void AFleePoint::BeginPlay()
 {
 	Super::BeginPlay();
-	ASimpleShooterGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
-	if (GameModeBase != nullptr)
-	{
-		GameModeBase->AddFleePoint(this);
-	}
 }
 
 // Called every frame

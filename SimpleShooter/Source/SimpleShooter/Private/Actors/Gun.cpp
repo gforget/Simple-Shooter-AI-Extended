@@ -13,10 +13,9 @@ AGun::AGun()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
-	
 }
 
-void AGun::PullTrigger(float AIOffsetRadius)
+void AGun::Fire(float AIOffsetRadius)
 {
 	if (UseAmmo())
 	{
@@ -47,11 +46,28 @@ void AGun::PullTrigger(float AIOffsetRadius)
 	}
 }
 
+void AGun::PullTrigger(float AIOffsetRadius)
+{
+	FireTimerTimerDel.BindUFunction(this, FName("Fire"), AIOffsetRadius);
+	GetWorld()->GetTimerManager().SetTimer(
+		FireTimerHandle,
+		FireTimerTimerDel,
+		TimeBetweenRound,
+		true,
+		0.0f
+	);
+}
+
+void AGun::ReleaseTrigger()
+{
+	GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
+}
+
 // Called when the game starts or when spawned
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Ammo = MaxAmmo;
 }
 
 // Called every frame
@@ -125,6 +141,11 @@ int AGun::Reload(int AmmoAmount)
 	}
 
 	return LeftOver;
+}
+
+int AGun::GetMaxAmmo() const
+{
+	return MaxAmmo;
 }
 
 FString AGun::GetAmmoRatio() const

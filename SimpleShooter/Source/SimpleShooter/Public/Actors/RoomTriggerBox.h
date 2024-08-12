@@ -6,6 +6,7 @@
 #include "Engine/TriggerBox.h"
 #include "RoomTriggerBox.generated.h"
 
+class AFleePoint;
 UCLASS()
 class SIMPLESHOOTER_API ARoomTriggerBox : public ATriggerBox
 {

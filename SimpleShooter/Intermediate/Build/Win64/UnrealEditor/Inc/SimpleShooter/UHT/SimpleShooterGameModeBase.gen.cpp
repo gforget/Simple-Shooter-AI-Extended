@@ -13,7 +13,6 @@ void EmptyLinkFunctionForGeneratedCodeSimpleShooterGameModeBase() {}
 	ENGINE_API UClass* Z_Construct_UClass_AGameModeBase();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_AAmmoPack_NoRegister();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_AEnemySpawnPoint_NoRegister();
-	SIMPLESHOOTER_API UClass* Z_Construct_UClass_AFleePoint_NoRegister();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_AHealthPack_NoRegister();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_AShooterCharacter_NoRegister();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_ASimpleShooterGameModeBase();
@@ -54,11 +53,6 @@ void EmptyLinkFunctionForGeneratedCodeSimpleShooterGameModeBase() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_AllWayPoints_MetaData[];
 #endif
 		static const UECodeGen_Private::FArrayPropertyParams NewProp_AllWayPoints;
-		static const UECodeGen_Private::FObjectPropertyParams NewProp_AllFleePoints_Inner;
-#if WITH_METADATA
-		static const UECodeGen_Private::FMetaDataPairParam NewProp_AllFleePoints_MetaData[];
-#endif
-		static const UECodeGen_Private::FArrayPropertyParams NewProp_AllFleePoints;
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_AllAmmoPacks_Inner;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_AllAmmoPacks_MetaData[];
@@ -118,13 +112,6 @@ void EmptyLinkFunctionForGeneratedCodeSimpleShooterGameModeBase() {}
 	};
 #endif
 	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllWayPoints = { "AllWayPoints", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleShooterGameModeBase, AllWayPoints), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllWayPoints_MetaData), Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllWayPoints_MetaData) };
-	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllFleePoints_Inner = { "AllFleePoints", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AFleePoint_NoRegister, METADATA_PARAMS(0, nullptr) };
-#if WITH_METADATA
-	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllFleePoints_MetaData[] = {
-		{ "ModuleRelativePath", "Public/GameMode/SimpleShooterGameModeBase.h" },
-	};
-#endif
-	const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllFleePoints = { "AllFleePoints", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASimpleShooterGameModeBase, AllFleePoints), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllFleePoints_MetaData), Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllFleePoints_MetaData) };
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllAmmoPacks_Inner = { "AllAmmoPacks", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AAmmoPack_NoRegister, METADATA_PARAMS(0, nullptr) };
 #if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllAmmoPacks_MetaData[] = {
@@ -146,8 +133,6 @@ void EmptyLinkFunctionForGeneratedCodeSimpleShooterGameModeBase() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllEnemySpawnPoints,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllWayPoints_Inner,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllWayPoints,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllFleePoints_Inner,
-		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllFleePoints,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllAmmoPacks_Inner,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllAmmoPacks,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASimpleShooterGameModeBase_Statics::NewProp_AllHealthPacks_Inner,
@@ -192,9 +177,9 @@ void EmptyLinkFunctionForGeneratedCodeSimpleShooterGameModeBase() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_GameMode_SimpleShooterGameModeBase_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_ASimpleShooterGameModeBase, ASimpleShooterGameModeBase::StaticClass, TEXT("ASimpleShooterGameModeBase"), &Z_Registration_Info_UClass_ASimpleShooterGameModeBase, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleShooterGameModeBase), 1988633765U) },
+		{ Z_Construct_UClass_ASimpleShooterGameModeBase, ASimpleShooterGameModeBase::StaticClass, TEXT("ASimpleShooterGameModeBase"), &Z_Registration_Info_UClass_ASimpleShooterGameModeBase, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASimpleShooterGameModeBase), 4167539874U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_GameMode_SimpleShooterGameModeBase_h_3765796447(TEXT("/Script/SimpleShooter"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_GameMode_SimpleShooterGameModeBase_h_491442307(TEXT("/Script/SimpleShooter"),
 		Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_GameMode_SimpleShooterGameModeBase_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_GameMode_SimpleShooterGameModeBase_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);

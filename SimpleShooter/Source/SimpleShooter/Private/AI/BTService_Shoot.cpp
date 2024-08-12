@@ -31,6 +31,6 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 			return;
 		}
 	
-		Character->Shoot(AimOffset);
+		Character->PullTrigger(AimOffset);
 	}
 }
