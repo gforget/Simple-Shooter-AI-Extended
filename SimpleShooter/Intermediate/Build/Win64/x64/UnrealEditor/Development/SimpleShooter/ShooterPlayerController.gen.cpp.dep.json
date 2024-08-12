@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\shooterplayercontroller.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\x64\\simpleshootereditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\simpleshooter\\definitions.simpleshooter.h",
+            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\source\\simpleshooter\\public\\controllers\\shooterplayercontroller.h",
+            "c:\\gabriel\\unreal project\\udemy\\simpleshooter\\intermediate\\build\\win64\\unrealeditor\\inc\\simpleshooter\\uht\\shooterplayercontroller.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
