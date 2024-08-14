@@ -29,6 +29,14 @@ void EmptyLinkFunctionForGeneratedCodeBTService_Shoot() {}
 		static const UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
 #if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_TimeBeforeStartingShooting_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_TimeBeforeStartingShooting;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_AimAdjustmentSpeed_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_AimAdjustmentSpeed;
+#if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_AimOffset_MetaData[];
 #endif
 		static const UECodeGen_Private::FFloatPropertyParams NewProp_AimOffset;
@@ -51,6 +59,20 @@ void EmptyLinkFunctionForGeneratedCodeBTService_Shoot() {}
 	};
 #endif
 #if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_TimeBeforeStartingShooting_MetaData[] = {
+		{ "Category", "BTService_Shoot" },
+		{ "ModuleRelativePath", "Public/AI/BTService_Shoot.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_TimeBeforeStartingShooting = { "TimeBeforeStartingShooting", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UBTService_Shoot, TimeBeforeStartingShooting), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_TimeBeforeStartingShooting_MetaData), Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_TimeBeforeStartingShooting_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimAdjustmentSpeed_MetaData[] = {
+		{ "Category", "BTService_Shoot" },
+		{ "ModuleRelativePath", "Public/AI/BTService_Shoot.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimAdjustmentSpeed = { "AimAdjustmentSpeed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UBTService_Shoot, AimAdjustmentSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimAdjustmentSpeed_MetaData), Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimAdjustmentSpeed_MetaData) };
+#if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimOffset_MetaData[] = {
 		{ "Category", "BTService_Shoot" },
 		{ "ModuleRelativePath", "Public/AI/BTService_Shoot.h" },
@@ -58,6 +80,8 @@ void EmptyLinkFunctionForGeneratedCodeBTService_Shoot() {}
 #endif
 	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimOffset = { "AimOffset", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UBTService_Shoot, AimOffset), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimOffset_MetaData), Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimOffset_MetaData) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UBTService_Shoot_Statics::PropPointers[] = {
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_TimeBeforeStartingShooting,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimAdjustmentSpeed,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UBTService_Shoot_Statics::NewProp_AimOffset,
 	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_UBTService_Shoot_Statics::StaticCppClassTypeInfo = {
@@ -98,9 +122,9 @@ void EmptyLinkFunctionForGeneratedCodeBTService_Shoot() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_AI_BTService_Shoot_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UBTService_Shoot, UBTService_Shoot::StaticClass, TEXT("UBTService_Shoot"), &Z_Registration_Info_UClass_UBTService_Shoot, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UBTService_Shoot), 3814639094U) },
+		{ Z_Construct_UClass_UBTService_Shoot, UBTService_Shoot::StaticClass, TEXT("UBTService_Shoot"), &Z_Registration_Info_UClass_UBTService_Shoot, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UBTService_Shoot), 3732761926U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_AI_BTService_Shoot_h_1534696983(TEXT("/Script/SimpleShooter"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_AI_BTService_Shoot_h_3090360249(TEXT("/Script/SimpleShooter"),
 		Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_AI_BTService_Shoot_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_AI_BTService_Shoot_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);

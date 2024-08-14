@@ -1,11 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "AI/BTService_Shoot.h"
 
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UBTService_Shoot::UBTService_Shoot()
 {
@@ -19,18 +18,44 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	{
 		return;
 	}
+	
+	AShooterCharacter* Character = Cast<AShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	if (Character == nullptr)
+	{
+		return;
+	}
 
 	AActor* EnemyTarget = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("EnemyInSight"));
-	OwnerComp.GetAIOwner()->SetFocus(EnemyTarget);
-
 	if (EnemyTarget != nullptr)
 	{
-		AShooterCharacter* Character = Cast<AShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-		if (Character == nullptr)
+		if (!bJustSawEnemy)
 		{
-			return;
+			CurrentAimPosition = EnemyTarget->GetActorLocation();
+			bJustSawEnemy = true;
 		}
-	
-		Character->PullTrigger(AimOffset);
+		
+		TimerBeforeShooting += DeltaSeconds;
+		if (TimerBeforeShooting > TimeBeforeStartingShooting)
+		{
+			OwnerComp.GetAIOwner()->SetFocalPoint(CurrentAimPosition);
+			Character->PullTrigger(AimOffset);
+		}
+		else
+		{
+			Character->ReleaseTrigger();
+		}
+		
+		CurrentAimPosition = UKismetMathLibrary::VInterpTo_Constant(
+			CurrentAimPosition,
+			EnemyTarget->GetActorLocation(),
+			DeltaSeconds,
+			AimAdjustmentSpeed
+			);
+	}
+	else
+	{
+		bJustSawEnemy = false;
+		TimerBeforeShooting = 0.0f;
+		Character->ReleaseTrigger();
 	}
 }

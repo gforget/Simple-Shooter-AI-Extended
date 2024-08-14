@@ -1,6 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Actors/Gun.h"
+
+#include "Actors/ShooterCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Controllers/ShooterAIController.h"
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -14,6 +17,45 @@ AGun::AGun()
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
 }
+// Called when the game starts or when spawned
+void AGun::BeginPlay()
+{
+	Super::BeginPlay();
+	Ammo = MaxAmmo;
+}
+
+// Called every frame
+void AGun::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void AGun::PullTrigger(float AIOffsetRadius)
+{
+	if (!TriggerPulled)
+	{
+		FireTimerTimerDel.BindUFunction(this, FName("Fire"), AIOffsetRadius);
+		GetWorld()->GetTimerManager().SetTimer(
+			FireTimerHandle,
+			FireTimerTimerDel,
+			TimeBetweenRound,
+			true,
+			0.0f
+		);
+		
+		TriggerPulled = true;
+	}
+
+}
+
+void AGun::ReleaseTrigger()
+{
+	if (TriggerPulled)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
+		TriggerPulled = false;
+	}
+}
 
 void AGun::Fire(float AIOffsetRadius)
 {
@@ -25,7 +67,7 @@ void AGun::Fire(float AIOffsetRadius)
 		FHitResult Hit;
 		FVector ShotDirection;
 		bool bSuccess = GunTrace(Hit, ShotDirection, AIOffsetRadius);
-
+		
 		if (bSuccess)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
@@ -46,45 +88,17 @@ void AGun::Fire(float AIOffsetRadius)
 	}
 }
 
-void AGun::PullTrigger(float AIOffsetRadius)
-{
-	FireTimerTimerDel.BindUFunction(this, FName("Fire"), AIOffsetRadius);
-	GetWorld()->GetTimerManager().SetTimer(
-		FireTimerHandle,
-		FireTimerTimerDel,
-		TimeBetweenRound,
-		true,
-		0.0f
-	);
-}
-
-void AGun::ReleaseTrigger()
-{
-	GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
-}
-
-// Called when the game starts or when spawned
-void AGun::BeginPlay()
-{
-	Super::BeginPlay();
-	Ammo = MaxAmmo;
-}
-
-// Called every frame
-void AGun::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection, float AIOffsetRadius)
 {
-	const AController* OwnerController = GetOwnerController();
+	AController* OwnerController = GetOwnerController();
+
 	if (OwnerController == nullptr) return false;
 	
 	FVector Location;
 	FRotator Rotation;
 	
 	OwnerController->GetPlayerViewPoint(Location, Rotation);
+
 	ShotDirection = -Rotation.Vector();
 	
 	FVector End = Location + Rotation.Vector()*MaxRange;

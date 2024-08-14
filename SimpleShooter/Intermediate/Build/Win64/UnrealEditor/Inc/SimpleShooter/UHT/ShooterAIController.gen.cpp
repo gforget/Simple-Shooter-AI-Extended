@@ -11,6 +11,7 @@ void EmptyLinkFunctionForGeneratedCodeShooterAIController() {}
 // Cross Module References
 	AIMODULE_API UClass* Z_Construct_UClass_AAIController();
 	AIMODULE_API UClass* Z_Construct_UClass_UBehaviorTree_NoRegister();
+	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FRotator();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_ARoomTriggerBox_NoRegister();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_AShooterAIController();
 	SIMPLESHOOTER_API UClass* Z_Construct_UClass_AShooterAIController_NoRegister();
@@ -34,6 +35,14 @@ void EmptyLinkFunctionForGeneratedCodeShooterAIController() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_CurrentRoomTriggerBox_MetaData[];
 #endif
 		static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentRoomTriggerBox;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SmoothPawnRotation_MetaData[];
+#endif
+		static const UECodeGen_Private::FStructPropertyParams NewProp_SmoothPawnRotation;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_SmoothFocusInterpSpeed_MetaData[];
+#endif
+		static const UECodeGen_Private::FFloatPropertyParams NewProp_SmoothFocusInterpSpeed;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_AIBehavior_MetaData[];
 #endif
@@ -62,6 +71,19 @@ void EmptyLinkFunctionForGeneratedCodeShooterAIController() {}
 #endif
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AShooterAIController_Statics::NewProp_CurrentRoomTriggerBox = { "CurrentRoomTriggerBox", nullptr, (EPropertyFlags)0x0010000000020001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterAIController, CurrentRoomTriggerBox), Z_Construct_UClass_ARoomTriggerBox_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterAIController_Statics::NewProp_CurrentRoomTriggerBox_MetaData), Z_Construct_UClass_AShooterAIController_Statics::NewProp_CurrentRoomTriggerBox_MetaData) };
 #if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothPawnRotation_MetaData[] = {
+		{ "ModuleRelativePath", "Public/Controllers/ShooterAIController.h" },
+	};
+#endif
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothPawnRotation = { "SmoothPawnRotation", nullptr, (EPropertyFlags)0x0020080000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterAIController, SmoothPawnRotation), Z_Construct_UScriptStruct_FRotator, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothPawnRotation_MetaData), Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothPawnRotation_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothFocusInterpSpeed_MetaData[] = {
+		{ "Category", "ShooterAIController" },
+		{ "ModuleRelativePath", "Public/Controllers/ShooterAIController.h" },
+	};
+#endif
+	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothFocusInterpSpeed = { "SmoothFocusInterpSpeed", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterAIController, SmoothFocusInterpSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothFocusInterpSpeed_MetaData), Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothFocusInterpSpeed_MetaData) };
+#if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AShooterAIController_Statics::NewProp_AIBehavior_MetaData[] = {
 		{ "Category", "ShooterAIController" },
 		{ "ModuleRelativePath", "Public/Controllers/ShooterAIController.h" },
@@ -70,6 +92,8 @@ void EmptyLinkFunctionForGeneratedCodeShooterAIController() {}
 	const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AShooterAIController_Statics::NewProp_AIBehavior = { "AIBehavior", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AShooterAIController, AIBehavior), Z_Construct_UClass_UBehaviorTree_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_AShooterAIController_Statics::NewProp_AIBehavior_MetaData), Z_Construct_UClass_AShooterAIController_Statics::NewProp_AIBehavior_MetaData) };
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AShooterAIController_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShooterAIController_Statics::NewProp_CurrentRoomTriggerBox,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothPawnRotation,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShooterAIController_Statics::NewProp_SmoothFocusInterpSpeed,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AShooterAIController_Statics::NewProp_AIBehavior,
 	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_AShooterAIController_Statics::StaticCppClassTypeInfo = {
@@ -110,9 +134,9 @@ void EmptyLinkFunctionForGeneratedCodeShooterAIController() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Controllers_ShooterAIController_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_AShooterAIController, AShooterAIController::StaticClass, TEXT("AShooterAIController"), &Z_Registration_Info_UClass_AShooterAIController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShooterAIController), 1216195364U) },
+		{ Z_Construct_UClass_AShooterAIController, AShooterAIController::StaticClass, TEXT("AShooterAIController"), &Z_Registration_Info_UClass_AShooterAIController, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AShooterAIController), 1756201013U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Controllers_ShooterAIController_h_3671434870(TEXT("/Script/SimpleShooter"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Controllers_ShooterAIController_h_1261573145(TEXT("/Script/SimpleShooter"),
 		Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Controllers_ShooterAIController_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Gabriel_Unreal_Project_SimpleShooterAIExtendedGit_SimpleShooter_Source_SimpleShooter_Public_Controllers_ShooterAIController_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);

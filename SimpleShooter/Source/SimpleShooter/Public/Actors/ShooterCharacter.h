@@ -78,7 +78,7 @@ private:
 	int MaxAmmoReserve = 100;
 
 	UPROPERTY(EditDefaultsOnly)
-	int AmmoReserve = 20;;
+	int AmmoReserve = 20;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGun> GunClass;

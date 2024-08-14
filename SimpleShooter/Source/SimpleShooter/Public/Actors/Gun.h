@@ -86,6 +86,9 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float BaseOffsetRadius = 1000.0f;
+
+	UPROPERTY()
+	bool TriggerPulled = false;
 	
 	bool GunTrace(FHitResult& Hit, FVector& ShotDirection, float AIOffsetRadius = 0.0f);
 	
