@@ -1,8 +1,0 @@
-{
-	"SourceFiles": [
-		"C:\\Gabriel\\Unreal Project\\SimpleShooterAIExtendedGit\\SimpleShooter\\Source\\SimpleShooter\\SimpleShooter.Build.cs",
-		"C:\\Gabriel\\Unreal Project\\SimpleShooterAIExtendedGit\\SimpleShooter\\Source\\SimpleShooter.Target.cs",
-		"C:\\Gabriel\\Unreal Project\\SimpleShooterAIExtendedGit\\SimpleShooter\\Source\\SimpleShooterEditor.Target.cs"
-	],
-	"EngineVersion": "5.3.2"
-}
