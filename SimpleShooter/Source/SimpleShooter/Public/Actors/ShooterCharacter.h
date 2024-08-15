@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "PlayMontageCallbackProxy.h"
 #include "ShooterCharacter.generated.h"
 
 class AGun;
+class UPlayMontageCallbackProxy;
 
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
@@ -64,6 +66,11 @@ private:
 	
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
+
+	void PlayReloadAnimationMontage();
+	
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* ReloadMontage;
 	
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10.0f;
@@ -85,5 +92,11 @@ private:
 
 	UPROPERTY()
 	AGun* Gun;
+
+	UPROPERTY()
+	UPlayMontageCallbackProxy* PlayMontageCallbackProxy;
+
+	UFUNCTION()
+	void OnMontageCompleted(FName NotifyName);
 };
 

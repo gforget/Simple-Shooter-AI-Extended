@@ -82,6 +82,7 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 		// }
 		
 		//Smooth and change the pawn rotation
+		//TODO: when fleeing, the rotation is wrong, let see why. Check my note for more details
 		if (bUpdatePawn)
 		{
 			//Get Pawn current rotation

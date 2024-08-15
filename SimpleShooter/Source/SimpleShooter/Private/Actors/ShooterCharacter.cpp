@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "SimpleShooter/Public/Actors/ShooterCharacter.h"
 #include "Actors/Gun.h"
 #include "GameMode/SimpleShooterGameModeBase.h"
 #include "Components/CapsuleComponent.h"
+#include "PlayMontageCallbackProxy.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -166,6 +166,7 @@ void AShooterCharacter::ReleaseTrigger()
 
 void AShooterCharacter::Reload()
 {
+	PlayReloadAnimationMontage();
 	if (AmmoReserve > 0)
 	{
 		int ReloadAmount = Gun->GetMaxAmmo();
@@ -185,10 +186,22 @@ void AShooterCharacter::Reload()
 	}
 }
 
+void AShooterCharacter::PlayReloadAnimationMontage()
+{
+	UPlayMontageCallbackProxy* ProxyPlayMontage = UPlayMontageCallbackProxy::CreateProxyObjectForPlayMontage(
+			GetMesh(),
+			ReloadMontage
+		);
+	ProxyPlayMontage->OnCompleted.AddDynamic(this, &AShooterCharacter::OnMontageCompleted);
+}
+
+void AShooterCharacter::OnMontageCompleted(FName NotifyName)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Reload Montage End"));
+}
+
 void AShooterCharacter::SelfDamage()
 {
 	Health -= 10.0f;
 }
-
-
 
