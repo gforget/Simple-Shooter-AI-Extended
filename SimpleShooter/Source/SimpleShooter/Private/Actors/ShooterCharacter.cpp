@@ -31,6 +31,11 @@ bool AShooterCharacter::IsDead() const
 	return Health <= 0.0f;
 }
 
+bool AShooterCharacter::GetIsReloading() const
+{
+	return IsReloading;
+}
+
 float AShooterCharacter::GetHealthPercent() const
 {
 	return Health/MaxHealth;
@@ -165,39 +170,36 @@ void AShooterCharacter::ReleaseTrigger()
 }
 
 void AShooterCharacter::Reload()
-{
-	PlayReloadAnimationMontage();
-	if (AmmoReserve > 0)
+{	
+	if (!IsReloading && AmmoReserve > 0 && Gun->GetAmmoPercent() < 1.0f )
 	{
-		int ReloadAmount = Gun->GetMaxAmmo();
-		int CurrentReloadAmount = ReloadAmount;
-		if (AmmoReserve - ReloadAmount < 0)
-		{
-			CurrentReloadAmount = ReloadAmount - FMath::Abs(AmmoReserve-ReloadAmount);
-		}
+		UPlayMontageCallbackProxy* ProxyPlayMontage = UPlayMontageCallbackProxy::CreateProxyObjectForPlayMontage(
+		GetMesh(),
+		ReloadMontage
+		);
 		
-		AmmoReserve -= CurrentReloadAmount;
-		const int LeftOver = Gun->Reload(CurrentReloadAmount);
-		AmmoReserve += LeftOver;
+		ProxyPlayMontage->OnCompleted.AddDynamic(this, &AShooterCharacter::OnReloadAnimationCompleted);
+		IsReloading = true;
 	}
 	else
 	{
-		//TODO: put a signal that you can no longer reload
+		//TODO: clip sound
 	}
 }
 
-void AShooterCharacter::PlayReloadAnimationMontage()
+void AShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
 {
-	UPlayMontageCallbackProxy* ProxyPlayMontage = UPlayMontageCallbackProxy::CreateProxyObjectForPlayMontage(
-			GetMesh(),
-			ReloadMontage
-		);
-	ProxyPlayMontage->OnCompleted.AddDynamic(this, &AShooterCharacter::OnMontageCompleted);
-}
-
-void AShooterCharacter::OnMontageCompleted(FName NotifyName)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Reload Montage End"));
+	IsReloading = false;
+	int ReloadAmount = Gun->GetMaxAmmo();
+	int CurrentReloadAmount = ReloadAmount;
+	if (AmmoReserve - ReloadAmount < 0)
+	{
+		CurrentReloadAmount = ReloadAmount - FMath::Abs(AmmoReserve-ReloadAmount);
+	}
+	
+	AmmoReserve -= CurrentReloadAmount;
+	const int LeftOver = Gun->Reload(CurrentReloadAmount);
+	AmmoReserve += LeftOver;
 }
 
 void AShooterCharacter::SelfDamage()

@@ -59,6 +59,11 @@ void AGun::ReleaseTrigger()
 
 void AGun::Fire(float AIOffsetRadius)
 {
+	if (AShooterCharacter* CharacterOwner = Cast<AShooterCharacter>(GetOwner()))
+	{
+		if (CharacterOwner->GetIsReloading()) return;
+	}
+	
 	if (UseAmmo())
 	{
 		UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));

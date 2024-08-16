@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 
+	UFUNCTION(BlueprintPure)
+	bool GetIsReloading() const;
+	
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() const;
 
@@ -66,8 +69,6 @@ private:
 	
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
-
-	void PlayReloadAnimationMontage();
 	
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* ReloadMontage;
@@ -92,11 +93,14 @@ private:
 
 	UPROPERTY()
 	AGun* Gun;
-
+	
+	UPROPERTY()
+	bool IsReloading = false;
+	
 	UPROPERTY()
 	UPlayMontageCallbackProxy* PlayMontageCallbackProxy;
 
 	UFUNCTION()
-	void OnMontageCompleted(FName NotifyName);
+	void OnReloadAnimationCompleted(FName NotifyName);
 };
 
