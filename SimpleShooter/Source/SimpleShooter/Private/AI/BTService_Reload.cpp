@@ -4,6 +4,7 @@
 #include "AI/BTService_Reload.h"
 
 #include "AIController.h"
+#include "Actors/Gun.h"
 #include "Actors/ShooterCharacter.h"
 
 UBTService_Reload::UBTService_Reload()
@@ -25,6 +26,16 @@ void UBTService_Reload::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	{
 		return;
 	}
-	
-	Character->Reload();
+
+	const AGun* Gun = Character->GetGunReference();
+	if (Character == nullptr)
+	{
+		return;
+	}
+
+	if (!Character->GetIsReloading() && Gun->GetAmmoPercent() == 0.0f && Character->GetAmmoReservePercent() > 0.0f)
+	{
+		Character->Reload();
+	}
+
 }
