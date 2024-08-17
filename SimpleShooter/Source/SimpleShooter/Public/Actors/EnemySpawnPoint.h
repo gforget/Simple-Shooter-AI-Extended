@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "RoomTriggerBox.h"
 #include "GameFramework/Actor.h"
 #include "EnemySpawnPoint.generated.h"
 
@@ -15,9 +14,6 @@ class SIMPLESHOOTER_API AEnemySpawnPoint : public AActor
 public:
 	// Sets default values for this actor's properties
 	AEnemySpawnPoint();
-
-	UPROPERTY(EditInstanceOnly)
-	ARoomTriggerBox* SpawnedRoomTriggerBox;
 	
 protected:
 	// Called when the game starts or when spawned

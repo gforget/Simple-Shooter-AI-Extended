@@ -33,14 +33,6 @@ void ASimpleShooterGameModeBase::BeginPlay()
 			AllEnemySpawnPoints[IndexSpawnPoint]->GetActorLocation(),
 			FRotator(0.0f, 0.0f, 0.0f)
 			);
-
-		if (ShooterCharacter != nullptr)
-		{
-			if (AShooterAIController* AIController = Cast<AShooterAIController>(ShooterCharacter->GetController()))
-			{
-				AIController->CurrentRoomTriggerBox = AllEnemySpawnPoints[IndexSpawnPoint]->SpawnedRoomTriggerBox;
-			}
-		}
 	}
 }
 

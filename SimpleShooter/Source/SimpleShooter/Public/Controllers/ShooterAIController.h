@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/RoomTriggerBox.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "ShooterAIController.generated.h"
 
@@ -16,9 +15,6 @@ public:
 	
 	// Sets default values for this actor's properties
 	AShooterAIController();
-
-	UPROPERTY(VisibleAnywhere)
-	ARoomTriggerBox* CurrentRoomTriggerBox;
 	
 protected:
 	
