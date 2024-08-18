@@ -5,6 +5,8 @@
 #include "GameMode/SimpleShooterGameModeBase.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
+#include "Controllers/ShooterPlayerController.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -24,6 +26,14 @@ void AShooterCharacter::BeginPlay()
 	
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
+
+	//Add OHHealthBar to the Only player instantiated
+	//TODO: when multiplayer arrive, find a way to do this on every player controller
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (GetController()->GetUniqueID() != PlayerController->GetUniqueID())
+	{
+		Cast<AShooterPlayerController>(PlayerController)->AddOHHealthBar(this);
+	}
 }
 
 bool AShooterCharacter::IsDead() const
@@ -185,6 +195,43 @@ void AShooterCharacter::Reload()
 	{
 		//TODO: clip sound
 	}
+}
+
+#if WITH_EDITOR
+void AShooterCharacter::PostActorCreated()
+{
+	Super::PostActorCreated();
+	GenerateEditorAnchorPositionVisualisation();	
+}
+
+void AShooterCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	GenerateEditorAnchorPositionVisualisation();
+}
+
+void AShooterCharacter::PostEditMove(bool bFinished)
+{
+	Super::PostEditMove(bFinished);
+	GenerateEditorAnchorPositionVisualisation();
+}
+#endif
+
+void AShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
+{
+#if WITH_EDITOR
+	if (const UWorld* World = GetWorld())
+	{
+		if (World->WorldType == EWorldType::EditorPreview)
+		{
+			UKismetSystemLibrary::FlushPersistentDebugLines(this);
+			const FVector ActorLocation = GetActorLocation();
+			
+			// HealtBar Anchor
+			DrawDebugSphere(GetWorld(), ActorLocation + HealthBarAnchor, 5.0f, 12, FColor::Cyan, true, 0.0f, 0, 0.0f);
+		}
+	}
+#endif
 }
 
 void AShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)

@@ -9,6 +9,7 @@
 /**
  * 
  */
+class AShooterCharacter;
 
 UCLASS()
 class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
@@ -16,15 +17,18 @@ class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-
 	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
+	void AddOHHealthBar(AShooterCharacter* AssignedCharacter);
 	
 protected:
 	virtual void BeginPlay() override;
-
+	
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> HUDScreenClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> OHHealthBarClass;
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> LoseScreenClass;

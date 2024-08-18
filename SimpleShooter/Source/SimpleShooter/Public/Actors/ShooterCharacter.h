@@ -23,8 +23,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+#if WITH_EDITOR
+	virtual void PostActorCreated() override;
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+	virtual void PostEditMove(bool bFinished) override;
+#endif
+	
 public:
-
+	UPROPERTY(EditDefaultsOnly, Category="Game UI")
+	FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
+	
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 
@@ -102,5 +110,7 @@ private:
 
 	UFUNCTION()
 	void OnReloadAnimationCompleted(FName NotifyName);
+	
+	void GenerateEditorAnchorPositionVisualisation() const;
 };
 

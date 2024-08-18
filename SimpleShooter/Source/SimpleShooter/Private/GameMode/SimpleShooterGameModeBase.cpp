@@ -4,7 +4,6 @@
 #include "Actors/AmmoPack.h"
 #include "Actors/EnemySpawnPoint.h"
 #include "Actors/ShooterCharacter.h"
-#include "Controllers/ShooterAIController.h"
 #include "Kismet/GameplayStatics.h"
 
 void ASimpleShooterGameModeBase::BeginPlay()

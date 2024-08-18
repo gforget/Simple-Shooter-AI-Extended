@@ -3,6 +3,7 @@
 
 #include "Controllers/ShooterPlayerController.h"
 #include "Blueprint/UserWidget.h"
+#include "UI/OHHealthBar.h"
 
 void AShooterPlayerController::BeginPlay()
 {
@@ -14,10 +15,17 @@ void AShooterPlayerController::BeginPlay()
 	}
 }
 
+void AShooterPlayerController::AddOHHealthBar(AShooterCharacter* AssignedCharacter)
+{
+	UOHHealthBar* OHHealthBar = Cast<UOHHealthBar>(CreateWidget(this, OHHealthBarClass));
+	OHHealthBar->AddToViewport();
+	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter, this);
+}
+
 void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 {
 	Super::GameHasEnded(EndGameFocus, bIsWinner);
-	HUD->RemoveFromViewport();
+	HUD->RemoveFromParent();
 	
 	if (bIsWinner)
 	{
@@ -38,3 +46,5 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 	
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
 }
+
+
