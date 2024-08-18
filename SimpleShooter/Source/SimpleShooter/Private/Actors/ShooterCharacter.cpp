@@ -183,12 +183,12 @@ void AShooterCharacter::Reload()
 {	
 	if (!IsReloading && AmmoReserve > 0 && Gun->GetAmmoPercent() < 1.0f )
 	{
-		UPlayMontageCallbackProxy* ProxyPlayMontage = UPlayMontageCallbackProxy::CreateProxyObjectForPlayMontage(
-		GetMesh(),
-		ReloadMontage
+		ProxyReloadPlayMontage = UPlayMontageCallbackProxy::CreateProxyObjectForPlayMontage(
+			GetMesh(),
+			ReloadMontage
 		);
 		
-		ProxyPlayMontage->OnCompleted.AddDynamic(this, &AShooterCharacter::OnReloadAnimationCompleted);
+		ProxyReloadPlayMontage->OnCompleted.AddDynamic(this, &AShooterCharacter::OnReloadAnimationCompleted);
 		IsReloading = true;
 	}
 	else

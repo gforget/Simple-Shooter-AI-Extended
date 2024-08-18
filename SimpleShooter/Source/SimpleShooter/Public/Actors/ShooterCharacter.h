@@ -77,6 +77,9 @@ private:
 	
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
+
+	UPROPERTY()
+	UPlayMontageCallbackProxy* ProxyReloadPlayMontage;
 	
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* ReloadMontage;
