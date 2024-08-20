@@ -168,12 +168,26 @@ APawn* UBTService_UMMaster::GetEnemyActor()
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(PlayerPawn))
 	{
-		return PlayerPawn;
+		FVector EyesLocation;
+		FRotator EyesRotation;
+		OwnerCompPtr->GetAIOwner()->GetActorEyesViewPoint(EyesLocation, EyesRotation);
+
+		const FVector EyesForward = EyesRotation.Vector();
+		FVector EyesToPlayer = PlayerPawn->GetActorLocation() - EyesLocation;
+		EyesToPlayer.Normalize();
+		
+		// factor of 0 to 1, 0 = 180 degree vision, 1 = 0 degree vision, 0.5 = 90 (45 split from the middle)
+		if (FVector::DotProduct(EyesForward, EyesToPlayer) > 0.0f) 
+		{
+			return PlayerPawn;
+		}
+		else
+		{
+			return nullptr;
+		}
 	}
-	else
-	{
-		return nullptr;
-	}
+	
+	return nullptr;
 }
 
 AWaypoint* UBTService_UMMaster::GetClosestValidFleePoint()
@@ -221,24 +235,8 @@ AWaypoint* UBTService_UMMaster::GetClosestValidFleePoint()
 					HighestDistance = CurrentPathDistanceFromEnemyPosition;
 				}
 			}
-			
-			// UE_LOG(LogTemp, Warning, TEXT("CharLocation2D : %f, %f"), CharLocation2D.X, CharLocation2D.Y);
-			// UE_LOG(LogTemp, Warning, TEXT("FirstPointLocation2D : %f, %f"), FirstPointLocation2D.X, FirstPointLocation2D.Y);
-			// UE_LOG(LogTemp, Warning, TEXT("LastKnownEnemyLocation2D : %f, %f"), LastKnownEnemyLocation2D.X, LastKnownEnemyLocation2D.Y);
-			// UE_LOG(LogTemp, Warning, TEXT("CharToFirstPoint : %f, %f"), CharToFirstPoint.X, CharToFirstPoint.Y);
-			// UE_LOG(LogTemp, Warning, TEXT("CharToEnemy : %f, %f"), CharToEnemy.X, CharToEnemy.Y);
-			//
-			// UE_LOG(LogTemp, Warning, TEXT("DotProduct CharToFirstPoint.CharToEnemy : %f"), DotProduct);
-			// UE_LOG(LogTemp, Warning, TEXT("----------------"));
 		}
 	}
-	
-	// if (SelectedFleePoint != nullptr)
-	// {
-	// 	const FString WiningStateString = SelectedFleePoint->GetActorLabel();
-	// 	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Orange, *FString::Printf(TEXT("Fleeing node is : %s"), *WiningStateString));
-	// 	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString::Printf(TEXT("Fleeing node : %s"), *WiningStateString));
-	// }
 	
 	return SelectedFleePoint;
 }
