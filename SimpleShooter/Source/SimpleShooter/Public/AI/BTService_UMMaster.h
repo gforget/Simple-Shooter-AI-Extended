@@ -27,7 +27,7 @@ enum EAIStateEnum
 };
 
 UCLASS()
-class SIMPLESHOOTER_API UBTService_UMMaster : public UBTService_BlackboardBase
+class SIMPLESHOOTER_API UBTService_UMMaster : public UBTService
 {
 	GENERATED_BODY()
 
@@ -127,11 +127,6 @@ private:
 	float ScoreAggregation(int NbConsiderations, float OriginalScore);
 
 	//Blackboard Methods
-	float GetHealthPercent();
-	AHealthPack* GetClosestHealthPack();
-	AAmmoPack* GetClosestAmmoPack();
-	float GetAmmoReservePercent();
-	float GetAmmoInGunPercent();
 	APawn* GetEnemyActor();
 	AWaypoint* GetClosestValidFleePoint();
 	

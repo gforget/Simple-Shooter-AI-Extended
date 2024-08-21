@@ -9,6 +9,7 @@
 
 class AGun;
 class UPlayMontageCallbackProxy;
+class UNavMeshUtility;
 
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
@@ -30,6 +31,10 @@ protected:
 #endif
 	
 public:
+	
+	UPROPERTY()
+	UNavMeshUtility* NavMeshUtility;
+	
 	UPROPERTY(EditDefaultsOnly, Category="Game UI")
 	FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
 	

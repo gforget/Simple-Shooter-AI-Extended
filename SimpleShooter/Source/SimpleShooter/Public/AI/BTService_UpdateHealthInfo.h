@@ -3,19 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/Services/BTService_BlackboardBase.h"
-#include "BTService_UpdateAmmoInReservePercent.generated.h"
+#include "BehaviorTree/BTService.h"
+#include "BTService_UpdateHealthInfo.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SIMPLESHOOTER_API UBTService_UpdateAmmoInReservePercent : public UBTService_BlackboardBase
+class SIMPLESHOOTER_API UBTService_UpdateHealthInfo : public UBTService
 {
 	GENERATED_BODY()
 public:
-	UBTService_UpdateAmmoInReservePercent();
+	UBTService_UpdateHealthInfo();
 	
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+
+private:
+	UPROPERTY()
+	UBehaviorTreeComponent* OwnerCompPtr;
+	
+	float GetHealthPercent();
 };

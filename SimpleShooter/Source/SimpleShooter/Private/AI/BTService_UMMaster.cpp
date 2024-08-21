@@ -31,33 +31,27 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 		//initiate blackboard value
 		if (!bInitiated)
 		{
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f);
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f); // Service - StimulusUpdate
 			bInitiated = true;	
 		}
-
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("SelfHealthPercent"), GetHealthPercent());
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("SelectedHealthPack"), GetClosestHealthPack());
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("AmmoInReservePercent"), GetAmmoReservePercent());
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("SelectedAmmoPack"), GetClosestAmmoPack());
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("AmmoInGunPercent"), GetAmmoInGunPercent());
-
-		APawn* EnemyActor = GetEnemyActor();
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("EnemyInSight"), EnemyActor);
+		
+		APawn* EnemyActor = GetEnemyActor();// Service - StimulusUpdate
+		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("EnemyInSight"), EnemyActor);// Service - StimulusUpdate
 		if (EnemyActor != nullptr)
 		{
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("LastKnownEnemyLocation"), EnemyActor->GetActorLocation());
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("LastKnownEnemyLocation"), EnemyActor->GetActorLocation());// Service - StimulusUpdate
 		}
 
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("SelectedFleePoint"), GetClosestValidFleePoint());
+		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("SelectedFleePoint"), GetClosestValidFleePoint()); // Service - SelectFleePoint
 		if (EnemyActor != nullptr)
 		{
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 0.0f);
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 0.0f); // Service - StimulusUpdate
 		}
 		else
 		{
-			float TimeRegistered = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy"));
+			float TimeRegistered = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")); // Service - StimulusUpdate
 			TimeRegistered += DeltaSeconds;
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), TimeRegistered);
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), TimeRegistered); // Service - StimulusUpdate
 		}
 
 		if (DefaultEnumState == EAIStateEnum::None)
@@ -69,98 +63,6 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsEnum(FName("State"), DefaultEnumState);
 		}
 	}
-}
-
-float UBTService_UMMaster::GetHealthPercent()
-{
-	const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
-	if (AICharacter == nullptr)
-	{
-		return 0.0f;
-	}
-	
-	return AICharacter->GetHealthPercent();
-}
-
-AHealthPack*  UBTService_UMMaster::GetClosestHealthPack()
-{
-	AHealthPack* SelectedHealthPack = nullptr;
-	ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
-	if (GameMode == nullptr)
-	{
-		return SelectedHealthPack;
-	}
-
-	TArray<AHealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
-	const FVector CharLocation = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation(); 
-
-	float HighestDistance = 999999999999.99f;
-	
-	for (int i=0; i<ConsideredHealthPacks.Num(); i++)
-	{
-		if (!ConsideredHealthPacks[i]->IsRecharging())
-		{
-			const float CurrentDistance = GetPathLength(CharLocation, ConsideredHealthPacks[i]->GetActorLocation());
-			if (CurrentDistance < HighestDistance)
-			{
-				SelectedHealthPack = ConsideredHealthPacks[i];
-				HighestDistance = CurrentDistance;
-			}
-		}
-	}
-
-	return SelectedHealthPack;
-}
-
-float UBTService_UMMaster::GetAmmoReservePercent()
-{
-	const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
-	if (AICharacter == nullptr)
-	{
-		return 0.0f;
-	}
-
-	return AICharacter->GetAmmoReservePercent();
-}
-
-float UBTService_UMMaster::GetAmmoInGunPercent()
-{
-	const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
-	if (AICharacter == nullptr)
-	{
-		return 0.0f;
-	}
-	return AICharacter->GetGunReference()->GetAmmoPercent();
-}
-
-AAmmoPack* UBTService_UMMaster::GetClosestAmmoPack()
-{
-	AAmmoPack* SelectedAmmoPack = nullptr;
-	ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
-	if (GameMode == nullptr)
-	{
-		return SelectedAmmoPack;
-	}
-
-	TArray<AAmmoPack*> ConsideredAmmoPacks = GameMode->GetAllAmmoPacks();
-	const FVector CharLocation = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation(); 
-
-	float HighestDistance = 999999999999.99f;
-	
-	for (int i=0; i<ConsideredAmmoPacks.Num(); i++)
-	{
-		if (!ConsideredAmmoPacks[i]->IsRecharging())
-		{
-			const float CurrentDistance = GetPathLength(CharLocation, ConsideredAmmoPacks[i]->GetActorLocation());
-			if (CurrentDistance < HighestDistance)
-			{
-				SelectedAmmoPack = ConsideredAmmoPacks[i];
-				HighestDistance = CurrentDistance;
-			}
-		}
-	}
-
-	return SelectedAmmoPack;
 }
 
 APawn* UBTService_UMMaster::GetEnemyActor()
@@ -175,7 +77,8 @@ APawn* UBTService_UMMaster::GetEnemyActor()
 		const FVector EyesForward = EyesRotation.Vector();
 		FVector EyesToPlayer = PlayerPawn->GetActorLocation() - EyesLocation;
 		EyesToPlayer.Normalize();
-		
+
+		//vision cone
 		// factor of 0 to 1, 0 = 180 degree vision, 1 = 0 degree vision, 0.5 = 90 (45 split from the middle)
 		if (FVector::DotProduct(EyesForward, EyesToPlayer) > 0.0f) 
 		{

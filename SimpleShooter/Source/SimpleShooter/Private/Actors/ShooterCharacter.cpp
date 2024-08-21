@@ -7,6 +7,7 @@
 #include "PlayMontageCallbackProxy.h"
 #include "Controllers/ShooterPlayerController.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Utility/NavMeshUtility.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -34,6 +35,8 @@ void AShooterCharacter::BeginPlay()
 	{
 		Cast<AShooterPlayerController>(PlayerController)->AddOHHealthBar(this);
 	}
+
+	NavMeshUtility = NewObject<UNavMeshUtility>(GetTransientPackage(), UNavMeshUtility::StaticClass());
 }
 
 bool AShooterCharacter::IsDead() const
