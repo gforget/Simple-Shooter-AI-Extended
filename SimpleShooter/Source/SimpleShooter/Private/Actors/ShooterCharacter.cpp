@@ -5,6 +5,7 @@
 #include "GameMode/SimpleShooterGameModeBase.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
+#include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
@@ -37,6 +38,15 @@ void AShooterCharacter::BeginPlay()
 	}
 
 	NavMeshUtility = NewObject<UNavMeshUtility>(GetTransientPackage(), UNavMeshUtility::StaticClass());
+
+	AVisualStimuli_ShooterCharacter* VisualStimuliShooterCharacter = GetWorld()->SpawnActor<AVisualStimuli_ShooterCharacter>(
+		VisualStimuli_ShooterCharacterClass,
+		FVector(0.0f, 0.0f, 0.0f),
+		FRotator(0.0f, 0.0f, 0.0f)
+	);
+
+	VisualStimuliShooterCharacter->SetShooterCharacterRef(this);
+	VisualStimuliShooterCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 }
 
 bool AShooterCharacter::IsDead() const

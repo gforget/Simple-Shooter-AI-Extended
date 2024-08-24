@@ -2,10 +2,13 @@
 #include "Actors/Gun.h"
 
 #include "Actors/ShooterCharacter.h"
+#include "Actors/Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
+#include "Actors/Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Controllers/ShooterAIController.h"
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AGun::AGun()
@@ -66,18 +69,33 @@ void AGun::Fire(float AIOffsetRadius)
 	
 	if (UseAmmo())
 	{
-		UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
+		UParticleSystemComponent* MuzzleFlashParticle = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
 		UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
-	
+
+		//Create Sound Stimuli for AI
+		ASoundStimuli_ShootingSound* SoundStimuli_ShootingSound = GetWorld()->SpawnActor<ASoundStimuli_ShootingSound>(
+			SoundStimuli_ShootingSoundClass,
+			MuzzleFlashParticle->GetComponentLocation(),
+			FRotator(0.0f, 0.0f, 0.0f)
+		);
+		
 		FHitResult Hit;
 		FVector ShotDirection;
 		bool bSuccess = GunTrace(Hit, ShotDirection, AIOffsetRadius);
 		
 		if (bSuccess)
 		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
+			UParticleSystemComponent* ImpactParticle = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
 			UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, Hit.Location);
-		
+
+			//Create Sound Stimuli for AI
+			ASoundStimuli_BulletImpactSound* SoundStimuli_BulletImpactSound = GetWorld()->SpawnActor<ASoundStimuli_BulletImpactSound>(
+				SoundStimuli_BulletImpactSoundClass,
+				ImpactParticle->GetComponentLocation(),
+				FRotator(0.0f, 0.0f, 0.0f)
+			);
+			SoundStimuli_BulletImpactSound->SetShootingOriginPosition(MuzzleFlashParticle->GetComponentLocation());
+			
 			AActor* HitActor = Hit.GetActor();
 			if (HitActor != nullptr)
 			{

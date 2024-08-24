@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "FleePoint.generated.h"
-
+#include "Stimuli.h"
+#include "VisualStimuli.generated.h"
+class USphereComponent;
 UCLASS()
-class SIMPLESHOOTER_API AFleePoint : public AActor
+class SIMPLESHOOTER_API AVisualStimuli : public AStimuli
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AFleePoint();
+	AVisualStimuli();
 
 protected:
 	// Called when the game starts or when spawned

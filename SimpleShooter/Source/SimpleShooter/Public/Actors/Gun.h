@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Gun.generated.h"
 
+class ASoundStimuli_ShootingSound;
+class ASoundStimuli_BulletImpactSound;
 UCLASS()
 class SIMPLESHOOTER_API AGun : public AActor
 {
@@ -47,6 +49,11 @@ public:
 	int GetMaxAmmo() const;
 	
 private:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ASoundStimuli_ShootingSound> SoundStimuli_ShootingSoundClass;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ASoundStimuli_BulletImpactSound> SoundStimuli_BulletImpactSoundClass;
 	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;

@@ -8,6 +8,7 @@
 #include "ShooterCharacter.generated.h"
 
 class AGun;
+class AVisualStimuli_ShooterCharacter;
 class UPlayMontageCallbackProxy;
 class UNavMeshUtility;
 
@@ -77,6 +78,10 @@ public:
 	void SelfDamage();
 	
 private:
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
+	
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	

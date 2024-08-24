@@ -1,26 +1,25 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/FleePoint.h"
-
-#include "GameMode/SimpleShooterGameModeBase.h"
+#include "Actors/Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
 
 
 // Sets default values
-AFleePoint::AFleePoint()
+ASoundStimuli_ShootingSound::ASoundStimuli_ShootingSound()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AFleePoint::BeginPlay()
+void ASoundStimuli_ShootingSound::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
 // Called every frame
-void AFleePoint::Tick(float DeltaTime)
+void ASoundStimuli_ShootingSound::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
