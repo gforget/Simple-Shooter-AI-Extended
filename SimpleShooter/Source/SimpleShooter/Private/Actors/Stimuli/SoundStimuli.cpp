@@ -29,3 +29,13 @@ void ASoundStimuli::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ASoundStimuli::SetSoundOwner(AActor* OwnerRef)
+{
+	SoundOwner = OwnerRef;
+}
+
+AActor* ASoundStimuli::GetSoundOwner()
+{
+	return SoundOwner;
+}
+

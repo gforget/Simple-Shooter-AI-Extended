@@ -39,14 +39,14 @@ void AShooterCharacter::BeginPlay()
 
 	NavMeshUtility = NewObject<UNavMeshUtility>(GetTransientPackage(), UNavMeshUtility::StaticClass());
 
-	AVisualStimuli_ShooterCharacter* VisualStimuliShooterCharacter = GetWorld()->SpawnActor<AVisualStimuli_ShooterCharacter>(
+	VSShooterCharacter = GetWorld()->SpawnActor<AVisualStimuli_ShooterCharacter>(
 		VisualStimuli_ShooterCharacterClass,
 		FVector(0.0f, 0.0f, 0.0f),
 		FRotator(0.0f, 0.0f, 0.0f)
 	);
 
-	VisualStimuliShooterCharacter->SetShooterCharacterRef(this);
-	VisualStimuliShooterCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+	VSShooterCharacter->SetShooterCharacterRef(this);
+	VSShooterCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 }
 
 bool AShooterCharacter::IsDead() const
@@ -124,6 +124,7 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		DetachFromControllerPendingDestroy();
 		ReleaseTrigger();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		VSShooterCharacter->Destroy();
 	}
 	
 	return DamageToApply;
@@ -134,11 +135,13 @@ float AShooterCharacter::Heal(float HealAmount)
 	if (Health+HealAmount <= MaxHealth)
 	{
 		Health += HealAmount;
+		OnHealEvent.Broadcast();
 		return HealAmount;
 	}
 	else
 	{
 		Health = MaxHealth;
+		OnHealEvent.Broadcast();
 		return (Health+HealAmount) - MaxHealth;
 	}
 }
@@ -265,5 +268,10 @@ void AShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
 void AShooterCharacter::SelfDamage()
 {
 	Health -= 10.0f;
+}
+
+AVisualStimuli_ShooterCharacter* AShooterCharacter::GetVSShooterCharacter() 
+{
+	return VSShooterCharacter;
 }
 

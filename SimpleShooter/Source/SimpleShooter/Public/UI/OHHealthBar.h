@@ -37,6 +37,10 @@ public :
 
 	UFUNCTION()
 	void OnCharacterHit(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
+	UFUNCTION()
+	void OnCharacterHeal();
+	
 	void UpdateHealthBar();
 
 	void InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef, APlayerController* AssignedPlayerControllerRef);

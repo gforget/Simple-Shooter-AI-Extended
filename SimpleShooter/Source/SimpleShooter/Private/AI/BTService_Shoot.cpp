@@ -56,6 +56,16 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	{
 		bJustSawEnemy = false;
 		TimerBeforeShooting = 0.0f;
+		
+		if (OwnerComp.GetBlackboardComponent()->IsVectorValueSet(FName("LastKnownEnemyLocation")))
+		{
+			OwnerComp.GetAIOwner()->SetFocalPoint(OwnerComp.GetBlackboardComponent()->GetValueAsVector(FName("LastKnownEnemyLocation")));
+		}
+		else
+		{
+			OwnerComp.GetAIOwner()->SetFocus(nullptr);
+		}
+		
 		Character->ReleaseTrigger();
 	}
 }

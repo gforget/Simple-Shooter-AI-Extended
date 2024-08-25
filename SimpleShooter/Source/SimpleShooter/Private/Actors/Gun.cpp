@@ -62,22 +62,26 @@ void AGun::ReleaseTrigger()
 
 void AGun::Fire(float AIOffsetRadius)
 {
-	if (AShooterCharacter* CharacterOwner = Cast<AShooterCharacter>(GetOwner()))
+	AShooterCharacter* CharacterOwner = Cast<AShooterCharacter>(GetOwner());
+	if (CharacterOwner == nullptr)
 	{
-		if (CharacterOwner->GetIsReloading()) return;
+		return;	
 	}
 	
 	if (UseAmmo())
 	{
+		if (CharacterOwner->GetIsReloading()) return;
 		UParticleSystemComponent* MuzzleFlashParticle = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
 		UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
 
 		//Create Sound Stimuli for AI
 		ASoundStimuli_ShootingSound* SoundStimuli_ShootingSound = GetWorld()->SpawnActor<ASoundStimuli_ShootingSound>(
 			SoundStimuli_ShootingSoundClass,
-			MuzzleFlashParticle->GetComponentLocation(),
+			CharacterOwner->GetActorLocation(), //want a position that is relevant to the sound, the position of the shooter is more relevant
 			FRotator(0.0f, 0.0f, 0.0f)
 		);
+		
+		SoundStimuli_ShootingSound->SetSoundOwner(CharacterOwner);
 		
 		FHitResult Hit;
 		FVector ShotDirection;
@@ -94,7 +98,9 @@ void AGun::Fire(float AIOffsetRadius)
 				ImpactParticle->GetComponentLocation(),
 				FRotator(0.0f, 0.0f, 0.0f)
 			);
-			SoundStimuli_BulletImpactSound->SetShootingOriginPosition(MuzzleFlashParticle->GetComponentLocation());
+			
+			SoundStimuli_BulletImpactSound->SetSoundOwner(CharacterOwner);
+			SoundStimuli_BulletImpactSound->SetShootingOriginPosition(CharacterOwner->GetActorLocation()); //want a position that is relevant to the sound, the position of the shooter is more relevant
 			
 			AActor* HitActor = Hit.GetActor();
 			if (HitActor != nullptr)

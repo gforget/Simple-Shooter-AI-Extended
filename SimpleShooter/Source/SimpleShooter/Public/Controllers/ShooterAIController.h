@@ -25,7 +25,7 @@ protected:
 	UPROPERTY()
 	FRotator SmoothPawnRotation;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float SmoothFocusInterpSpeed = 30.0f;
 	
 public:
@@ -33,8 +33,24 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	bool IsDead() const;
 	virtual void UpdateControlRotation(float DeltaTime, bool bUpdatePawn) override;
+
+	float GetFieldOfView();
+	float GetSightRange();
+	float GetHearingRange();
 	
 private:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AIBehavior;
+
+	UPROPERTY(EditDefaultsOnly)
+	bool bDebug = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Custom Stimulus System")
+	float FieldOfView = 90.0f;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Custom Stimulus System")
+	float SightRange = 2000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Custom Stimulus System")
+	float HearingRange = 2500.0f;
 };

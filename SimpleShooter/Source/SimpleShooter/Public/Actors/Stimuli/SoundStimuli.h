@@ -24,10 +24,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetSoundOwner(AActor* OwnerRef);
+	AActor* GetSoundOwner();
+	
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	USceneComponent* Root;
 	
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	USphereComponent* SphereComponent;
+
+	UPROPERTY()
+	AActor* SoundOwner;
 };

@@ -34,25 +34,15 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f); // Service - StimulusUpdate
 			bInitiated = true;	
 		}
-		
-		APawn* EnemyActor = GetEnemyActor();// Service - StimulusUpdate
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("EnemyInSight"), EnemyActor);// Service - StimulusUpdate
-		if (EnemyActor != nullptr)
-		{
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("LastKnownEnemyLocation"), EnemyActor->GetActorLocation());// Service - StimulusUpdate
-		}
 
+		float MaxTime = FMath::Max(EEC_MaxTimeSeenAnEnemy, FlC_MaxTimeSeenAnEnemy);
+		MaxTime = FMath::Max(MaxTime, ExC_MaxTimeSeenAnEnemy);
+		if (OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")) > MaxTime)
+		{
+			OwnerCompPtr->GetBlackboardComponent()->ClearValue(FName("LastKnownEnemyLocation"));
+		}
+		
 		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("SelectedFleePoint"), GetClosestValidFleePoint()); // Service - SelectFleePoint
-		if (EnemyActor != nullptr)
-		{
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 0.0f); // Service - StimulusUpdate
-		}
-		else
-		{
-			float TimeRegistered = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")); // Service - StimulusUpdate
-			TimeRegistered += DeltaSeconds;
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), TimeRegistered); // Service - StimulusUpdate
-		}
 
 		if (DefaultEnumState == EAIStateEnum::None)
 		{

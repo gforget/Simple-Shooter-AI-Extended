@@ -12,6 +12,7 @@ class AVisualStimuli_ShooterCharacter;
 class UPlayMontageCallbackProxy;
 class UNavMeshUtility;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealEvent);
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
 {
@@ -32,6 +33,8 @@ protected:
 #endif
 	
 public:
+	UPROPERTY()
+	FHealEvent OnHealEvent;
 	
 	UPROPERTY()
 	UNavMeshUtility* NavMeshUtility;
@@ -77,10 +80,15 @@ public:
 
 	void SelfDamage();
 	
+	AVisualStimuli_ShooterCharacter* GetVSShooterCharacter();
+	
 private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
+
+	UPROPERTY()
+	AVisualStimuli_ShooterCharacter* VSShooterCharacter;
 	
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
@@ -125,5 +133,6 @@ private:
 	void OnReloadAnimationCompleted(FName NotifyName);
 	
 	void GenerateEditorAnchorPositionVisualisation() const;
+	
 };
 

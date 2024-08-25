@@ -1,12 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Controllers/ShooterAIController.h"
-
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-
 
 // Sets default values
 AShooterAIController::AShooterAIController()
@@ -35,6 +32,77 @@ void AShooterAIController::OnPossess(APawn* InPawn)
 void AShooterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bDebug)
+	{
+		DrawDebugSphere(
+			GetWorld(),
+			GetPawn()->GetActorLocation(),
+			SightRange,
+			12,
+			FColor::Green,
+			false,
+			0.0f,
+			0,
+			1.0f);
+		
+		DrawDebugSphere(
+			GetWorld(),
+			GetPawn()->GetActorLocation(),
+			HearingRange,
+			12,
+			FColor::Magenta,
+			false,
+			0.0f,
+			0,
+			1.0f);
+		
+		FVector EyesLocation;
+		FRotator EyesRotation;
+		GetActorEyesViewPoint(EyesLocation, EyesRotation);
+
+		const FVector EyesForward = EyesRotation.Vector();
+		const FVector EyesRightFieldOfView = EyesForward.RotateAngleAxis(FieldOfView, EyesForward.UpVector);
+		DrawDebugLine(
+			GetWorld(),
+			EyesLocation,
+			EyesLocation + EyesRightFieldOfView*SightRange,
+			FColor::Yellow,
+			false, -1, 0,
+			1.0f
+		);
+		
+		const FVector EyesLeftFieldOfView = EyesForward.RotateAngleAxis(-FieldOfView, EyesForward.UpVector);
+		DrawDebugLine(
+			GetWorld(),
+			EyesLocation,
+			EyesLocation + EyesLeftFieldOfView*SightRange,
+			FColor::Yellow,
+			false, -1, 0,
+			1.0f
+		);
+		
+		const FVector EyesRight = EyesForward.Cross(EyesForward.UpVector); //For some reason, RightVector from EyesForward doesn't work, so calculate it with a CrossP
+		const FVector EyesTopFieldOfView = EyesForward.RotateAngleAxis(FieldOfView, EyesRight);
+		DrawDebugLine(
+			GetWorld(),
+			EyesLocation,
+			EyesLocation + EyesTopFieldOfView*SightRange,
+			FColor::Yellow,
+			false, -1, 0,
+			1.0f
+		);
+		
+		const FVector EyesBottomFieldOfView = EyesForward.RotateAngleAxis(-FieldOfView, EyesRight);
+		DrawDebugLine(
+			GetWorld(),
+			EyesLocation,
+			EyesLocation + EyesBottomFieldOfView*SightRange,
+			FColor::Yellow,
+			false, -1, 0,
+			1.0f
+		);
+	}
 }
 
 bool AShooterAIController::IsDead() const
@@ -69,6 +137,13 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 			NewControlRotation = MyPawn->GetActorRotation();
 		}
 		
+		// Don't pitch view unless you have an enemy target
+		AActor* EnemyTarget = Cast<AActor>(GetBlackboardComponent()->GetValueAsObject("EnemyInSight"));
+		if (NewControlRotation.Pitch != 0 && EnemyTarget == nullptr)
+		{
+			NewControlRotation.Pitch = 0.f;
+		}
+		
 		SetControlRotation(NewControlRotation);
 
 		if (bUpdatePawn)
@@ -99,6 +174,21 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 		// 	}
 		// }
 	}
+}
+
+float AShooterAIController::GetFieldOfView()
+{
+	return FieldOfView;
+}
+
+float AShooterAIController::GetSightRange()
+{
+	return SightRange;
+}
+
+float AShooterAIController::GetHearingRange()
+{
+	return HearingRange;
 }
 
 
