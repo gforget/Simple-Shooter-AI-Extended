@@ -7,13 +7,8 @@
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "Actors/AmmoPack.h"
-#include "Actors/Gun.h"
 #include "Actors/HealthPack.h"
-#include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Controllers/ShooterAIController.h"
-#include "GameMode/SimpleShooterGameModeBase.h"
-#include "Kismet/GameplayStatics.h"
 
 UBTService_UMMaster::UBTService_UMMaster()
 {
@@ -28,22 +23,6 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 
 	if (OwnerCompPtr != nullptr && CurrentWorldPtr != nullptr)
 	{
-		//initiate blackboard value
-		if (!bInitiated)
-		{
-			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f); // Service - StimulusUpdate
-			bInitiated = true;	
-		}
-
-		float MaxTime = FMath::Max(EEC_MaxTimeSeenAnEnemy, FlC_MaxTimeSeenAnEnemy);
-		MaxTime = FMath::Max(MaxTime, ExC_MaxTimeSeenAnEnemy);
-		if (OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")) > MaxTime)
-		{
-			OwnerCompPtr->GetBlackboardComponent()->ClearValue(FName("LastKnownEnemyLocation"));
-		}
-		
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("SelectedFleePoint"), GetClosestValidFleePoint()); // Service - SelectFleePoint
-
 		if (DefaultEnumState == EAIStateEnum::None)
 		{
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsEnum(FName("State"), ChooseState());
@@ -52,86 +31,8 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 		{
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsEnum(FName("State"), DefaultEnumState);
 		}
+		
 	}
-}
-
-APawn* UBTService_UMMaster::GetEnemyActor()
-{
-	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(PlayerPawn))
-	{
-		FVector EyesLocation;
-		FRotator EyesRotation;
-		OwnerCompPtr->GetAIOwner()->GetActorEyesViewPoint(EyesLocation, EyesRotation);
-
-		const FVector EyesForward = EyesRotation.Vector();
-		FVector EyesToPlayer = PlayerPawn->GetActorLocation() - EyesLocation;
-		EyesToPlayer.Normalize();
-
-		//vision cone
-		// factor of 0 to 1, 0 = 180 degree vision, 1 = 0 degree vision, 0.5 = 90 (45 split from the middle)
-		if (FVector::DotProduct(EyesForward, EyesToPlayer) > 0.0f) 
-		{
-			return PlayerPawn;
-		}
-		else
-		{
-			return nullptr;
-		}
-	}
-	
-	return nullptr;
-}
-
-AWaypoint* UBTService_UMMaster::GetClosestValidFleePoint()
-{
-	AWaypoint* SelectedFleePoint = nullptr;
-	const bool bLastKnownEnemyLocationIsSet = OwnerCompPtr->GetBlackboardComponent()->IsVectorValueSet(FName("LastKnownEnemyLocation"));
-
-	if (!bLastKnownEnemyLocationIsSet)
-	{
-		return SelectedFleePoint;
-	}
-
-	const FVector CharLocation = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
-	const FVector2D CharLocation2D = FVector2D(CharLocation.X, CharLocation.Y);
-	
-	const FVector LastKnownEnemyLocation = OwnerCompPtr->GetBlackboardComponent()->GetValueAsVector(FName("LastKnownEnemyLocation"));
-	const FVector2D LastKnownEnemyLocation2D = FVector2D(LastKnownEnemyLocation.X, LastKnownEnemyLocation.Y);
-	
-	ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
-	TArray<AWaypoint*> ConsideredWaypoints = GameMode->GetAllWayPoints();
-
-	float HighestDistance = 0.0f;
-	for (int i=0; i<ConsideredWaypoints.Num(); i++)
-	{
-		UNavigationPath* TPath = GetPath(CharLocation, ConsideredWaypoints[i]->GetActorLocation());
-		if (TPath != nullptr)
-		{
-			const FVector FirstPointLocation = TPath->PathPoints[1];
-			FVector2D FirstPointLocation2D = FVector2D(FirstPointLocation.X, FirstPointLocation.Y);
-			
-			FVector2D CharToFirstPoint = FirstPointLocation2D - CharLocation2D;
-			CharToFirstPoint.Normalize();
-
-			FVector2D CharToEnemy = LastKnownEnemyLocation2D - CharLocation2D;
-			CharToEnemy.Normalize();
-			
-			//Is the first point on the opposite side of the last known position of the enemy
-			const float DotProduct = CharToFirstPoint.Dot(CharToEnemy);
-			if (DotProduct < 0.0f)
-			{
-				const float CurrentPathDistanceFromEnemyPosition = GetPathLength(LastKnownEnemyLocation, ConsideredWaypoints[i]->GetActorLocation());
-				if ( CurrentPathDistanceFromEnemyPosition > HighestDistance)
-				{
-					SelectedFleePoint = ConsideredWaypoints[i];
-					HighestDistance = CurrentPathDistanceFromEnemyPosition;
-				}
-			}
-		}
-	}
-	
-	return SelectedFleePoint;
 }
 
 TEnumAsByte<EAIStateEnum> UBTService_UMMaster::ChooseState()

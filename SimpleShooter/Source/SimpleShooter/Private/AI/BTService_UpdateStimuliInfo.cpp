@@ -23,6 +23,19 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 	OwnerCompPtr = &OwnerComp;
+
+	//initiate blackboard value
+	if (!bInitiated)
+	{
+		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f); // Service - StimulusUpdate
+		bInitiated = true;	
+	}
+	
+	if (OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")) > MaxTimeSeenAnEnemy)
+	{
+		OwnerCompPtr->GetBlackboardComponent()->ClearValue(FName("LastKnownEnemyLocation"));
+	}
+	
 	AShooterAIController* ShooterAIController = Cast<AShooterAIController>(OwnerCompPtr->GetAIOwner());
 	AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 	

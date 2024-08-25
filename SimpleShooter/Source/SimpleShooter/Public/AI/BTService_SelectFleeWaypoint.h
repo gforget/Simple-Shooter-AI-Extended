@@ -4,29 +4,31 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "BTService_UpdateStimuliInfo.generated.h"
+#include "BTService_SelectFleeWaypoint.generated.h"
 
 /**
  * 
  */
+
+class AWaypoint;
 UCLASS()
-class SIMPLESHOOTER_API UBTService_UpdateStimuliInfo : public UBTService
+class SIMPLESHOOTER_API UBTService_SelectFleeWaypoint : public UBTService
 {
 	GENERATED_BODY()
-	
-public:
-	UBTService_UpdateStimuliInfo();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Visual Stimuli")
-	float MaxTimeSeenAnEnemy = 10.0f;
+public:
+	UBTService_SelectFleeWaypoint();
+	
+private:
+	AWaypoint* GetClosestValidFleePoint();
 	
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 private:
 	UPROPERTY()
-	UBehaviorTreeComponent* OwnerCompPtr;
-
+	UWorld* CurrentWorldPtr;
+	
 	UPROPERTY()
-	bool bInitiated = false;
+	UBehaviorTreeComponent* OwnerCompPtr;
 };

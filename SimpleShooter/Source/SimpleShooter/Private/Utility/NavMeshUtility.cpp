@@ -2,7 +2,6 @@
 
 
 #include "Utility/NavMeshUtility.h"
-
 #include "NavigationSystem.h"
 
 float UNavMeshUtility::GetPathLength(const FVector& Start, const FVector& End, UWorld* WorldContext) const
@@ -25,4 +24,15 @@ float UNavMeshUtility::GetPathLength(const FVector& Start, const FVector& End, U
 	}
 
 	return -1.0f;
+}
+
+UNavigationPath* UNavMeshUtility::GetPath(const FVector& Start, const FVector& End, UWorld* WorldContext) const
+{
+	UNavigationSystemV1* NavSys = UNavigationSystemV1::GetCurrent(WorldContext);
+	if (!NavSys) return nullptr;
+
+	const ANavigationData* NavData = NavSys->GetDefaultNavDataInstance(FNavigationSystem::DontCreate);
+	if (!NavData) return nullptr;
+	
+	return NavSys->FindPathToLocationSynchronously(WorldContext, Start, End);
 }

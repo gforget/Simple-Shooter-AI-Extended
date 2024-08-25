@@ -116,18 +116,11 @@ private:
 	UWorld* CurrentWorldPtr;
 	
 	UPROPERTY()
-	bool bInitiated = false;;
-	
-	UPROPERTY()
 	UBehaviorTreeComponent* OwnerCompPtr;
 
 	//UM Methods
 	TEnumAsByte<EAIStateEnum> ChooseState();
 	float ScoreAggregation(int NbConsiderations, float OriginalScore);
-
-	//Blackboard Methods
-	APawn* GetEnemyActor();
-	AWaypoint* GetClosestValidFleePoint();
 	
 	//Flee considerations
 	float FleeC_HealthPercent();
