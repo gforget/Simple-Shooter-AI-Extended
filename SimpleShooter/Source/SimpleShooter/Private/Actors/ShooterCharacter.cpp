@@ -185,11 +185,6 @@ void AShooterCharacter::PullTrigger()
 	Gun->PullTrigger();
 }
 
-void AShooterCharacter::PullTrigger(float AIOffsetRadius)
-{
-	Gun->PullTrigger(AIOffsetRadius);
-}
-
 void AShooterCharacter::ReleaseTrigger()
 {
 	Gun->ReleaseTrigger();

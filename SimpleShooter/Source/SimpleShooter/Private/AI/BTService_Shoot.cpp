@@ -38,16 +38,17 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		if (TimerBeforeShooting > TimeBeforeStartingShooting)
 		{
 			OwnerComp.GetAIOwner()->SetFocalPoint(CurrentAimPosition);
-			Character->PullTrigger(AimOffset);
+			Character->PullTrigger();
 		}
 		else
 		{
 			Character->ReleaseTrigger();
 		}
 		
+		const FVector OffsetPosition = FMath::VRand()*AimOffset;
 		CurrentAimPosition = UKismetMathLibrary::VInterpTo_Constant(
 			CurrentAimPosition,
-			EnemyTarget->GetActorLocation(),
+			EnemyTarget->GetActorLocation() + OffsetPosition,
 			DeltaSeconds,
 			AimAdjustmentSpeed
 			);

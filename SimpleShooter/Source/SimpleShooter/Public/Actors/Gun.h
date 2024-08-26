@@ -27,11 +27,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void Fire(float AIOffsetRadius = 0.0f);
+	void Fire();
 	FTimerDelegate FireTimerTimerDel;
 	FTimerHandle FireTimerHandle;
 	
-	void PullTrigger(float AIOffsetRadius = 0.0f);
+	void PullTrigger();
 	void ReleaseTrigger();
 	
 	int Reload (int AmmoAmount);
@@ -97,7 +97,7 @@ private:
 	UPROPERTY()
 	bool TriggerPulled = false;
 	
-	bool GunTrace(FHitResult& Hit, FVector& ShotDirection, float AIOffsetRadius = 0.0f);
+	bool GunTrace(FHitResult& Hit, FVector& ShotDirection);
 	
 	bool UseAmmo();
 

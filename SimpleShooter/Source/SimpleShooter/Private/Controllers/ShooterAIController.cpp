@@ -144,8 +144,22 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 			NewControlRotation.Pitch = 0.f;
 		}
 		
-		SetControlRotation(NewControlRotation);
-
+		//Get Pawn current rotation
+		const FRotator CurrentControlRotation = GetControlRotation();
+		
+		//Calculate smoothed rotation
+		SmoothControlRotation = UKismetMathLibrary::RInterpTo_Constant(CurrentControlRotation, NewControlRotation, DeltaTime, SmoothFocusInterpSpeed);
+		
+		//Check if we need to change
+		if (CurrentControlRotation.Equals(SmoothControlRotation, 1e-3f) == false)
+		{
+			SetControlRotation(SmoothControlRotation);
+		}
+		else
+		{
+			SetControlRotation(NewControlRotation);
+		}
+		
 		if (bUpdatePawn)
 		{
 			const FRotator CurrentPawnRotation = MyPawn->GetActorRotation();
@@ -155,24 +169,6 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 				MyPawn->FaceRotation(NewControlRotation, DeltaTime);
 			}
 		}
-		
-		//Smooth and change the pawn rotation
-		//TODO: when fleeing, the rotation is wrong, let see why. Check my note for more details
-		// if (bUpdatePawn)
-		// {
-		// 	//Get Pawn current rotation
-		// 	const FRotator CurrentPawnRotation = MyPawn->GetActorRotation();
- 	//
-		// 	//Calculate smoothed rotation
-		// 	SmoothPawnRotation = UKismetMathLibrary::RInterpTo_Constant(MyPawn->GetActorRotation(), ControlRotation, DeltaTime, SmoothFocusInterpSpeed);
-	 // 	
-		// 	//Check if we need to change
-		// 	if (CurrentPawnRotation.Equals(SmoothPawnRotation, 1e-3f) == false)
-		// 	{
-		// 		//Change rotation using the Smooth Target Rotation
-		// 		MyPawn->FaceRotation(SmoothPawnRotation, DeltaTime);
-		// 	}
-		// }
 	}
 }
 

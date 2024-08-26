@@ -73,7 +73,6 @@ public:
 	int AddAmmoReserve(int AmmoAmount);
 
 	void PullTrigger();
-	void PullTrigger(float AIOffsetRadius);
 	void ReleaseTrigger();
 	
 	void Reload();

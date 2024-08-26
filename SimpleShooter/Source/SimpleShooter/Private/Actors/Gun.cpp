@@ -33,11 +33,11 @@ void AGun::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AGun::PullTrigger(float AIOffsetRadius)
+void AGun::PullTrigger()
 {
 	if (!TriggerPulled)
 	{
-		FireTimerTimerDel.BindUFunction(this, FName("Fire"), AIOffsetRadius);
+		FireTimerTimerDel.BindUFunction(this, FName("Fire"));
 		GetWorld()->GetTimerManager().SetTimer(
 			FireTimerHandle,
 			FireTimerTimerDel,
@@ -60,7 +60,7 @@ void AGun::ReleaseTrigger()
 	}
 }
 
-void AGun::Fire(float AIOffsetRadius)
+void AGun::Fire()
 {
 	AShooterCharacter* CharacterOwner = Cast<AShooterCharacter>(GetOwner());
 	if (CharacterOwner == nullptr)
@@ -85,7 +85,7 @@ void AGun::Fire(float AIOffsetRadius)
 		
 		FHitResult Hit;
 		FVector ShotDirection;
-		bool bSuccess = GunTrace(Hit, ShotDirection, AIOffsetRadius);
+		bool bSuccess = GunTrace(Hit, ShotDirection);
 		
 		if (bSuccess)
 		{
@@ -117,7 +117,7 @@ void AGun::Fire(float AIOffsetRadius)
 	}
 }
 
-bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection, float AIOffsetRadius)
+bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 {
 	AController* OwnerController = GetOwnerController();
 
@@ -137,7 +137,7 @@ bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection, float AIOffsetRadiu
 	
 	FVector2D result = FVector2D(FMath::VRand()); 
 	result.Normalize();
-	result *= FMath::RandRange(AIOffsetRadius/2.0f,BaseOffsetRadius+AIOffsetRadius);
+	result *= FMath::RandRange(0.0f,BaseOffsetRadius);
 	
 	float UpFinalPosition = End.Z + result.Y;
 	FVector2D HorizontalAxis = FVector2D(HorizontalAxis3D.X, HorizontalAxis3D.Y);

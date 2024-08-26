@@ -21,9 +21,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
-	
+
 	UPROPERTY()
-	FRotator SmoothPawnRotation;
+	FRotator SmoothControlRotation;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float SmoothFocusInterpSpeed = 30.0f;
@@ -39,18 +39,22 @@ public:
 	float GetHearingRange();
 	
 private:
-	UPROPERTY(EditAnywhere)
+	
+	UPROPERTY(EditDefaultsOnly)
 	UBehaviorTree* AIBehavior;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	bool bDebug = false;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Custom Stimulus System")
+	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")
 	float FieldOfView = 90.0f;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Custom Stimulus System")
+	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")
 	float SightRange = 2000.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Custom Stimulus System")
+	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")
 	float HearingRange = 2500.0f;
+
+	UPROPERTY()
+	float CurrentYawOffset = 0.0f;
 };
