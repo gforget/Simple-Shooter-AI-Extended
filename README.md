@@ -1,3 +1,4 @@
+![Screenshot of the projectt](/Screenshot/ProjectHeader.png)</BR>
 # Simple Shooter - AIExtended
 This project is an extension of the final exercise, 'Simple Shooter,' from the GameDev.TV course 'UE5 C++ Developer: Code Your Own Unreal Games.' It primarily focuses on adding new gameplay mechanics, an original map, and improved AI to the project, similar to what you would expect in a AAA shooter game. The AI acts as a bot that could replace players in a multiplayer match and has the same power and goals as them: to eliminate all other players on the map and be the last survivor.
 
