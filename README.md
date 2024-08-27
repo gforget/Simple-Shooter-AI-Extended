@@ -9,6 +9,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - Bullets now spread from the gun with a custom radius, simulating the behavior of an automatic weapon, rather than always hitting the same point.
 - Added health packs that the player or the bot can use to heal themselves.
 - Added ammo packs that the player or the bot can use to reload their weapon.
+- Added Overhead healthbar on the bots so the player know how hurt it is
 
 ## AI improvement
 - The bot can explore the entire map rather than being limited to a spawn point.
