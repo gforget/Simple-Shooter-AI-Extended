@@ -137,7 +137,7 @@ bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	
 	FVector2D result = FVector2D(FMath::VRand()); 
 	result.Normalize();
-	result *= FMath::RandRange(0.0f,BaseOffsetRadius);
+	result *= FMath::RandRange(0.0f,BulletSpreadRadius);
 	
 	float UpFinalPosition = End.Z + result.Y;
 	FVector2D HorizontalAxis = FVector2D(HorizontalAxis3D.X, HorizontalAxis3D.Y);

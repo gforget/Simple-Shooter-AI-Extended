@@ -82,7 +82,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 
 						//vision cone
 						// factor of 0 to 1, 0 = 180 degree vision, 1 = 0 degree vision, 0.5 = 90 (45 split from the middle)
-						if (FVector::DotProduct(EyesForward, EyesToPlayer) > (1-(ShooterAIController->GetFieldOfView()/90.0f))) 
+						if (FVector::DotProduct(EyesForward, EyesToPlayer) > (1-(ShooterAIController->GetFieldOfView()/180.0f))) 
 						{
 							OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("EnemyInSight"), VS_Shooter->GetShooterCharacterRef());
 							OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("LastKnownEnemyLocation"), VS_Shooter->GetShooterCharacterRef()->GetActorLocation());

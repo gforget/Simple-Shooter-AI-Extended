@@ -62,7 +62,7 @@ void AShooterAIController::Tick(float DeltaTime)
 		GetActorEyesViewPoint(EyesLocation, EyesRotation);
 
 		const FVector EyesForward = EyesRotation.Vector();
-		const FVector EyesRightFieldOfView = EyesForward.RotateAngleAxis(FieldOfView, EyesForward.UpVector);
+		const FVector EyesRightFieldOfView = EyesForward.RotateAngleAxis(FieldOfView/2, EyesForward.UpVector);
 		DrawDebugLine(
 			GetWorld(),
 			EyesLocation,
@@ -72,7 +72,7 @@ void AShooterAIController::Tick(float DeltaTime)
 			1.0f
 		);
 		
-		const FVector EyesLeftFieldOfView = EyesForward.RotateAngleAxis(-FieldOfView, EyesForward.UpVector);
+		const FVector EyesLeftFieldOfView = EyesForward.RotateAngleAxis(-FieldOfView/2, EyesForward.UpVector);
 		DrawDebugLine(
 			GetWorld(),
 			EyesLocation,
@@ -83,7 +83,7 @@ void AShooterAIController::Tick(float DeltaTime)
 		);
 		
 		const FVector EyesRight = EyesForward.Cross(EyesForward.UpVector); //For some reason, RightVector from EyesForward doesn't work, so calculate it with a CrossP
-		const FVector EyesTopFieldOfView = EyesForward.RotateAngleAxis(FieldOfView, EyesRight);
+		const FVector EyesTopFieldOfView = EyesForward.RotateAngleAxis(FieldOfView/2, EyesRight);
 		DrawDebugLine(
 			GetWorld(),
 			EyesLocation,
@@ -93,7 +93,7 @@ void AShooterAIController::Tick(float DeltaTime)
 			1.0f
 		);
 		
-		const FVector EyesBottomFieldOfView = EyesForward.RotateAngleAxis(-FieldOfView, EyesRight);
+		const FVector EyesBottomFieldOfView = EyesForward.RotateAngleAxis(-FieldOfView/2, EyesRight);
 		DrawDebugLine(
 			GetWorld(),
 			EyesLocation,

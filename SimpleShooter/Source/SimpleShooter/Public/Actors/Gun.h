@@ -86,13 +86,10 @@ private:
 	int Ammo = 10;
 
 	UPROPERTY(EditAnywhere)
-	int NbRoundsPerShot = -1;
-
-	UPROPERTY(EditAnywhere)
 	float TimeBetweenRound = 0.15f;
 	
 	UPROPERTY(EditAnywhere)
-	float BaseOffsetRadius = 1000.0f;
+	float BulletSpreadRadius = 10000.0;
 
 	UPROPERTY()
 	bool TriggerPulled = false;

@@ -47,7 +47,7 @@ private:
 	bool bDebug = false;
 
 	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")
-	float FieldOfView = 90.0f;
+	float FieldOfView = 180.0f;
 	
 	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")
 	float SightRange = 2000.0f;
