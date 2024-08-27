@@ -20,12 +20,6 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 ## New map
 - A new map was created to allow for shooting from high ground and offer more space to fight in. It is also much lighter than the original exercise map.
 
-# What was kept from the exercice
-- The core third-person controller was retained (75% of the animation blueprint and the code for the ShooterCharacter class for the main character remain the same).
-- The character mesh and textures were all kept as is.
-- The sound effects of the gun.
-- The character animations were cleaned up to reduce the overall project size.
-
 ## Disclaimer
 <b>The current version of this project is not finished, and development is still ongoing. The current presentation is mainly to showcase what has already been done and how it has been implemented.</b>
 
@@ -35,5 +29,11 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 Video Presentation: </br>
 <i> coming soon </i>
 
+# What was kept from the exercice
+- The core third-person controller was retained (75% of the animation blueprint and the code for the ShooterCharacter class for the main character remain the same).
+- The character mesh and textures were all kept as is.
+- The sound effects of the gun.
+- The character animations were cleaned up to reduce the overall project size.
+  
 ### Link to the game course
 https://www.gamedev.tv/courses/unreal-5-0-c-developer-learn-c-and-make-video-games
