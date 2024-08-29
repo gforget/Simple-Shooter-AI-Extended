@@ -35,7 +35,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 
 ## Introduction
 Video Presentation: </br>
-<i> coming soon </i>
+https://youtu.be/gmx63PSk-uE
   
 ## Link to the game course
 https://www.gamedev.tv/courses/unreal-5-0-c-developer-learn-c-and-make-video-games
