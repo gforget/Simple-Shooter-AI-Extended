@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "BTService_CreateEngagementLocation.generated.h"
+#include "BTService_CreateEngagementCircleLocation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SIMPLESHOOTER_API UBTService_CreateEngagementLocation : public UBTService
+class SIMPLESHOOTER_API UBTService_CreateEngagementCircleLocation : public UBTService
 {
 	GENERATED_BODY()
 public:
-	UBTService_CreateEngagementLocation();
+	UBTService_CreateEngagementCircleLocation();
 	
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;

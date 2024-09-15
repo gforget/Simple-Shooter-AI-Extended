@@ -1,18 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTService_CreateEngagementLocation.h"
+#include "AI/BTService_CreateEngagementCircleLocation.h"
 
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-UBTService_CreateEngagementLocation::UBTService_CreateEngagementLocation()
+UBTService_CreateEngagementCircleLocation::UBTService_CreateEngagementCircleLocation()
 {
-	NodeName = TEXT("Create Engagement Location");
+	NodeName = TEXT("Create Engagement Circle Location");
 }
 
-void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UBTService_CreateEngagementCircleLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
