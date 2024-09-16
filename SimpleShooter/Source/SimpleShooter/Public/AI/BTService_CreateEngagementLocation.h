@@ -22,15 +22,20 @@ protected:
 
 public:
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Circle Grid Properties")
-	int NbArcs = 6;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	int nbHorizontalPoints = 6;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Circle Grid Properties")
-	int NbPointsPerArcs = 6;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	int nbVerticalPoints = 6;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Circle Grid Properties")
-	float MaxRadius = 600.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	float distanceBetweenPoints = 200.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Circle Grid Properties")
-	float ArcDegrees = 180.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	bool bDebug = false;
+
+private:
+	
+	UPROPERTY()
+	TArray<FVector> AllValidPositions;
 };

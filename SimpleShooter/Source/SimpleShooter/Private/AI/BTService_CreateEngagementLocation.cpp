@@ -5,6 +5,7 @@
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Utility/NavMeshUtility.h"
 
 UBTService_CreateEngagementLocation::UBTService_CreateEngagementLocation()
 {
@@ -17,58 +18,78 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 	
 	UBehaviorTreeComponent* OwnerCompPtr = &OwnerComp;
 	const AShooterCharacter* EnemyInSight = Cast<AShooterCharacter>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+	const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn()));
 	
 	if (EnemyInSight != nullptr)
 	{
+		AllValidPositions.Empty();
 		FVector StartPoint = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
-
-		FHitResult Hit;
-		FCollisionQueryParams Params;
-		Params.AddIgnoredActor(OwnerCompPtr->GetAIOwner()->GetPawn());
-		Params.AddIgnoredActor(EnemyInSight);
-		
-		if (!GetWorld()->LineTraceSingleByChannel(Hit, StartPoint, StartPoint + FVector::UpVector*99999.9f, ECollisionChannel::ECC_GameTraceChannel1, Params))
-		{
-			return;
-		}
 		
 		const FVector BotForward = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorForwardVector();
 		FVector2D BotForward2D = FVector2D(BotForward.X, BotForward.Y);
 		BotForward2D.Normalize();
 		FVector BotForwardXY = FVector(BotForward2D.X, BotForward2D.Y, 0.0f);
+		FVector BotRightXY = BotForwardXY.RotateAngleAxis(90.0f, FVector::UpVector);
 		
-		StartPoint.Z = Hit.Location.Z - 50.0f;
-		FVector EndPoint = StartPoint + BotForwardXY*200.0f; 
-
 		// Draw the debug line
-		DrawDebugLine(GetWorld(), StartPoint, EndPoint, FColor::Green,false,0.25f,0,1.0f);
-		//
-		
-		const float ArcIncrement = ArcDegrees/NbArcs;
-		const float RadiusIncrement = MaxRadius/NbPointsPerArcs;
-		float CurrentArcDegree = -(ArcDegrees/2.0f);
+		if (bDebug) DrawDebugLine(GetWorld(), StartPoint, StartPoint + BotForwardXY*200.0f, FColor::Green,false,0.25f,0,1.0f);
+		if (bDebug) DrawDebugLine(GetWorld(), StartPoint, StartPoint + BotRightXY*200.0f, FColor::Green,false,0.25f,0,1.0f);
 
-		BotForwardXY = BotForwardXY.RotateAngleAxis(CurrentArcDegree, FVector::UpVector);
+		FHitResult Hit;
+		FHitResult Hit2;
+		FHitResult Hit3;
 		
-		for (int i=0; i<NbArcs; i++)
+		//TODO: will have to find another way to ignore shooter character later
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(OwnerCompPtr->GetAIOwner()->GetPawn());
+		Params.AddIgnoredActor(EnemyInSight);
+		
+		for (int i=0; i<nbVerticalPoints; i++)
 		{
-			float CurrentRadius = RadiusIncrement;
-			for (int j=0; j<NbPointsPerArcs-1; j++)
+			FVector PointPosition = StartPoint + BotForwardXY*(distanceBetweenPoints*i) - BotRightXY*(distanceBetweenPoints*(nbHorizontalPoints/2));
+			for (int j=0; j<nbHorizontalPoints; j++)
 			{
-				FVector EngagementPosition = StartPoint + BotForwardXY*CurrentRadius;
-				FHitResult Hit2;
-		
-				if (GetWorld()->LineTraceSingleByChannel(Hit2, EngagementPosition, EngagementPosition + FVector::UpVector*-99999.9f, ECollisionChannel::ECC_GameTraceChannel1, Params))
+
+				if (GetWorld()->LineTraceSingleByChannel(Hit, PointPosition, PointPosition + FVector::UpVector*99999.9f, ECollisionChannel::ECC_GameTraceChannel1, Params))
 				{
-					EngagementPosition = Hit2.Location;
-					DrawDebugSphere(GetWorld(), EngagementPosition, 5.0f, 12, FColor::Red, false, 0.25f, 0, 1.0);
-					//OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("EngagementLocation"), Hit.Location);
+					FVector CeilPosition = Hit.Location;
+					CeilPosition.Z -= 50.0f;
+				
+					if (bDebug)DrawDebugLine(GetWorld(), CeilPosition, CeilPosition + FVector::UpVector*-99999.9f, FColor::Blue,false,0.25f,0,1.0f);
+					
+					if (GetWorld()->LineTraceSingleByChannel(Hit2, CeilPosition, CeilPosition + FVector::UpVector*-99999.9f, ECollisionChannel::ECC_GameTraceChannel1, Params))
+					{
+						FVector GroundLocation = Hit2.Location;
+						GroundLocation.Z += 25.0f;
+						
+						if (!GetWorld()->LineTraceSingleByChannel(Hit3, GroundLocation, StartPoint, ECollisionChannel::ECC_GameTraceChannel1, Params))
+						{
+							if (AICharacter->NavMeshUtility->IsPointOnNavmesh(GroundLocation, GetWorld()))
+							{
+								if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
+								AllValidPositions.Add(GroundLocation);
+							}
+							else
+							{
+								if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Blue, false, 0.25f, 0, 1.0);
+							}
+						}
+						else
+						{
+							if (bDebug)DrawDebugSphere(GetWorld(), Hit2.Location, 5.0f, 12, FColor::Red, false, 0.25f, 0, 1.0);
+						}
+						
+					}
 				}
 				
-				CurrentRadius += RadiusIncrement;
+				PointPosition += BotRightXY*distanceBetweenPoints;
 			}
+		}
+
+		//Evaluate which point is the most suitable to go to
+		for (int i=0; i<AllValidPositions.Num(); i++)
+		{
 			
-			BotForwardXY = BotForwardXY.RotateAngleAxis(ArcIncrement, FVector::UpVector);
 		}
 	}
 }

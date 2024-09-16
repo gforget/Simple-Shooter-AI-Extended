@@ -36,3 +36,12 @@ UNavigationPath* UNavMeshUtility::GetPath(const FVector& Start, const FVector& E
 	
 	return NavSys->FindPathToLocationSynchronously(WorldContext, Start, End);
 }
+
+bool UNavMeshUtility::IsPointOnNavmesh(const FVector& Position, UWorld* WorldContext) const
+{
+	UNavigationSystemV1* NavSys = UNavigationSystemV1::GetCurrent(WorldContext);
+	if (!NavSys) return false;
+
+	FNavLocation NavLocation;
+	return NavSys->ProjectPointToNavigation(Position, NavLocation);
+}

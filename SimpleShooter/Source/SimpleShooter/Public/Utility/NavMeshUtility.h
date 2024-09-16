@@ -18,4 +18,5 @@ class SIMPLESHOOTER_API UNavMeshUtility : public UObject
 public :
 	float GetPathLength(const FVector& Start, const FVector& End, UWorld* WorldContext) const;
 	UNavigationPath* GetPath(const FVector& Start, const FVector& End, UWorld* WorldContext) const;
+	bool IsPointOnNavmesh(const FVector& Position, UWorld* WorldContext) const;
 };
