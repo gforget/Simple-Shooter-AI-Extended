@@ -43,31 +43,58 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 		FCollisionQueryParams Params;
 		Params.AddIgnoredActor(OwnerCompPtr->GetAIOwner()->GetPawn());
 		Params.AddIgnoredActor(EnemyInSight);
+
+		// Get the delta position of the eyes from the actor position, so we can add it to the evaluated position
+		FVector Location;
+		FRotator Rotation;
+		OwnerCompPtr->GetAIOwner()->GetPlayerViewPoint(Location, Rotation);
+		FVector DeltaEyesPosition = Location - OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
 		
 		for (int i=0; i<nbVerticalPoints; i++)
 		{
 			FVector PointPosition = StartPoint + BotForwardXY*(distanceBetweenPoints*i) - BotRightXY*(distanceBetweenPoints*(nbHorizontalPoints/2));
 			for (int j=0; j<nbHorizontalPoints; j++)
 			{
-
+				//Get the ceiling position
 				if (GetWorld()->LineTraceSingleByChannel(Hit, PointPosition, PointPosition + FVector::UpVector*99999.9f, ECollisionChannel::ECC_GameTraceChannel1, Params))
 				{
 					FVector CeilPosition = Hit.Location;
 					CeilPosition.Z -= 50.0f;
 				
-					if (bDebug)DrawDebugLine(GetWorld(), CeilPosition, CeilPosition + FVector::UpVector*-99999.9f, FColor::Blue,false,0.25f,0,1.0f);
-					
+					//if (bDebug)DrawDebugLine(GetWorld(), CeilPosition, CeilPosition + FVector::UpVector*-99999.9f, FColor::Blue,false,0.25f,0,1.0f);
+
+					//Get the floor position
 					if (GetWorld()->LineTraceSingleByChannel(Hit2, CeilPosition, CeilPosition + FVector::UpVector*-99999.9f, ECollisionChannel::ECC_GameTraceChannel1, Params))
 					{
 						FVector GroundLocation = Hit2.Location;
-						GroundLocation.Z += 25.0f;
-						
+						GroundLocation.Z += GroundZOffset;
+
+						// Check if no Obstacle is set between the point and the bot
 						if (!GetWorld()->LineTraceSingleByChannel(Hit3, GroundLocation, StartPoint, ECollisionChannel::ECC_GameTraceChannel1, Params))
 						{
+							//Check if the point is on the navmesh
 							if (AICharacter->NavMeshUtility->IsPointOnNavmesh(GroundLocation, GetWorld()))
 							{
-								if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
-								AllValidPositions.Add(GroundLocation);
+								//Check if the bot could still see his target from the new position
+								FVector EyesFutureLocation = GroundLocation + DeltaEyesPosition;
+								EyesFutureLocation.Z += Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn())->FootPositionAnchor.Z*-1.0f;
+
+								if (!GetWorld()->LineTraceSingleByChannel(Hit, EyesFutureLocation, EnemyInSight->GetActorLocation(), ECollisionChannel::ECC_GameTraceChannel1, Params))
+								{
+									if (FVector::Distance(GroundLocation, EnemyInSight->GetActorLocation() + EnemyInSight->FootPositionAnchor) > MinDistanceToTarget)
+									{
+										if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
+										AllValidPositions.Add(GroundLocation);
+									}
+									else
+									{
+										if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Purple, false, 0.25f, 0, 1.0);
+									}
+								}
+								else
+								{
+									if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Cyan, false, 0.25f, 0, 1.0);
+								}
 							}
 							else
 							{
@@ -81,15 +108,52 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 						
 					}
 				}
-				
 				PointPosition += BotRightXY*distanceBetweenPoints;
 			}
 		}
-
+		
 		//Evaluate which point is the most suitable to go to
+		float HighestScore = 0.0f;
+		int IndexValidPosition = 0;
 		for (int i=0; i<AllValidPositions.Num(); i++)
 		{
+			FVector FootAnchorPosition = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn())->FootPositionAnchor;
 			
+			FVector DeltaToEnemy = EnemyInSight->GetActorLocation() - AllValidPositions[i];
+			float ZDistance = DeltaToEnemy.Z;
+			DeltaToEnemy.Z = 0;
+			float DistancePointXYToEnemy = DeltaToEnemy.Length();
+			
+			FVector DeltaToPosition = AllValidPositions[i] - (OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation() + FootAnchorPosition);
+			float DistanceToNewPosition = DeltaToPosition.Length();
+			
+			float DesiredXYScore = 1.01f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
+			float HigherGroundScore = ZDistance < HigherGroundDistance ? 0.75f : 1.0f;
+			float DistanceFromCurrentPositionScore  = DistanceToNewPosition < MinDistanceFromCurrentPosition ? 0.75f:1.0f;
+
+			float AggregatedScore = ScoreAggregation(3, 1.0f*DesiredXYScore*HigherGroundScore*DistanceFromCurrentPositionScore);
+			
+			if (AggregatedScore > HighestScore)
+			{
+				HighestScore = AggregatedScore;
+				IndexValidPosition = i;
+			}
 		}
+		
+		OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("EngagementLocation"), AllValidPositions[IndexValidPosition]);
+		if (bDebug)DrawDebugSphere(GetWorld(), AllValidPositions[IndexValidPosition], 10.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
 	}
+	else
+	{
+		OwnerCompPtr->GetBlackboardComponent()->ClearValue(FName("EngagementLocation"));
+	}
+}
+
+float UBTService_CreateEngagementLocation::ScoreAggregation(int NbConsiderations, float OriginalScore)
+{
+	const float modFactor = 1 - (1 / NbConsiderations);
+	const float makeupValue = (1 - OriginalScore) * modFactor;
+	const float FinalScore = OriginalScore + (makeupValue * OriginalScore);
+	
+	return FinalScore;
 }

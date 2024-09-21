@@ -39,8 +39,11 @@ public:
 	UPROPERTY()
 	UNavMeshUtility* NavMeshUtility;
 	
-	UPROPERTY(EditDefaultsOnly, Category="Game UI")
+	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
+
+	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
 	
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;

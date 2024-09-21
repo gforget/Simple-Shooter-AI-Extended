@@ -34,8 +34,29 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
 	bool bDebug = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	float MinDistanceToTarget = 200.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	float GroundZOffset = 25.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Desired Distance Considerations Properties")
+	float DesiredXYDistance = 500.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Desired Distance Considerations Properties")
+	float ThresholdDistance = 750.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Higher Ground Distance Considerations Properties")
+	float HigherGroundDistance = 200.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Min Distance From Current Position Considerations Properties")
+	float MinDistanceFromCurrentPosition = 200.0f;
+	
 private:
 	
 	UPROPERTY()
 	TArray<FVector> AllValidPositions;
+
+	float ScoreAggregation(int NbConsiderations, float OriginalScore);
+	
 };

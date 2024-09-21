@@ -38,11 +38,11 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		if (TimerBeforeShooting > TimeBeforeStartingShooting)
 		{
 			OwnerComp.GetAIOwner()->SetFocalPoint(CurrentAimPosition);
-			//Character->PullTrigger();
+			Character->PullTrigger();
 		}
 		else
 		{
-			//Character->ReleaseTrigger();
+			Character->ReleaseTrigger();
 		}
 		
 		const FVector OffsetPosition = FMath::VRand()*AimOffset;
@@ -67,6 +67,6 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 			OwnerComp.GetAIOwner()->SetFocus(nullptr);
 		}
 		
-		//Character->ReleaseTrigger();
+		Character->ReleaseTrigger();
 	}
 }

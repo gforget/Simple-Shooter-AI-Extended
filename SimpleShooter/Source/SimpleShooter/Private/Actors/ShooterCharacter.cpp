@@ -240,6 +240,7 @@ void AShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
 			
 			// HealtBar Anchor
 			DrawDebugSphere(GetWorld(), ActorLocation + HealthBarAnchor, 5.0f, 12, FColor::Cyan, true, 0.0f, 0, 0.0f);
+			DrawDebugSphere(GetWorld(), ActorLocation + FootPositionAnchor, 5.0f, 12, FColor::Purple, true, 0.0f, 0, 0.0f);
 		}
 	}
 #endif
