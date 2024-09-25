@@ -21,6 +21,7 @@ void UBTService_UpdateGunInfo::TickNode(UBehaviorTreeComponent& OwnerComp, uint8
 	{
 		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("AmmoInReservePercent"), GetAmmoReservePercent());
 		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("AmmoInGunPercent"), GetAmmoInGunPercent());
+		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("AmmoInTotalPercent"), GetAmmoInTotalPercent());
 	}
 }
 
@@ -44,4 +45,15 @@ float UBTService_UpdateGunInfo::GetAmmoInGunPercent()
 	}
 	
 	return AICharacter->GetGunReference()->GetAmmoPercent();
+}
+
+float UBTService_UpdateGunInfo::GetAmmoInTotalPercent()
+{
+	const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+	if (AICharacter == nullptr)
+	{
+		return 0.0f;
+	}
+	
+	return AICharacter->GetAmmoTotalPercent();
 }

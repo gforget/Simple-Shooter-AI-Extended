@@ -69,6 +69,14 @@ float AShooterCharacter::GetAmmoReservePercent() const
 	return (float)AmmoReserve/(float)MaxAmmoReserve;
 }
 
+float AShooterCharacter::GetAmmoTotalPercent() const
+{
+	int AmmoTotal = AmmoReserve + GetGunReference()->GetAmmoAmount();
+	int AmmoMaxTotal = MaxAmmoReserve + GetGunReference()->GetMaxAmmo();
+	
+	return (float)AmmoTotal/(float)AmmoMaxTotal;
+}
+
 FString AShooterCharacter::GetAmmoReserveRatio() const
 {
 	return FString::FromInt(AmmoReserve) + "/" + FString::FromInt(MaxAmmoReserve); 

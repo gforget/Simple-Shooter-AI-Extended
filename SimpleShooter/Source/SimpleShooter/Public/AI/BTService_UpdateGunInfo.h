@@ -25,4 +25,5 @@ private:
 	
 	float GetAmmoReservePercent();
 	float GetAmmoInGunPercent();
+	float GetAmmoInTotalPercent();
 };

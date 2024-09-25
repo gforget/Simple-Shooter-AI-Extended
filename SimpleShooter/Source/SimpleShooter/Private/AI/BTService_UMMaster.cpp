@@ -67,14 +67,15 @@ TEnumAsByte<EAIStateEnum> UBTService_UMMaster::ChooseState()
 		1.0f *
 		EngageEnemyC_IsLastKnownEnemyLocationIsSet() *
 		EngageEnemyC_TimeSeenEnemy() *
-		//EngageEnemyC_AimingPercent() *
-		EngageEnemyC_AmmoInGunPercent() *
+		EngageEnemyC_AmmoInTotalPercent() *
 		EngageEnemyC_HealthPercent()
 		);
 
 	//Explore
-	StateScoreArray[EAIStateEnum::Explore] = ScoreAggregation(2,
+	StateScoreArray[EAIStateEnum::Explore] = ScoreAggregation(4,
 		1.0f *
+		ExploreC_Have100PercentHP()*
+		ExploreC_Have100PercentTotalAmmo()*
 		ExploreC_EnemyInSight() *
 		ExploreC_TimeSeenEnemy()
 		);
@@ -203,14 +204,9 @@ float UBTService_UMMaster::EngageEnemyC_TimeSeenEnemy()
 	return EEC_TimeSeenEnemyCurve.GetRichCurve()->Eval(FMath::Min(TimeSeenAnEnemy, EEC_MaxTimeSeenAnEnemy)/EEC_MaxTimeSeenAnEnemy);
 }
 
-//  float UBTService_UMMaster::EngageEnemyC_AimingPercent()
-// {
-// 	return EEC_AimingPercentCurve.GetRichCurve()->Eval(1.0f);
-// }
-
-float UBTService_UMMaster::EngageEnemyC_AmmoInGunPercent()
+float UBTService_UMMaster::EngageEnemyC_AmmoInTotalPercent()
 {
-	return EEC_AmmoInGunPercentCurve.GetRichCurveConst()->Eval(OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("AmmoInGunPercent")));
+	return EEC_AmmoInTotalPercentCurve.GetRichCurveConst()->Eval(OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("AmmoInTotalPercent")));
 }
 
 float UBTService_UMMaster::EngageEnemyC_HealthPercent()
@@ -228,6 +224,18 @@ float UBTService_UMMaster::ExploreC_EnemyInSight()
 {
 	const float TimeSeenAnEnemy = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy"));
 	return ExC_TimeSeenEnemyCurve.GetRichCurve()->Eval(FMath::Min(TimeSeenAnEnemy, ExC_MaxTimeSeenAnEnemy)/ExC_MaxTimeSeenAnEnemy);
+}
+
+float UBTService_UMMaster::ExploreC_Have100PercentHP()
+{
+	const float HealthPercent = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("SelfHealthPercent"));
+	return HealthPercent == 1.0 ? ExC_Have100PercentHP.X : ExC_Have100PercentHP.Y;
+}
+
+float UBTService_UMMaster::ExploreC_Have100PercentTotalAmmo()
+{
+	const float AmmoInTotalPercent = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("AmmoInTotalPercent"));
+	return AmmoInTotalPercent == 1.0 ? ExC_Have100PercentTotalAmmo.X : ExC_Have100PercentTotalAmmo.Y;
 }
 
 float UBTService_UMMaster::GetPathLength(const FVector& Start, const FVector& End) const

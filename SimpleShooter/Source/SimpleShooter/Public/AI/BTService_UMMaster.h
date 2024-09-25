@@ -77,12 +77,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engage Enemy Properties")
 	FRuntimeFloatCurve EEC_TimeSeenEnemyCurve;
-	
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engage Enemy Properties")
-	// FRuntimeFloatCurve EEC_AimingPercentCurve;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engage Enemy Properties")
-	FRuntimeFloatCurve EEC_AmmoInGunPercentCurve;
+	FRuntimeFloatCurve EEC_AmmoInTotalPercentCurve;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engage Enemy Properties")
 	FRuntimeFloatCurve EEC_HealthPercentCurve;
@@ -94,6 +91,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explore Properties")
 	FVector2D ExC_EnemyInSightBool = FVector2D(1.0f, 0.0f);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explore Properties")
+	FVector2D ExC_Have100PercentHP = FVector2D(1.0f, 0.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explore Properties")
+	FVector2D ExC_Have100PercentTotalAmmo = FVector2D(1.0f, 0.0f);
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explore Properties")
 	FRuntimeFloatCurve ExC_TimeSeenEnemyCurve;
 	
@@ -138,12 +141,12 @@ private:
 	//Engage Player considerations
 	float EngageEnemyC_IsLastKnownEnemyLocationIsSet();
 	float EngageEnemyC_TimeSeenEnemy();
-	//float EngageEnemyC_AimingPercent(); //TODO: Just assume aim is 100% for now
-	float EngageEnemyC_AmmoInGunPercent();
+	float EngageEnemyC_AmmoInTotalPercent();
 	float EngageEnemyC_HealthPercent();
 	
 	//Explore
 	float ExploreC_EnemyInSight();
 	float ExploreC_TimeSeenEnemy();
-	
+	float ExploreC_Have100PercentHP();
+	float ExploreC_Have100PercentTotalAmmo();
 };

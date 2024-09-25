@@ -56,6 +56,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetAmmoReservePercent() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetAmmoTotalPercent() const;
 	
 	UFUNCTION(BlueprintCallable)
 	FString GetAmmoReserveRatio() const;

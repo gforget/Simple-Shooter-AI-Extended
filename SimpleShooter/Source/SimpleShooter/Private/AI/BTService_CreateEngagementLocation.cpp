@@ -112,36 +112,44 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 			}
 		}
 		
-		//Evaluate which point is the most suitable to go to
-		float HighestScore = 0.0f;
-		int IndexValidPosition = 0;
-		for (int i=0; i<AllValidPositions.Num(); i++)
+		if (AllValidPositions.Num() > 0)
 		{
-			FVector FootAnchorPosition = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn())->FootPositionAnchor;
-			
-			FVector DeltaToEnemy = EnemyInSight->GetActorLocation() - AllValidPositions[i];
-			float ZDistance = DeltaToEnemy.Z;
-			DeltaToEnemy.Z = 0;
-			float DistancePointXYToEnemy = DeltaToEnemy.Length();
-			
-			FVector DeltaToPosition = AllValidPositions[i] - (OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation() + FootAnchorPosition);
-			float DistanceToNewPosition = DeltaToPosition.Length();
-			
-			float DesiredXYScore = 1.01f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
-			float HigherGroundScore = ZDistance < HigherGroundDistance ? 0.75f : 1.0f;
-			float DistanceFromCurrentPositionScore  = DistanceToNewPosition < MinDistanceFromCurrentPosition ? 0.75f:1.0f;
-
-			float AggregatedScore = ScoreAggregation(3, 1.0f*DesiredXYScore*HigherGroundScore*DistanceFromCurrentPositionScore);
-			
-			if (AggregatedScore > HighestScore)
+			//Evaluate which point is the most suitable to go to
+			float HighestScore = 0.0f;
+			int IndexValidPosition = 0;
+			for (int i=0; i<AllValidPositions.Num(); i++)
 			{
-				HighestScore = AggregatedScore;
-				IndexValidPosition = i;
+				FVector FootAnchorPosition = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn())->FootPositionAnchor;
+			
+				FVector DeltaToEnemy = EnemyInSight->GetActorLocation() - AllValidPositions[i];
+				float ZDistance = DeltaToEnemy.Z;
+				DeltaToEnemy.Z = 0;
+				float DistancePointXYToEnemy = DeltaToEnemy.Length();
+			
+				FVector DeltaToPosition = AllValidPositions[i] - (OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation() + FootAnchorPosition);
+				float DistanceToNewPosition = DeltaToPosition.Length();
+			
+				float DesiredXYScore = 1.01f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
+				float HigherGroundScore = ZDistance < HigherGroundDistance ? 0.75f : 1.0f;
+				float DistanceFromCurrentPositionScore  = DistanceToNewPosition < MinDistanceFromCurrentPosition ? 0.75f:1.0f;
+
+				float AggregatedScore = ScoreAggregation(3, 1.0f*DesiredXYScore*HigherGroundScore*DistanceFromCurrentPositionScore);
+			
+				if (AggregatedScore > HighestScore)
+				{
+					HighestScore = AggregatedScore;
+					IndexValidPosition = i;
+				}
 			}
+			
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("EngagementLocation"), AllValidPositions[IndexValidPosition]);
+			if (bDebug)DrawDebugSphere(GetWorld(), AllValidPositions[IndexValidPosition], 10.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
+			
 		}
-		
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("EngagementLocation"), AllValidPositions[IndexValidPosition]);
-		if (bDebug)DrawDebugSphere(GetWorld(), AllValidPositions[IndexValidPosition], 10.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
+		else
+		{
+			OwnerCompPtr->GetBlackboardComponent()->ClearValue(FName("EngagementLocation"));
+		}
 	}
 	else
 	{
