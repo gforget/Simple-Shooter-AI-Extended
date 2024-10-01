@@ -25,7 +25,7 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 		AllValidPositions.Empty();
 		FVector StartPoint = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
 		
-		const FVector BotForward = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorForwardVector();
+		const FVector BotForward = EnemyInSight->GetActorLocation() - OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
 		FVector2D BotForward2D = FVector2D(BotForward.X, BotForward.Y);
 		BotForward2D.Normalize();
 		FVector BotForwardXY = FVector(BotForward2D.X, BotForward2D.Y, 0.0f);
@@ -52,7 +52,7 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 		
 		for (int i=0; i<nbVerticalPoints; i++)
 		{
-			FVector PointPosition = StartPoint + BotForwardXY*(distanceBetweenPoints*i) - BotRightXY*(distanceBetweenPoints*(nbHorizontalPoints/2));
+			FVector PointPosition = StartPoint + BotForwardXY*(distanceBetweenPoints*(i-1)) - BotRightXY*(distanceBetweenPoints*(nbHorizontalPoints/2));
 			for (int j=0; j<nbHorizontalPoints; j++)
 			{
 				//Get the ceiling position
@@ -117,12 +117,13 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 			//Evaluate which point is the most suitable to go to
 			float HighestScore = 0.0f;
 			int IndexValidPosition = 0;
+			
 			for (int i=0; i<AllValidPositions.Num(); i++)
 			{
 				FVector FootAnchorPosition = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn())->FootPositionAnchor;
 			
 				FVector DeltaToEnemy = EnemyInSight->GetActorLocation() - AllValidPositions[i];
-				float ZDistance = DeltaToEnemy.Z;
+				float ZDistance = DeltaToEnemy.Z*-1.0f;
 				DeltaToEnemy.Z = 0;
 				float DistancePointXYToEnemy = DeltaToEnemy.Length();
 			
@@ -130,8 +131,8 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 				float DistanceToNewPosition = DeltaToPosition.Length();
 			
 				float DesiredXYScore = 1.01f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
-				float HigherGroundScore = ZDistance < HigherGroundDistance ? 0.75f : 1.0f;
-				float DistanceFromCurrentPositionScore  = DistanceToNewPosition < MinDistanceFromCurrentPosition ? 0.75f:1.0f;
+				float HigherGroundScore = ZDistance < HigherGroundDistance ? 0.5f : 1.0f;
+				float DistanceFromCurrentPositionScore  = DistanceToNewPosition < MinDistanceFromCurrentPosition ? 0.5f:1.0f;
 
 				float AggregatedScore = ScoreAggregation(3, 1.0f*DesiredXYScore*HigherGroundScore*DistanceFromCurrentPositionScore);
 			

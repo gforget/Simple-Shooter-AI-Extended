@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Actors/Gun.h"
 
+#include "Actors/RotationViewPointRef.h"
 #include "Actors/ShooterCharacter.h"
 #include "Actors/Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
 #include "Actors/Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
@@ -119,33 +120,26 @@ void AGun::Fire()
 
 bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 {
-	AController* OwnerController = GetOwnerController();
-
-	if (OwnerController == nullptr) return false;
+	const AController* OwnerController = GetOwnerController();
+	AShooterCharacter* CharacterOwner = Cast<AShooterCharacter>(GetOwner());
+	
+	if (OwnerController == nullptr || CharacterOwner == nullptr) return false;
 	
 	FVector Location;
 	FRotator Rotation;
 	
 	OwnerController->GetPlayerViewPoint(Location, Rotation);
-
 	ShotDirection = -Rotation.Vector();
 	
 	FVector End = Location + Rotation.Vector()*MaxRange;
 	
 	//Random offset
-	FVector HorizontalAxis3D = Rotation.Vector().Cross(FVector::UpVector);
-	
 	FVector2D result = FVector2D(FMath::VRand()); 
 	result.Normalize();
 	result *= FMath::RandRange(0.0f,BulletSpreadRadius);
-	
-	float UpFinalPosition = End.Z + result.Y;
-	FVector2D HorizontalAxis = FVector2D(HorizontalAxis3D.X, HorizontalAxis3D.Y);
-	FVector2D HorizontalFinalPosition = FVector2D(End.X, End.Y) + HorizontalAxis*result.X;
-	
-	End.X += HorizontalFinalPosition.X;
-	End.Y += HorizontalFinalPosition.Y;
-	End.Z += UpFinalPosition;
+
+	End += CharacterOwner->GetRotationViewPointRef()->GetActorRightVector()*result.X; //Offset Right
+	End += CharacterOwner->GetRotationViewPointRef()->GetActorUpVector()*result.Y; //Offset Up
 	//End Random offset
 	
 	FCollisionQueryParams Params;

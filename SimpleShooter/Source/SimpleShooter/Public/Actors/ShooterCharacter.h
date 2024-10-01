@@ -9,6 +9,7 @@
 
 class AGun;
 class AVisualStimuli_ShooterCharacter;
+class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
 class UNavMeshUtility;
 
@@ -86,14 +87,20 @@ public:
 	void SelfDamage();
 	
 	AVisualStimuli_ShooterCharacter* GetVSShooterCharacter();
-	
+	ARotationViewPointRef* GetRotationViewPointRef();
 private:
-	
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
-
+	
 	UPROPERTY()
 	AVisualStimuli_ShooterCharacter* VSShooterCharacter;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
+
+	UPROPERTY()
+	ARotationViewPointRef* RotationViewPointRef;
 	
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);

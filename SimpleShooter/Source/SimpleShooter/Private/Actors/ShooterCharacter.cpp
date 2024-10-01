@@ -5,6 +5,7 @@
 #include "GameMode/SimpleShooterGameModeBase.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
+#include "Actors/RotationViewPointRef.h"
 #include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -47,6 +48,15 @@ void AShooterCharacter::BeginPlay()
 
 	VSShooterCharacter->SetShooterCharacterRef(this);
 	VSShooterCharacter->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+
+	RotationViewPointRef = GetWorld()->SpawnActor<ARotationViewPointRef>(
+		RotationViewPointRefClass,
+		FVector(0.0f, 0.0f, 0.0f),
+		FRotator(0.0f, 0.0f, 0.0f)
+	);
+
+	RotationViewPointRef->SetOwnerController(GetController());
+	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 }
 
 bool AShooterCharacter::IsDead() const
@@ -277,5 +287,10 @@ void AShooterCharacter::SelfDamage()
 AVisualStimuli_ShooterCharacter* AShooterCharacter::GetVSShooterCharacter() 
 {
 	return VSShooterCharacter;
+}
+
+ARotationViewPointRef* AShooterCharacter::GetRotationViewPointRef()
+{
+	return RotationViewPointRef;
 }
 
