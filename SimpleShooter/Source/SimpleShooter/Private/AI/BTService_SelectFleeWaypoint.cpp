@@ -48,6 +48,8 @@ AWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 	TArray<AWaypoint*> ConsideredWaypoints = GameMode->GetAllWayPoints();
 
 	float HighestDistance = 0.0f;
+	int NbValidFleePoint = 0;
+	
 	for (int i=0; i<ConsideredWaypoints.Num(); i++)
 	{
 		const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
@@ -70,8 +72,9 @@ AWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 				const float DotProduct = CharToFirstPoint.Dot(CharToEnemy);
 				if (DotProduct < 0.0f)
 				{
+					NbValidFleePoint++;
 					const float CurrentPathDistanceFromEnemyPosition = AICharacter->NavMeshUtility->GetPathLength(LastKnownEnemyLocation, ConsideredWaypoints[i]->GetActorLocation(), CurrentWorldPtr);
-					if ( CurrentPathDistanceFromEnemyPosition > HighestDistance)
+					if (CurrentPathDistanceFromEnemyPosition > HighestDistance)
 					{
 						SelectedFleePoint = ConsideredWaypoints[i];
 						HighestDistance = CurrentPathDistanceFromEnemyPosition;
@@ -81,5 +84,5 @@ AWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 		}
 	}
 	
-	return SelectedFleePoint;
+	return NbValidFleePoint > 1 ? SelectedFleePoint : nullptr;
 }
