@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "EnemySpawnPoint.generated.h"
 
+class AShooterCharacter;
+
 UCLASS()
 class SIMPLESHOOTER_API AEnemySpawnPoint : public AActor
 {
@@ -14,12 +16,13 @@ class SIMPLESHOOTER_API AEnemySpawnPoint : public AActor
 public:
 	// Sets default values for this actor's properties
 	AEnemySpawnPoint();
+
+	UPROPERTY(EditInstanceOnly)
+	TSubclassOf<AShooterCharacter> ShooterCharacterClass;
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
 };

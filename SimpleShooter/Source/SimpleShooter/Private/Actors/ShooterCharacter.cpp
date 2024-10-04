@@ -64,6 +64,11 @@ bool AShooterCharacter::IsDead() const
 	return Health <= 0.0f;
 }
 
+ETeam AShooterCharacter::GetTeam() const
+{
+	return Team;
+}
+
 bool AShooterCharacter::GetIsReloading() const
 {
 	return IsReloading;

@@ -12,6 +12,7 @@
  * 
  */
 
+class UTeamManager;
 class AShooterCharacter;
 class AAmmoPack;
 class AEnemySpawnPoint;
@@ -23,6 +24,11 @@ class SIMPLESHOOTER_API ASimpleShooterGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+
+	ASimpleShooterGameModeBase();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
+	UTeamManager* FactionManagerComponent;
 	
 	virtual void PawnKilled(APawn* PawnKilled);
 
@@ -37,9 +43,6 @@ public:
 
 	TArray<AHealthPack*> GetAllHealthPacks();
 	void AddHealthPack(AHealthPack* HealthPack);
-	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AShooterCharacter> EnemyShooterCharacterClass;
 	
 protected:
 

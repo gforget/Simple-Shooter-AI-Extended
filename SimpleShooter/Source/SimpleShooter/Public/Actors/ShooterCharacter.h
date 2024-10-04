@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "PlayMontageCallbackProxy.h"
+#include "ActorComponents/TeamManager.h"
 #include "ShooterCharacter.generated.h"
 
 class AGun;
@@ -45,12 +46,15 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
+
+	UFUNCTION(BlueprintPure)
+	bool GetIsReloading() const;
 	
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 
 	UFUNCTION(BlueprintPure)
-	bool GetIsReloading() const;
+	ETeam GetTeam() const;
 	
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() const;
@@ -88,8 +92,12 @@ public:
 	
 	AVisualStimuli_ShooterCharacter* GetVSShooterCharacter();
 	ARotationViewPointRef* GetRotationViewPointRef();
+	
 private:
 
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<ETeam> Team;
+	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
 	

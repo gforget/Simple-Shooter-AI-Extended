@@ -6,6 +6,11 @@
 #include "Actors/ShooterCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
+ASimpleShooterGameModeBase::ASimpleShooterGameModeBase()
+{
+	FactionManagerComponent = CreateDefaultSubobject<UTeamManager>(TEXT("Faction Manager Component"));
+}
+
 void ASimpleShooterGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -20,18 +25,17 @@ void ASimpleShooterGameModeBase::BeginPlay()
 		for (int i=0; i<AllActors.Num(); i++)
 		{
 			AEnemySpawnPoint* SpawnPointPtr = Cast<AEnemySpawnPoint>(AllActors[i]);
-			if (SpawnPointPtr != nullptr)
+			if (SpawnPointPtr != nullptr && SpawnPointPtr->ShooterCharacterClass != nullptr)
 			{
 				AllEnemySpawnPoints.Add(SpawnPointPtr);
+				
+				const AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+				SpawnPointPtr->ShooterCharacterClass,
+				SpawnPointPtr->GetActorLocation(),
+				SpawnPointPtr->GetActorRotation()
+				);
 			}
 		}
-
-		const int IndexSpawnPoint = FMath::RandRange(0, AllEnemySpawnPoints.Num()-1);
-		const AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
-			EnemyShooterCharacterClass,
-			AllEnemySpawnPoints[IndexSpawnPoint]->GetActorLocation(),
-			FRotator(0.0f, 0.0f, 0.0f)
-			);
 	}
 }
 

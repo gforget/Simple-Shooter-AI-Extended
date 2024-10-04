@@ -12,6 +12,7 @@
 #include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Controllers/ShooterAIController.h"
+#include "GameMode/SimpleShooterGameModeBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 UBTService_UpdateStimuliInfo::UBTService_UpdateStimuliInfo()
@@ -69,6 +70,15 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 				//VS of ShooterCharacter
 				if (AVisualStimuli_ShooterCharacter* VS_Shooter = Cast<AVisualStimuli_ShooterCharacter> (VSFound[i]))
 				{
+					//Check if it is an enemy
+					const ASimpleShooterGameModeBase* GameMode = Cast<ASimpleShooterGameModeBase>(GetWorld()->GetAuthGameMode());
+					const ETeamRelation TargetTeamRelation = GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterCharacter->GetTeam());
+
+					if (TargetTeamRelation == ETeamRelation::Ally)
+					{
+						continue;
+					}
+					
 					//check if you have line of sight first
 					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(VS_Shooter->GetShooterCharacterRef()))
 					{
@@ -77,12 +87,12 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 						OwnerCompPtr->GetAIOwner()->GetActorEyesViewPoint(EyesLocation, EyesRotation);
 
 						const FVector EyesForward = EyesRotation.Vector();
-						FVector EyesToPlayer = VS_Shooter->GetShooterCharacterRef()->GetActorLocation() - EyesLocation;
-						EyesToPlayer.Normalize();
+						FVector EyesToOtherShooterCharacter = VS_Shooter->GetShooterCharacterRef()->GetActorLocation() - EyesLocation;
+						EyesToOtherShooterCharacter.Normalize();
 
 						//vision cone
 						// factor of 0 to 1, 0 = 180 degree vision, 1 = 0 degree vision, 0.5 = 90 (45 split from the middle)
-						if (FVector::DotProduct(EyesForward, EyesToPlayer) > (1-(ShooterAIController->GetFieldOfView()/180.0f))) 
+						if (FVector::DotProduct(EyesForward, EyesToOtherShooterCharacter) > (1-(ShooterAIController->GetFieldOfView()/180.0f))) 
 						{
 							OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("EnemyInSight"), VS_Shooter->GetShooterCharacterRef());
 							OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("LastKnownEnemyLocation"), VS_Shooter->GetShooterCharacterRef()->GetActorLocation());
