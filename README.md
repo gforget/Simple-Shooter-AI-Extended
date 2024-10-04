@@ -8,6 +8,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 
 ## AI improvement
 - Engagement positioning
+- Team Management
 
 ## New map
 - None
