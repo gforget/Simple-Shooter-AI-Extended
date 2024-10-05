@@ -25,17 +25,21 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		return;
 	}
 
-	AActor* EnemyTarget = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("EnemyInSight"));
+	AActor* EnemyTarget = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+	
 	if (EnemyTarget != nullptr)
 	{
-		if (!bJustSawEnemy)
+		if (!OwnerComp.GetBlackboardComponent()->GetValueAsBool(FName("JustSawEnemy")))
 		{
 			CurrentAimPosition = EnemyTarget->GetActorLocation();
-			bJustSawEnemy = true;
+			OwnerComp.GetBlackboardComponent()->SetValueAsBool(FName("JustSawEnemy"), true);
 		}
-		
-		TimerBeforeShooting += DeltaSeconds;
-		if (TimerBeforeShooting > TimeBeforeStartingShooting)
+
+		OwnerComp.GetBlackboardComponent()->SetValueAsFloat(
+			FName("TimerBeforeShooting"),
+			OwnerComp.GetBlackboardComponent()->GetValueAsFloat(FName("TimerBeforeShooting")) + DeltaSeconds);
+
+		if (OwnerComp.GetBlackboardComponent()->GetValueAsFloat(FName("TimerBeforeShooting")) > TimeBeforeStartingShooting)
 		{
 			OwnerComp.GetAIOwner()->SetFocalPoint(CurrentAimPosition);
 			Character->PullTrigger();
@@ -55,8 +59,8 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	}
 	else
 	{
-		bJustSawEnemy = false;
-		TimerBeforeShooting = 0.0f;
+		OwnerComp.GetBlackboardComponent()->SetValueAsBool(FName("JustSawEnemy"), false);
+		OwnerComp.GetBlackboardComponent()->SetValueAsFloat(FName("TimerBeforeShooting"), 0.0f);
 		
 		if (OwnerComp.GetBlackboardComponent()->IsVectorValueSet(FName("LastKnownEnemyLocation")))
 		{

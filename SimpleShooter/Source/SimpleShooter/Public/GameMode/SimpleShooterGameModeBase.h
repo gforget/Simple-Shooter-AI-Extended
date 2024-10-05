@@ -29,8 +29,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
-	
-	virtual void PawnKilled(APawn* PawnKilled);
+
+	UFUNCTION()
+	virtual void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter);
 
 	UPROPERTY(EditDefaultsOnly)
 	bool SpawnEnemy = true;
@@ -43,6 +44,8 @@ public:
 
 	TArray<AHealthPack*> GetAllHealthPacks();
 	void AddHealthPack(AHealthPack* HealthPack);
+
+	void RegisterEvent (AShooterCharacter* ShooterCharacterRef);
 	
 protected:
 

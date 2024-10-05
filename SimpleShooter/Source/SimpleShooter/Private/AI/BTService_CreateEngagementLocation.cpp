@@ -22,7 +22,7 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 	
 	if (EnemyInSight != nullptr)
 	{
-		AllValidPositions.Empty();
+		TArray<FVector> AllValidPositions;
 		FVector StartPoint = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
 		
 		const FVector BotForward = EnemyInSight->GetActorLocation() - OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
@@ -60,8 +60,6 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 				{
 					FVector CeilPosition = Hit.Location;
 					CeilPosition.Z -= 50.0f;
-				
-					//if (bDebug)DrawDebugLine(GetWorld(), CeilPosition, CeilPosition + FVector::UpVector*-99999.9f, FColor::Blue,false,0.25f,0,1.0f);
 
 					//Get the floor position
 					if (GetWorld()->LineTraceSingleByChannel(Hit2, CeilPosition, CeilPosition + FVector::UpVector*-99999.9f, ECollisionChannel::ECC_GameTraceChannel1, Params))

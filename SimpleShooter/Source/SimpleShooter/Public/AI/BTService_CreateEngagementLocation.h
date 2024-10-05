@@ -54,9 +54,6 @@ public:
 	
 private:
 	
-	UPROPERTY()
-	TArray<FVector> AllValidPositions;
-
 	float ScoreAggregation(int NbConsiderations, float OriginalScore);
 	
 };

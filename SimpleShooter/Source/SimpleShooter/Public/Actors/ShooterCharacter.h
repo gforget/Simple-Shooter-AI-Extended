@@ -15,6 +15,8 @@ class UPlayMontageCallbackProxy;
 class UNavMeshUtility;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, AShooterCharacter*, DeadShooterCharacter);
+
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
 {
@@ -37,6 +39,9 @@ protected:
 public:
 	UPROPERTY()
 	FHealEvent OnHealEvent;
+
+	UPROPERTY()
+	FDeadEvent OnDeadEvent;
 	
 	UPROPERTY()
 	UNavMeshUtility* NavMeshUtility;
@@ -109,6 +114,8 @@ private:
 
 	UPROPERTY()
 	ARotationViewPointRef* RotationViewPointRef;
+
+	void Death();
 	
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
@@ -145,6 +152,9 @@ private:
 	
 	UPROPERTY()
 	bool IsReloading = false;
+
+	UPROPERTY()
+	bool Dead = false;
 	
 	UPROPERTY()
 	UPlayMontageCallbackProxy* PlayMontageCallbackProxy;

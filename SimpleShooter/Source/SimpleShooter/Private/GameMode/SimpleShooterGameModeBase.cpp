@@ -29,18 +29,19 @@ void ASimpleShooterGameModeBase::BeginPlay()
 			{
 				AllEnemySpawnPoints.Add(SpawnPointPtr);
 				
-				const AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
-				SpawnPointPtr->ShooterCharacterClass,
-				SpawnPointPtr->GetActorLocation(),
-				SpawnPointPtr->GetActorRotation()
+				AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+					SpawnPointPtr->ShooterCharacterClass,
+					SpawnPointPtr->GetActorLocation(),
+					SpawnPointPtr->GetActorRotation()
 				);
 			}
 		}
 	}
 }
 
-void ASimpleShooterGameModeBase::PawnKilled(APawn* PawnKilled)
+void ASimpleShooterGameModeBase::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
 {
+	
 }
 
 TArray<AWaypoint*> ASimpleShooterGameModeBase::GetAllWayPoints()
@@ -71,6 +72,11 @@ TArray<AHealthPack*> ASimpleShooterGameModeBase::GetAllHealthPacks()
 void ASimpleShooterGameModeBase::AddHealthPack(AHealthPack* HealthPack)
 {
 	AllHealthPacks.Add(HealthPack);
+}
+
+void ASimpleShooterGameModeBase::RegisterEvent(AShooterCharacter* ShooterCharacterRef)
+{
+	ShooterCharacterRef->OnDeadEvent.AddDynamic(this, &ASimpleShooterGameModeBase::OnShooterCharacterDeath);
 }
 
 

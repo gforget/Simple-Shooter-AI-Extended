@@ -23,6 +23,7 @@ void UOHHealthBar::InitializeAssignedCharacterAndPlayerController(AShooterCharac
 	UpdateHealthBar();
 	AssignedCharacter->OnTakeAnyDamage.AddDynamic(this, &UOHHealthBar::OnCharacterHit);
 	AssignedCharacter->OnHealEvent.AddDynamic(this, &UOHHealthBar::OnCharacterHeal);
+	AssignedCharacter->OnDeadEvent.AddDynamic(this, &UOHHealthBar::OnCharacterDeath);
 }
 
 void UOHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -83,6 +84,11 @@ void UOHHealthBar::OnCharacterHit(
 void UOHHealthBar::OnCharacterHeal()
 {
 	UpdateHealthBar();
+}
+
+void UOHHealthBar::OnCharacterDeath(AShooterCharacter* DeadCharacter)
+{
+	RemoveFromParent();
 }
 
 void UOHHealthBar::UpdateHealthBar()

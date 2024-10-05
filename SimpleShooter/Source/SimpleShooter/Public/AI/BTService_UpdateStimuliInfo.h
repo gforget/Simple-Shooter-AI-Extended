@@ -26,7 +26,5 @@ protected:
 private:
 	UPROPERTY()
 	UBehaviorTreeComponent* OwnerCompPtr;
-
-	UPROPERTY()
-	bool bInitiated = false;
+	
 };

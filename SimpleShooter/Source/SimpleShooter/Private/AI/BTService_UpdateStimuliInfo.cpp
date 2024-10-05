@@ -26,10 +26,10 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	OwnerCompPtr = &OwnerComp;
 
 	//initiate blackboard value
-	if (!bInitiated)
+	if (!OwnerCompPtr->GetBlackboardComponent()->GetValueAsBool(FName("StimuliServiceInitiated")))
 	{
 		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f); // Service - StimulusUpdate
-		bInitiated = true;	
+		OwnerCompPtr->GetBlackboardComponent()->SetValueAsBool(FName("StimuliServiceInitiated"), true);
 	}
 	
 	if (OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")) > MaxTimeSeenAnEnemy)

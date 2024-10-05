@@ -30,7 +30,5 @@ protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 private:
-	float TimerBeforeShooting = 0.0f;
 	FVector CurrentAimPosition;
-	bool bJustSawEnemy = false;
 };

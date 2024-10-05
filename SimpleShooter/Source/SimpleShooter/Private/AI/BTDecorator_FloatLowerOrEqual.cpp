@@ -13,9 +13,6 @@ UBTDecorator_FloatLowerOrEqual::UBTDecorator_FloatLowerOrEqual()
 bool UBTDecorator_FloatLowerOrEqual::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
 	const bool bReturnValue = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(GetSelectedBlackboardKey()) <= TargetValue;
-	//FString StringValue = bReturnValue ? "true" : "false";
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *StringValue);
-	
 	return bReturnValue;
 }
 

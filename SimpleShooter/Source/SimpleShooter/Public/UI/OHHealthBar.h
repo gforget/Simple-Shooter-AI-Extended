@@ -40,6 +40,9 @@ public :
 
 	UFUNCTION()
 	void OnCharacterHeal();
+
+	UFUNCTION()
+	void OnCharacterDeath(AShooterCharacter* DeadCharacter);
 	
 	void UpdateHealthBar();
 

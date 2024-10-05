@@ -16,9 +16,6 @@ bool UBTDecorator_EvaluateState::CalculateRawConditionValue(UBehaviorTreeCompone
 	if (StateEvaluated == EAIStateEnum::None) return false;
 	
 	const bool bReturnValue = OwnerComp.GetBlackboardComponent()->GetValueAsEnum(GetSelectedBlackboardKey()) == StateEvaluated;
-	//FString StringValue = bReturnValue ? "true" : "false";
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *StringValue);
-	
 	return bReturnValue;
 }
 

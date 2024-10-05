@@ -4,13 +4,15 @@
 #include "GameMode/KillEmAllGameMode.h"
 
 #include "EngineUtils.h"
+#include "Actors/ShooterCharacter.h"
 #include "Controllers/ShooterAIController.h"
 
-void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
+void AKillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
 {
-	Super::PawnKilled(PawnKilled);
-	
-	APlayerController* PlayerController = Cast<APlayerController>(PawnKilled->GetController());
+	Super::OnShooterCharacterDeath(DeadShooterCharacter);
+
+	//Make sure the win event work with the TeamManager
+	const APlayerController* PlayerController = Cast<APlayerController>(DeadShooterCharacter->GetController());
 	if (PlayerController != nullptr)
 	{
 		EndGame(false);

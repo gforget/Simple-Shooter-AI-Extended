@@ -27,10 +27,8 @@ void UBTService_CreateEngagementCircleLocation::TickNode(UBehaviorTreeComponent&
 		DeltaBotToEnemy2D.Normalize();
 
 		FVector DeltaBotToEnemyXY = FVector(DeltaBotToEnemy2D.X, DeltaBotToEnemy2D.Y, 0.0f);
-		//DeltaBotToEnemyXY = DeltaBotToEnemyXY.RotateAngleAxis(FMath::RandRange(0.0f, 45.0f), FVector::UpVector);
 		DeltaBotToEnemyXY = DeltaBotToEnemyXY.RotateAngleAxis(45.0f, FVector::UpVector);
 		
-		//FVector EngagementPosition = EnemyInSight->GetActorLocation() + DeltaBotToEnemyXY*FMath::RandRange(400.0f, 600.0f);
 		FVector EngagementPosition = EnemyInSight->GetActorLocation() + DeltaBotToEnemyXY*600.0f;
 		FHitResult Hit;
 		

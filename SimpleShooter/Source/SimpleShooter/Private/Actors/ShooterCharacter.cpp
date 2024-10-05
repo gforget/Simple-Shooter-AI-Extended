@@ -57,11 +57,13 @@ void AShooterCharacter::BeginPlay()
 
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+
+	Cast<ASimpleShooterGameModeBase>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
 }
 
 bool AShooterCharacter::IsDead() const
 {
-	return Health <= 0.0f;
+	return Dead;
 }
 
 ETeam AShooterCharacter::GetTeam() const
@@ -132,25 +134,32 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
 	AActor* DamageCauser)
 {
+	
 	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
 
-	if (IsDead())
+	if (Health <= 0.0f)
 	{
-		ASimpleShooterGameModeBase* GameMode =  GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
-		if (GameMode != nullptr)
-		{
-			GameMode->PawnKilled(this);
-		}
-		
+		Death();
+	}
+	
+	return DamageToApply;
+}
+
+void AShooterCharacter::Death()
+{
+	if (!IsDead())
+	{
 		DetachFromControllerPendingDestroy();
 		ReleaseTrigger();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		VSShooterCharacter->Destroy();
+		RotationViewPointRef->Destroy();
+
+		Dead = true;
+		OnDeadEvent.Broadcast(this);
 	}
-	
-	return DamageToApply;
 }
 
 float AShooterCharacter::Heal(float HealAmount)
