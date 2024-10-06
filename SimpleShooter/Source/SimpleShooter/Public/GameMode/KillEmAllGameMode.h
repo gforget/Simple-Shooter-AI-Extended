@@ -18,6 +18,23 @@ public:
 	
 	void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter) override;
 
+	void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister);
+	
+protected:
+	void BeginPlay();
+	
 private:
 	void EndGame(bool bIsPlayerWinner);
+
+	UPROPERTY()
+	bool LostFFA = false;
+	
+	UPROPERTY()
+	int FFACount = 0;
+
+	UPROPERTY()
+	TMap<TEnumAsByte<ETeam>, int> TeamCount;
+
+	UPROPERTY()
+	TEnumAsByte<ETeam> TeamOfPlayer;
 };

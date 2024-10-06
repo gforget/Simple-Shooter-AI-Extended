@@ -5,28 +5,62 @@
 
 #include "EngineUtils.h"
 #include "Actors/ShooterCharacter.h"
-#include "Controllers/ShooterAIController.h"
+#include "Kismet/GameplayStatics.h"
+
+void AKillEmAllGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+	{
+		const AShooterCharacter* PlayerCharacter = Cast<AShooterCharacter>(PlayerPawn);
+		TeamOfPlayer = PlayerCharacter->GetTeam();	
+	}
+}
 
 void AKillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
-
-	//Make sure the win event work with the TeamManager
-	const APlayerController* PlayerController = Cast<APlayerController>(DeadShooterCharacter->GetController());
-	if (PlayerController != nullptr)
+	
+	if (AllianceMode == EAllianceMode::FFA)
 	{
-		EndGame(false);
-	}
-
-	for (AShooterAIController* Controller : TActorRange<AShooterAIController>(GetWorld()))
-	{
-		if (!Controller->IsDead())
+		const APlayerController* PlayerController = Cast<APlayerController>(DeadShooterCharacter->GetController());
+		if (PlayerController != nullptr)
 		{
-			return;
+			LostFFA = true;
+		}
+		
+		FFACount--;
+		if (FFACount == 1)
+		{
+			EndGame(!LostFFA);
 		}
 	}
-	
-	EndGame(true);
+	else
+	{
+		TeamCount[DeadShooterCharacter->GetTeam()]--;
+		if (TeamCount[DeadShooterCharacter->GetTeam()] == 0)
+		{
+			EndGame(TeamOfPlayer != DeadShooterCharacter->GetTeam());
+		}
+	}
+}
+
+void AKillEmAllGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister)
+{
+	if (AllianceMode == EAllianceMode::FFA)
+	{
+		FFACount++;
+	}
+	else
+	{
+		if (!TeamCount.Contains(ShooterCharacterToRegister->GetTeam()))
+		{
+			TeamCount.Add(ShooterCharacterToRegister->GetTeam(), 0);
+		}
+		
+		TeamCount[ShooterCharacterToRegister->GetTeam()]++;
+	}
 }
 
 void AKillEmAllGameMode::EndGame(bool bIsPlayerWinner)

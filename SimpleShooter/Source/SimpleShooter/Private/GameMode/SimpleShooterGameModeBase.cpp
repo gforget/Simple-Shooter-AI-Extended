@@ -37,6 +37,8 @@ void ASimpleShooterGameModeBase::BeginPlay()
 			}
 		}
 	}
+	
+	FactionManagerComponent->SetAllianceMode(AllianceMode);
 }
 
 void ASimpleShooterGameModeBase::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)

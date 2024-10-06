@@ -13,6 +13,11 @@ void UTeamManager::BeginPlay()
 	Super::BeginPlay();
 }
 
+void UTeamManager::SetAllianceMode(EAllianceMode AllianceModeValue)
+{
+	AllianceMode = AllianceModeValue;
+}
+
 ETeamRelation UTeamManager::GetTeamRelation(ETeam TeamA, ETeam TeamB)
 {
 	if (AllianceMode == EAllianceMode::Team)
@@ -31,4 +36,6 @@ ETeamRelation UTeamManager::GetTeamRelation(ETeam TeamA, ETeam TeamB)
 		return Enemy;
 	}
 }
+
+
 

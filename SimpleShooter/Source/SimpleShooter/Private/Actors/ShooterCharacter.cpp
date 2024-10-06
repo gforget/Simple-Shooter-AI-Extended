@@ -8,6 +8,7 @@
 #include "Actors/RotationViewPointRef.h"
 #include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
+#include "GameMode/KillEmAllGameMode.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
 
@@ -59,6 +60,11 @@ void AShooterCharacter::BeginPlay()
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 
 	Cast<ASimpleShooterGameModeBase>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
+
+	if (AKillEmAllGameMode* KillEmAllGameMode = Cast<AKillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		KillEmAllGameMode->AddShooterCharacterCount(this);
+	}
 }
 
 bool AShooterCharacter::IsDead() const
@@ -151,6 +157,8 @@ void AShooterCharacter::Death()
 {
 	if (!IsDead())
 	{
+		OnDeadEvent.Broadcast(this);
+		
 		DetachFromControllerPendingDestroy();
 		ReleaseTrigger();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -158,7 +166,6 @@ void AShooterCharacter::Death()
 		RotationViewPointRef->Destroy();
 
 		Dead = true;
-		OnDeadEvent.Broadcast(this);
 	}
 }
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActorComponents/TeamManager.h"
 #include "Actors/HealthPack.h"
 #include "Actors/Waypoint.h"
 #include "GameFramework/GameModeBase.h"
@@ -27,9 +28,6 @@ public:
 
 	ASimpleShooterGameModeBase();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
-	UTeamManager* FactionManagerComponent;
-
 	UFUNCTION()
 	virtual void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter);
 
@@ -46,10 +44,16 @@ public:
 	void AddHealthPack(AHealthPack* HealthPack);
 
 	void RegisterEvent (AShooterCharacter* ShooterCharacterRef);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
+	UTeamManager* FactionManagerComponent;
 	
 protected:
 
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<EAllianceMode> AllianceMode;
 	
 	UPROPERTY()
 	TArray<AEnemySpawnPoint*> AllEnemySpawnPoints;
