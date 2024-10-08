@@ -17,12 +17,17 @@ class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
+	AShooterPlayerController();
+	
 	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
 	void AddOHHealthBar(AShooterCharacter* AssignedCharacter);
+
+	virtual void SetIgnoreLookInput(bool bNewLookInput) override;
+	virtual void SetIgnoreMoveInput(bool bNewMoveInput) override;
 	
 protected:
 	virtual void BeginPlay() override;
-	
+
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> HUDScreenClass;

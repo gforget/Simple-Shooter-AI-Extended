@@ -131,9 +131,11 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 				float DesiredXYScore = 1.01f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
 				float HigherGroundScore = ZDistance < HigherGroundDistance ? 0.5f : 1.0f;
 				float DistanceFromCurrentPositionScore  = DistanceToNewPosition < MinDistanceFromCurrentPosition ? 0.5f:1.0f;
-
+				
 				float AggregatedScore = ScoreAggregation(3, 1.0f*DesiredXYScore*HigherGroundScore*DistanceFromCurrentPositionScore);
-			
+
+				if (bDebug) DrawDebugString(GetWorld(), AllValidPositions[i], FString::Printf(TEXT("%f"), AggregatedScore), 0, FColor::Red, 0.25f, false, 1);
+				
 				if (AggregatedScore > HighestScore)
 				{
 					HighestScore = AggregatedScore;
@@ -143,7 +145,6 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 			
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("EngagementLocation"), AllValidPositions[IndexValidPosition]);
 			if (bDebug)DrawDebugSphere(GetWorld(), AllValidPositions[IndexValidPosition], 10.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
-			
 		}
 		else
 		{

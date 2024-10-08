@@ -13,6 +13,7 @@ class AVisualStimuli_ShooterCharacter;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
 class UNavMeshUtility;
+class AShooterSpectatorPawn;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, AShooterCharacter*, DeadShooterCharacter);
@@ -163,6 +164,11 @@ private:
 	void OnReloadAnimationCompleted(FName NotifyName);
 	
 	void GenerateEditorAnchorPositionVisualisation() const;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AShooterSpectatorPawn> SpectatorPawnClass;
+    	
+	void ActivateDebugSpectatorMode();
 	
 };
 

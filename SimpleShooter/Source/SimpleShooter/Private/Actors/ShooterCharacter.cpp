@@ -6,9 +6,12 @@
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/RotationViewPointRef.h"
+#include "Actors/ShooterSpectatorPawn.h"
 #include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
+#include "Camera/CameraComponent.h"
 #include "Controllers/ShooterPlayerController.h"
 #include "GameMode/KillEmAllGameMode.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
 
@@ -135,6 +138,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Reload"), IE_Pressed, this, &AShooterCharacter::Reload);
 
 	PlayerInputComponent->BindAction(TEXT("SelfDamage"), IE_Pressed, this, &AShooterCharacter::SelfDamage);
+	PlayerInputComponent->BindAction(TEXT("ToggleDebugSpectatorMode"), IE_Pressed, this, &AShooterCharacter::ActivateDebugSpectatorMode);
 }
 
 float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -283,6 +287,30 @@ void AShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
 		}
 	}
 #endif
+}
+
+void AShooterCharacter::ActivateDebugSpectatorMode()
+{
+	AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+	if (ShooterPlayerController != nullptr)
+	{
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+		GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0"));
+		
+		AShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
+			SpectatorPawnClass,
+			GetActorLocation(),
+			GetActorRotation()
+		);
+		
+		UnPossessed();
+		SpectatorPawn->SetPlayerShooterCharacter(this);
+		ShooterPlayerController->SetTickableWhenPaused(true);
+		ShooterPlayerController->SetIgnoreLookInput(false);
+		ShooterPlayerController->SetIgnoreMoveInput(false);
+		SpectatorPawn->SetTickableWhenPaused(true);
+		ShooterPlayerController->Possess(SpectatorPawn);
+	}
 }
 
 void AShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)

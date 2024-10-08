@@ -5,6 +5,13 @@
 #include "Blueprint/UserWidget.h"
 #include "UI/OHHealthBar.h"
 
+AShooterPlayerController::AShooterPlayerController()
+{
+	bShouldPerformFullTickWhenPaused = true;
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bTickEvenWhenPaused = true;
+}
+
 void AShooterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -13,6 +20,16 @@ void AShooterPlayerController::BeginPlay()
 	{
 		HUD->AddToViewport();
 	}
+}
+
+void AShooterPlayerController::SetIgnoreLookInput(bool bNewLookInput)
+{
+	Super::SetIgnoreLookInput(false);
+}
+
+void AShooterPlayerController::SetIgnoreMoveInput(bool bNewMoveInput)
+{
+	Super::SetIgnoreMoveInput(false);
 }
 
 void AShooterPlayerController::AddOHHealthBar(AShooterCharacter* AssignedCharacter)
