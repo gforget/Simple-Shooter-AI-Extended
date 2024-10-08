@@ -21,9 +21,6 @@ public:
 	
 	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
 	void AddOHHealthBar(AShooterCharacter* AssignedCharacter);
-
-	virtual void SetIgnoreLookInput(bool bNewLookInput) override;
-	virtual void SetIgnoreMoveInput(bool bNewMoveInput) override;
 	
 protected:
 	virtual void BeginPlay() override;

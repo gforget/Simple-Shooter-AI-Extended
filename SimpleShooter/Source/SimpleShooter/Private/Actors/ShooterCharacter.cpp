@@ -306,8 +306,6 @@ void AShooterCharacter::ActivateDebugSpectatorMode()
 		UnPossessed();
 		SpectatorPawn->SetPlayerShooterCharacter(this);
 		ShooterPlayerController->SetTickableWhenPaused(true);
-		ShooterPlayerController->SetIgnoreLookInput(false);
-		ShooterPlayerController->SetIgnoreMoveInput(false);
 		SpectatorPawn->SetTickableWhenPaused(true);
 		ShooterPlayerController->Possess(SpectatorPawn);
 	}

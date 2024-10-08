@@ -22,16 +22,6 @@ void AShooterPlayerController::BeginPlay()
 	}
 }
 
-void AShooterPlayerController::SetIgnoreLookInput(bool bNewLookInput)
-{
-	Super::SetIgnoreLookInput(false);
-}
-
-void AShooterPlayerController::SetIgnoreMoveInput(bool bNewMoveInput)
-{
-	Super::SetIgnoreMoveInput(false);
-}
-
 void AShooterPlayerController::AddOHHealthBar(AShooterCharacter* AssignedCharacter)
 {
 	UOHHealthBar* OHHealthBar = Cast<UOHHealthBar>(CreateWidget(this, OHHealthBarClass));
