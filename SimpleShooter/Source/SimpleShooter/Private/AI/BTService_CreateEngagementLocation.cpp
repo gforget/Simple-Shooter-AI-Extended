@@ -49,10 +49,12 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 		FRotator Rotation;
 		OwnerCompPtr->GetAIOwner()->GetPlayerViewPoint(Location, Rotation);
 		FVector DeltaEyesPosition = Location - OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
+
+		float MaxDistanceFromTarget = 0.0f;
 		
 		for (int i=0; i<nbVerticalPoints; i++)
 		{
-			FVector PointPosition = StartPoint + BotForwardXY*(distanceBetweenPoints*(i-1)) - BotRightXY*(distanceBetweenPoints*(nbHorizontalPoints/2));
+			FVector PointPosition = StartPoint + BotForwardXY*(distanceBetweenPoints*(i-offset)) - BotRightXY*(distanceBetweenPoints*(nbHorizontalPoints/2));
 			for (int j=0; j<nbHorizontalPoints; j++)
 			{
 				//Get the ceiling position
@@ -82,6 +84,13 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 									if (FVector::Distance(GroundLocation, EnemyInSight->GetActorLocation() + EnemyInSight->FootPositionAnchor) > MinDistanceToTarget)
 									{
 										if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
+
+										FVector DeltaToEnemy = EnemyInSight->GetActorLocation() - GroundLocation;
+										DeltaToEnemy.Z = 0;
+										float DistancePointXYToEnemy = DeltaToEnemy.Length();
+
+										if (MaxDistanceFromTarget < DistancePointXYToEnemy) MaxDistanceFromTarget = DistancePointXYToEnemy;
+										
 										AllValidPositions.Add(GroundLocation);
 									}
 									else
@@ -128,12 +137,19 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 				FVector DeltaToPosition = AllValidPositions[i] - (OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation() + FootAnchorPosition);
 				float DistanceToNewPosition = DeltaToPosition.Length();
 			
-				float DesiredXYScore = 1.01f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
-				float HigherGroundScore = ZDistance < HigherGroundDistance ? 0.5f : 1.0f;
-				float DistanceFromCurrentPositionScore  = DistanceToNewPosition < MinDistanceFromCurrentPosition ? 0.5f:1.0f;
+				float DesiredXYScore = 1.0f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
+				float DistanceToEnemy = 1.0f-(DistancePointXYToEnemy/MaxDistanceFromTarget);
+				float AggregatedDistanceToEnemyScore = DesiredXYScore*0.5f + DistanceToEnemy*0.5f;
+				AggregatedDistanceToEnemyScore = AggregatedDistanceToEnemyCurve.GetRichCurveConst()->Eval(AggregatedDistanceToEnemyScore);
 				
-				float AggregatedScore = ScoreAggregation(3, 1.0f*DesiredXYScore*HigherGroundScore*DistanceFromCurrentPositionScore);
-
+				float HigherGroundScore = FMath::Min(FMath::Max(0.0f, ZDistance), HigherGroundDistance)/HigherGroundDistance;
+				HigherGroundScore = HigherGroundDistanceCurve.GetRichCurveConst()->Eval(HigherGroundScore);
+				
+				float DistanceFromCurrentPositionScore = FMath::Min(DistanceToNewPosition, MinDistanceFromCurrentPosition) / MinDistanceFromCurrentPosition;
+				DistanceFromCurrentPositionScore = MinDistanceFromCurrentPositionCurve.GetRichCurveConst()->Eval(DistanceFromCurrentPositionScore);
+				
+				float AggregatedScore = ScoreAggregation(3, 1.0f * AggregatedDistanceToEnemyScore * HigherGroundScore * DistanceFromCurrentPositionScore);
+				AggregatedScore = FMath::Min(AggregatedScore + FMath::RandRange(0.0f, MaxRandomBonusScore), 1.0f);
 				if (bDebug) DrawDebugString(GetWorld(), AllValidPositions[i], FString::Printf(TEXT("%f"), AggregatedScore), 0, FColor::Red, 0.25f, false, 1);
 				
 				if (AggregatedScore > HighestScore)

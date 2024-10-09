@@ -21,6 +21,8 @@ protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	int offset = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
 	int nbHorizontalPoints = 6;
@@ -39,6 +41,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
 	float GroundZOffset = 25.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid Properties")
+	float MaxRandomBonusScore = 0.1f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Desired Distance Considerations Properties")
 	float DesiredXYDistance = 500.0f;
@@ -46,11 +51,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Desired Distance Considerations Properties")
 	float ThresholdDistance = 750.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Desired Distance Considerations Properties")
+	FRuntimeFloatCurve AggregatedDistanceToEnemyCurve;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Higher Ground Distance Considerations Properties")
 	float HigherGroundDistance = 200.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Higher Ground Distance Considerations Properties")
+	FRuntimeFloatCurve HigherGroundDistanceCurve;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Min Distance From Current Position Considerations Properties")
 	float MinDistanceFromCurrentPosition = 200.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Min Distance From Current Position Considerations Properties")
+	FRuntimeFloatCurve MinDistanceFromCurrentPositionCurve;
 	
 private:
 	
