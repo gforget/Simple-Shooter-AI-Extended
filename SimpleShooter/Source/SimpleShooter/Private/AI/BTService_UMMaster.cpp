@@ -61,12 +61,12 @@ TEnumAsByte<EAIStateEnum> UBTService_UMMaster::ChooseState()
 		LookForAmmoPackC_AmmoReservePercent() *
 		LookForAmmoPackC_AmmoPackDistance()
 		);
-
+	
 	//EngagePlayer
 	StateScoreArray[EAIStateEnum::EngageEnemy] = ScoreAggregation(4,
 		1.0f *
 		EngageEnemyC_IsLastKnownEnemyLocationIsSet() *
-		EngageEnemyC_TimeSeenEnemy() *
+		EngageEnemyC_TimeSenseAnEnemy() *
 		EngageEnemyC_AmmoInTotalPercent() *
 		EngageEnemyC_HealthPercent()
 		);
@@ -194,14 +194,17 @@ float UBTService_UMMaster::LookForAmmoPackC_AmmoReservePercent()
 
 float UBTService_UMMaster::EngageEnemyC_IsLastKnownEnemyLocationIsSet()
 {
-	const bool bIsSet = OwnerCompPtr->GetBlackboardComponent()->IsVectorValueSet(FName("LastKnownEnemyLocation"));
-	return bIsSet ? EEC_IsLastKnownEnemyLocationIsSetBool.X : EEC_IsLastKnownEnemyLocationIsSetBool.Y;
+	const bool bIsSet = OwnerCompPtr->GetBlackboardComponent()->IsVectorValueSet(FName("LastKnownEnemyLocation")) || OwnerCompPtr->GetBlackboardComponent()->IsVectorValueSet(FName("SoundHeardLocation"));
+	return bIsSet ? EEC_IsLastKnownEnemyLocationOrSoundHeardLocationIsSetBool.X : EEC_IsLastKnownEnemyLocationOrSoundHeardLocationIsSetBool.Y;
 }
 
-float UBTService_UMMaster::EngageEnemyC_TimeSeenEnemy()
+float UBTService_UMMaster::EngageEnemyC_TimeSenseAnEnemy()
 {
 	const float TimeSeenAnEnemy = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy"));
-	return EEC_TimeSeenEnemyCurve.GetRichCurve()->Eval(FMath::Min(TimeSeenAnEnemy, EEC_MaxTimeSeenAnEnemy)/EEC_MaxTimeSeenAnEnemy);
+	const float TimeHeardSomething = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeHeardSomething"));
+
+	const float TimeMin = FMath::Min(TimeSeenAnEnemy, TimeHeardSomething);
+	return EEC_TimeSenseEnemyCurve.GetRichCurve()->Eval(FMath::Min(TimeMin, EEC_MaxTimeSeenAnEnemy)/EEC_MaxTimeSeenAnEnemy);
 }
 
 float UBTService_UMMaster::EngageEnemyC_AmmoInTotalPercent()

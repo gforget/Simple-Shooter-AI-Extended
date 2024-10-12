@@ -37,6 +37,9 @@ public:
 	float GetFieldOfView();
 	float GetSightRange();
 	float GetHearingRange();
+
+	UPROPERTY()
+	bool bStimuliServiceInitiated = false;
 	
 private:
 	
@@ -54,7 +57,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")
 	float HearingRange = 2500.0f;
-
+	
 	UPROPERTY()
 	float CurrentYawOffset = 0.0f;
 };

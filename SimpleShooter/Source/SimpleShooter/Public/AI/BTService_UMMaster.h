@@ -73,10 +73,10 @@ public:
 	
 	//Engage Properties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engage Enemy Properties")
-	FVector2D EEC_IsLastKnownEnemyLocationIsSetBool = FVector2D(1.0f, 0.0f);
+	FVector2D EEC_IsLastKnownEnemyLocationOrSoundHeardLocationIsSetBool = FVector2D(1.0f, 0.0f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engage Enemy Properties")
-	FRuntimeFloatCurve EEC_TimeSeenEnemyCurve;
+	FRuntimeFloatCurve EEC_TimeSenseEnemyCurve;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engage Enemy Properties")
 	FRuntimeFloatCurve EEC_AmmoInTotalPercentCurve;
@@ -140,7 +140,7 @@ private:
 	
 	//Engage Player considerations
 	float EngageEnemyC_IsLastKnownEnemyLocationIsSet();
-	float EngageEnemyC_TimeSeenEnemy();
+	float EngageEnemyC_TimeSenseAnEnemy();
 	float EngageEnemyC_AmmoInTotalPercent();
 	float EngageEnemyC_HealthPercent();
 	

@@ -26,6 +26,9 @@ public:
 
 	void SetSoundOwner(AActor* OwnerRef);
 	AActor* GetSoundOwner();
+
+	UPROPERTY(EditDefaultsOnly)
+	int PriorityLevel = 0;
 	
 private:
 	UPROPERTY()

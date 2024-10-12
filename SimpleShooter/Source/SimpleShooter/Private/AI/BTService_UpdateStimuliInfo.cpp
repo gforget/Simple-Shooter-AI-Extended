@@ -26,10 +26,14 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	OwnerCompPtr = &OwnerComp;
 
 	//initiate blackboard value
-	if (!OwnerCompPtr->GetBlackboardComponent()->GetValueAsBool(FName("StimuliServiceInitiated")))
+	if (AShooterAIController* AIController = Cast<AShooterAIController>(OwnerCompPtr->GetAIOwner()))
 	{
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f); // Service - StimulusUpdate
-		OwnerCompPtr->GetBlackboardComponent()->SetValueAsBool(FName("StimuliServiceInitiated"), true);
+		if (!AIController->bStimuliServiceInitiated)
+		{
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f);
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 9999999.9f);
+			AIController->bStimuliServiceInitiated = true;
+		}
 	}
 	
 	if (OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")) > MaxTimeSeenAnEnemy)
@@ -65,11 +69,23 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		bool bHaveSeenAnEnemy = false;
 		if (bVSHasHit)
 		{
+			const AShooterCharacter* ShooterInSight = Cast<AShooterCharacter> (OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+			
 			for (int i=0; i<VSFound.Num(); i++)
 			{
 				//VS of ShooterCharacter
-				if (AVisualStimuli_ShooterCharacter* VS_Shooter = Cast<AVisualStimuli_ShooterCharacter> (VSFound[i]))
+				AVisualStimuli_ShooterCharacter* VS_Shooter = Cast<AVisualStimuli_ShooterCharacter> (VSFound[i]);
+				if (VS_Shooter != nullptr) 
 				{
+					// do not reset target if you already have a target
+					if (ShooterInSight != nullptr)
+					{
+						if (ShooterInSight->GetUniqueID() != VS_Shooter->GetShooterCharacterRef()->GetUniqueID())
+						{
+							continue;
+						}
+					}
+					
 					//Check if it is an enemy
 					const ASimpleShooterGameModeBase* GameMode = Cast<ASimpleShooterGameModeBase>(GetWorld()->GetAuthGameMode());
 					const ETeamRelation TargetTeamRelation = GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterCharacter->GetTeam());
@@ -107,7 +123,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		if (!bHaveSeenAnEnemy)
 		{
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsObject(FName("EnemyInSight"), nullptr);
-			float TimeRegistered = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy")); // Service - StimulusUpdate
+			float TimeRegistered = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy"));
 			TimeRegistered += DeltaSeconds;
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), TimeRegistered); 
 		}
@@ -130,6 +146,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 			SSToIgnore,
 			SSFound);
 		
+		bool bJustHeardSomething = false;
 		if (bSSHasHit)
 		{
 			for (int i=0; i<SSFound.Num(); i++)
@@ -144,23 +161,36 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 				//SS of ShootingSound
 				if (ASoundStimuli_ShootingSound* SS_ShootingSound = Cast<ASoundStimuli_ShootingSound> (SSFound[i]))
 				{
-					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(SS_ShootingSound))
+					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(SS_ShootingSound) &&
+						OwnerCompPtr->GetBlackboardComponent()->GetValueAsInt("SoundPriorityLevel") < SS_ShootingSound->PriorityLevel)
 					{
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("LastKnownEnemyLocation"), SS_ShootingSound->GetActorLocation());
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 0.0f);
+						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), SS_ShootingSound->GetActorLocation());
+						OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 0.0f);
+						OwnerCompPtr->GetBlackboardComponent()->SetValueAsInt(FName("SoundPriorityLevel"), SS_ShootingSound->PriorityLevel);
+						bJustHeardSomething = true;
 					}
 				}
 				
 				//SS of BulletImpact
 				if (ASoundStimuli_BulletImpactSound* SS_BulletImpact= Cast<ASoundStimuli_BulletImpactSound> (SSFound[i]))
 				{
-					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(SS_BulletImpact))
+					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(SS_BulletImpact) &&
+						OwnerCompPtr->GetBlackboardComponent()->GetValueAsInt("SoundPriorityLevel") < SS_BulletImpact->PriorityLevel)
 					{
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("LastKnownEnemyLocation"), SS_BulletImpact->GetShootingOriginPosition());
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 0.0f);
+						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), SS_BulletImpact->GetActorLocation());
+						OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 0.0f);
+						OwnerCompPtr->GetBlackboardComponent()->SetValueAsInt(FName("SoundPriorityLevel"), SS_BulletImpact->PriorityLevel);
+						bJustHeardSomething = true;
 					}
 				}
 			}
+		}
+		
+		if (!bJustHeardSomething)
+		{
+			float TimeRegistered = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeHeardSomething"));
+			TimeRegistered += DeltaSeconds;
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), TimeRegistered); 
 		}
 	}
 }
