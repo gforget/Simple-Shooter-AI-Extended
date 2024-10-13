@@ -118,6 +118,8 @@ bool AShooterAIController::IsDead() const
 
 void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePawn)
 {
+	//Super::UpdateControlRotation(DeltaTime, bUpdatePawn);
+	
 	//Following code is the original UpdateControlRotation without bUpdatePawn
 	//it include a fix so pitch can now work with focal point
 	
@@ -125,7 +127,7 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 	if (MyPawn)
 	{
 		FRotator NewControlRotation = GetControlRotation();
-
+	
 		// Look toward focus
 		const FVector FocalPoint = GetFocalPoint();
 		if (FAISystem::IsValidLocation(FocalPoint))
@@ -163,10 +165,10 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 		if (bUpdatePawn)
 		{
 			const FRotator CurrentPawnRotation = MyPawn->GetActorRotation();
-		
-			if (CurrentPawnRotation.Equals(NewControlRotation, 1e-3f) == false)
+			
+			if (CurrentPawnRotation.Equals(GetControlRotation(), 1e-3f) == false)
 			{
-				MyPawn->FaceRotation(NewControlRotation, DeltaTime);
+				MyPawn->FaceRotation(GetControlRotation(), DeltaTime);
 			}
 		}
 	}

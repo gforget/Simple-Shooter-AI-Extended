@@ -177,7 +177,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(SS_BulletImpact) &&
 						OwnerCompPtr->GetBlackboardComponent()->GetValueAsInt("SoundPriorityLevel") < SS_BulletImpact->PriorityLevel)
 					{
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), SS_BulletImpact->GetActorLocation());
+						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), SS_BulletImpact->GetShootingOriginPosition());
 						OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 0.0f);
 						OwnerCompPtr->GetBlackboardComponent()->SetValueAsInt(FName("SoundPriorityLevel"), SS_BulletImpact->PriorityLevel);
 						bJustHeardSomething = true;

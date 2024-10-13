@@ -42,20 +42,25 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		if (OwnerComp.GetBlackboardComponent()->GetValueAsFloat(FName("TimerBeforeShooting")) > TimeBeforeStartingShooting)
 		{
 			OwnerComp.GetAIOwner()->SetFocalPoint(CurrentAimPosition);
+			//OwnerComp.GetAIOwner()->SetFocalPoint(EnemyTarget->GetActorLocation());
 			Character->PullTrigger();
 		}
 		else
 		{
 			Character->ReleaseTrigger();
 		}
-		
+
+		DrawDebugSphere(GetWorld(), CurrentAimPosition, 5.0f, 12, FColor::Cyan, false, 0.01f, 0, 1.0);
+
+		const FVector AimBodyOffset = FVector(0.0f,0.0f,50.0f);
 		const FVector OffsetPosition = FMath::VRand()*AimOffset;
 		CurrentAimPosition = UKismetMathLibrary::VInterpTo_Constant(
 			CurrentAimPosition,
-			EnemyTarget->GetActorLocation() + OffsetPosition,
+			EnemyTarget->GetActorLocation() + AimBodyOffset + OffsetPosition, //EnemyTarget->GetActorLocation() + OffsetPosition
 			DeltaSeconds,
 			AimAdjustmentSpeed
 			);
+		
 	}
 	else
 	{

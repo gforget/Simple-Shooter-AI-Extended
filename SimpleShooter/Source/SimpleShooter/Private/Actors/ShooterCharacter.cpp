@@ -20,6 +20,7 @@ AShooterCharacter::AShooterCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	//bAsyncPhysicsTickEnabled = true;
 }
 
 // Called when the game starts or when spawned
@@ -119,6 +120,12 @@ void AShooterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AShooterCharacter::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
+{
+	Super::AsyncPhysicsTickActor(DeltaTime, SimTime);
+	//AddMovementInput(GetActorForwardVector()*ForwardAxisValue);
+}
+
 // Called to bind functionality to input
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -205,6 +212,7 @@ int AShooterCharacter::AddAmmoReserve(int AmmoAmount)
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
+	//ForwardAxisValue = AxisValue;
 	AddMovementInput(GetActorForwardVector()*AxisValue);
 }
 
@@ -230,7 +238,10 @@ void AShooterCharacter::PullTrigger()
 
 void AShooterCharacter::ReleaseTrigger()
 {
-	Gun->ReleaseTrigger();
+	if (Gun != nullptr)
+	{
+		Gun->ReleaseTrigger();	
+	}
 }
 
 void AShooterCharacter::Reload()
