@@ -5,15 +5,16 @@
 
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"
-#include "Actors/Stimuli/SoundStimuli.h"
-#include "Actors/Stimuli/VisualStimuli.h"
-#include "Actors/Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
-#include "Actors/Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
-#include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
+#include "Stimuli/SoundStimuli.h"
+#include "Stimuli/VisualStimuli.h"
+#include "Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
+#include "Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
+#include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Controllers/ShooterAIController.h"
 #include "GameMode/SimpleShooterGameModeBase.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Stimuli/TouchStimuli/HurtStimuli.h"
 
 UBTService_UpdateStimuliInfo::UBTService_UpdateStimuliInfo()
 {
@@ -46,6 +47,13 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	
 	if (OwnerCompPtr != nullptr && ShooterCharacter != nullptr && ShooterAIController != nullptr)
 	{
+
+		// Touch Stimuli - Hurt Stimuli
+		if (ShooterAIController->GetHurtStimuli()->GetDamageDealer() != nullptr)
+		{
+			ShooterAIController->GetHurtStimuli()->SetDamageDealer(nullptr);
+		}
+		
 		// Visual Stimuli collection
 		TArray<AActor*> VSFound;
 		

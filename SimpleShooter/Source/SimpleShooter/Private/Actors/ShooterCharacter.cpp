@@ -7,8 +7,7 @@
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/RotationViewPointRef.h"
 #include "Actors/ShooterSpectatorPawn.h"
-#include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
-#include "Camera/CameraComponent.h"
+#include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
 #include "GameMode/KillEmAllGameMode.h"
 #include "Kismet/GameplayStatics.h"
@@ -20,7 +19,6 @@ AShooterCharacter::AShooterCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	//bAsyncPhysicsTickEnabled = true;
 }
 
 // Called when the game starts or when spawned
@@ -118,12 +116,6 @@ AGun* AShooterCharacter::GetGunReference() const
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void AShooterCharacter::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
-{
-	Super::AsyncPhysicsTickActor(DeltaTime, SimTime);
-	//AddMovementInput(GetActorForwardVector()*ForwardAxisValue);
 }
 
 // Called to bind functionality to input
@@ -295,6 +287,7 @@ void AShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
 			// HealtBar Anchor
 			DrawDebugSphere(GetWorld(), ActorLocation + HealthBarAnchor, 5.0f, 12, FColor::Cyan, true, 0.0f, 0, 0.0f);
 			DrawDebugSphere(GetWorld(), ActorLocation + FootPositionAnchor, 5.0f, 12, FColor::Purple, true, 0.0f, 0, 0.0f);
+			DrawDebugSphere(GetWorld(), ActorLocation + BodyPositionAnchor, 5.0f, 12, FColor::Blue, true, 0.0f, 0, 0.0f);
 		}
 	}
 #endif

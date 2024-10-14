@@ -4,6 +4,7 @@
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Stimuli/TouchStimuli/HurtStimuli.h"
 
 // Sets default values
 AShooterAIController::AShooterAIController()
@@ -23,6 +24,9 @@ void AShooterAIController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	if (AIBehavior != nullptr)
 	{
+		HurtStimuli =NewObject<UHurtStimuli>(GetTransientPackage(), UHurtStimuli::StaticClass());
+		HurtStimuli->Initialize(this, Cast<AShooterCharacter>(InPawn));
+		
 		RunBehaviorTree(AIBehavior);
 		GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), InPawn->GetActorLocation());
 	}
@@ -187,6 +191,11 @@ float AShooterAIController::GetSightRange()
 float AShooterAIController::GetHearingRange()
 {
 	return HearingRange;
+}
+
+UHurtStimuli* AShooterAIController::GetHurtStimuli()
+{
+	return HurtStimuli;
 }
 
 

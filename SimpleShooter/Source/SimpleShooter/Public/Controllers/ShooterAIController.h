@@ -6,6 +6,8 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "ShooterAIController.generated.h"
 
+class UHurtStimuli;
+
 UCLASS()
 class SIMPLESHOOTER_API AShooterAIController : public AAIController
 {
@@ -40,7 +42,8 @@ public:
 
 	UPROPERTY()
 	bool bStimuliServiceInitiated = false;
-	
+
+	UHurtStimuli* GetHurtStimuli();
 private:
 	
 	UPROPERTY(EditDefaultsOnly)
@@ -60,4 +63,7 @@ private:
 	
 	UPROPERTY()
 	float CurrentYawOffset = 0.0f;
+
+	UPROPERTY()
+	UHurtStimuli* HurtStimuli;
 };

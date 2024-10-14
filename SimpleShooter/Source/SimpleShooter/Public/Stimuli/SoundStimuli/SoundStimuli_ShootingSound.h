@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/Stimuli/SoundStimuli.h"
-#include "SoundStimuli_BulletImpactSound.generated.h"
+#include "Stimuli/SoundStimuli.h"
+#include "SoundStimuli_ShootingSound.generated.h"
 
 UCLASS()
-class SIMPLESHOOTER_API ASoundStimuli_BulletImpactSound : public ASoundStimuli
+class SIMPLESHOOTER_API ASoundStimuli_ShootingSound : public ASoundStimuli
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASoundStimuli_BulletImpactSound();
+	ASoundStimuli_ShootingSound();
 
 protected:
 	// Called when the game starts or when spawned
@@ -22,13 +22,4 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	void SetShootingOriginPosition(FVector ShootingOriginPositionValue);
-
-	FVector GetShootingOriginPosition();
-
-private:
-	
-	UPROPERTY()
-	FVector ShootingOriginPosition;
 };

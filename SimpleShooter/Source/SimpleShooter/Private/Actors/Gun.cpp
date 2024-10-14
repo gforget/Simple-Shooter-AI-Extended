@@ -3,10 +3,9 @@
 
 #include "Actors/RotationViewPointRef.h"
 #include "Actors/ShooterCharacter.h"
-#include "Actors/Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
-#include "Actors/Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
+#include "Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
+#include "Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Controllers/ShooterAIController.h"
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -108,7 +107,7 @@ void AGun::Fire()
 			{
 				FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
 				AController* OwnerController = GetOwnerController();
-				HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+				HitActor->TakeDamage(Damage, DamageEvent, OwnerController, GetOwner());
 			}
 		}
 	}

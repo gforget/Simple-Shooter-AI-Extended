@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
+#include "Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
 
 
 // Sets default values

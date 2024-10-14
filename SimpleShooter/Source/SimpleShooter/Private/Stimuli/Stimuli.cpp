@@ -1,25 +1,24 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
+#include "Stimuli/Stimuli.h"
 
 
 // Sets default values
-ASoundStimuli_ShootingSound::ASoundStimuli_ShootingSound()
+AStimuli::AStimuli()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void ASoundStimuli_ShootingSound::BeginPlay()
+void AStimuli::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
-void ASoundStimuli_ShootingSound::Tick(float DeltaTime)
+void AStimuli::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }

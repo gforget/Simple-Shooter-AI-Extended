@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Actors/Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
+#include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Actors/ShooterCharacter.h"
 #include "Components/CapsuleComponent.h"
 

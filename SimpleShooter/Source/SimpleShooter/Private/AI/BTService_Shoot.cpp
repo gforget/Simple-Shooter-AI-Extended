@@ -25,42 +25,42 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		return;
 	}
 
-	AActor* EnemyTarget = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+	const AShooterCharacter* EnemyShooterTarget = Cast<AShooterCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
 	
-	if (EnemyTarget != nullptr)
+	if (EnemyShooterTarget != nullptr)
 	{
 		if (!OwnerComp.GetBlackboardComponent()->GetValueAsBool(FName("JustSawEnemy")))
 		{
-			CurrentAimPosition = EnemyTarget->GetActorLocation();
+			OwnerComp.GetBlackboardComponent()->SetValueAsVector("CurrentAimPosition", EnemyShooterTarget->GetActorLocation() + EnemyShooterTarget->BodyPositionAnchor);
 			OwnerComp.GetBlackboardComponent()->SetValueAsBool(FName("JustSawEnemy"), true);
 		}
-
+		
 		OwnerComp.GetBlackboardComponent()->SetValueAsFloat(
 			FName("TimerBeforeShooting"),
 			OwnerComp.GetBlackboardComponent()->GetValueAsFloat(FName("TimerBeforeShooting")) + DeltaSeconds);
 
 		if (OwnerComp.GetBlackboardComponent()->GetValueAsFloat(FName("TimerBeforeShooting")) > TimeBeforeStartingShooting)
 		{
-			OwnerComp.GetAIOwner()->SetFocalPoint(CurrentAimPosition);
-			//OwnerComp.GetAIOwner()->SetFocalPoint(EnemyTarget->GetActorLocation());
+			OwnerComp.GetAIOwner()->SetFocalPoint(OwnerComp.GetBlackboardComponent()->GetValueAsVector("CurrentAimPosition"));
 			Character->PullTrigger();
 		}
 		else
 		{
 			Character->ReleaseTrigger();
 		}
-
-		DrawDebugSphere(GetWorld(), CurrentAimPosition, 5.0f, 12, FColor::Cyan, false, 0.01f, 0, 1.0);
-
-		const FVector AimBodyOffset = FVector(0.0f,0.0f,50.0f);
-		const FVector OffsetPosition = FMath::VRand()*AimOffset;
-		CurrentAimPosition = UKismetMathLibrary::VInterpTo_Constant(
-			CurrentAimPosition,
-			EnemyTarget->GetActorLocation() + AimBodyOffset + OffsetPosition, //EnemyTarget->GetActorLocation() + OffsetPosition
+	
+		const FVector AimOffsetPosition = FMath::VRand()*AimOffset;
+		
+		FVector NewCurrentAimPosition = OwnerComp.GetBlackboardComponent()->GetValueAsVector("CurrentAimPosition");
+		NewCurrentAimPosition = UKismetMathLibrary::VInterpTo_Constant(
+			NewCurrentAimPosition,
+			EnemyShooterTarget->GetActorLocation() + EnemyShooterTarget->BodyPositionAnchor + AimOffsetPosition,
 			DeltaSeconds,
 			AimAdjustmentSpeed
 			);
-		
+
+		if (bDebug) DrawDebugSphere(GetWorld(), NewCurrentAimPosition, 5.0f, 12, FColor::Cyan, false, 0.01f, 0, 1.0);
+		OwnerComp.GetBlackboardComponent()->SetValueAsVector("CurrentAimPosition", NewCurrentAimPosition);
 	}
 	else
 	{

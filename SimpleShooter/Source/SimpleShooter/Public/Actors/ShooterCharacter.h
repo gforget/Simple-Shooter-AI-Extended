@@ -53,6 +53,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
 
+	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
+	
 	UFUNCTION(BlueprintPure)
 	bool GetIsReloading() const;
 	
@@ -79,7 +82,6 @@ public:
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	virtual void AsyncPhysicsTickActor(float DeltaTime, float SimTime) override;
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

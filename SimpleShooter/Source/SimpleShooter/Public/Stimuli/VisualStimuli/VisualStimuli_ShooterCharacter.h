@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/Stimuli/VisualStimuli.h"
+#include "Stimuli/VisualStimuli.h"
 #include "VisualStimuli_ShooterCharacter.generated.h"
 
 class UCapsuleComponent;

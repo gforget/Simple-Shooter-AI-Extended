@@ -1,24 +1,23 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/Stimuli/Stimuli.h"
-
+#include "Stimuli/VisualStimuli.h"
 
 // Sets default values
-AStimuli::AStimuli()
+AVisualStimuli::AVisualStimuli()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AStimuli::BeginPlay()
+void AVisualStimuli::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
 // Called every frame
-void AStimuli::Tick(float DeltaTime)
+void AVisualStimuli::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
