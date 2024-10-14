@@ -85,7 +85,7 @@ public:
 	FRuntimeFloatCurve EEC_HealthPercentCurve;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Engage Enemy Properties")
-	float EEC_MaxTimeSeenAnEnemy = 10.0f;
+	float EEC_MaxTimeSenseAnEnemy = 10.0f;
 	
 	//Explore properties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explore Properties")

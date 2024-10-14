@@ -140,7 +140,7 @@ float UBTService_UMMaster::FleeC_HaveAValidFleePoint()
 float UBTService_UMMaster::FleeC_TimeSeenEnemy()
 {
 	const float TimeSeenAnEnemy = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy"));
-	return FlC_TimeSeenEnemyCurve.GetRichCurveConst()->Eval(FMath::Min(TimeSeenAnEnemy, EEC_MaxTimeSeenAnEnemy)/EEC_MaxTimeSeenAnEnemy);
+	return FlC_TimeSeenEnemyCurve.GetRichCurveConst()->Eval(FMath::Min(TimeSeenAnEnemy, EEC_MaxTimeSenseAnEnemy)/EEC_MaxTimeSenseAnEnemy);
 }
 
 float UBTService_UMMaster::LookForHealthPackC_HealthPercent()
@@ -202,9 +202,11 @@ float UBTService_UMMaster::EngageEnemyC_TimeSenseAnEnemy()
 {
 	const float TimeSeenAnEnemy = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeSeenAnEnemy"));
 	const float TimeHeardSomething = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeHeardSomething"));
-
-	const float TimeMin = FMath::Min(TimeSeenAnEnemy, TimeHeardSomething);
-	return EEC_TimeSenseEnemyCurve.GetRichCurve()->Eval(FMath::Min(TimeMin, EEC_MaxTimeSeenAnEnemy)/EEC_MaxTimeSeenAnEnemy);
+	const float TimeHurt = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeGotHurt"));
+	
+	const float TimeMin = FMath::Min(FMath::Min(TimeSeenAnEnemy, TimeHeardSomething), TimeHurt);
+	
+	return EEC_TimeSenseEnemyCurve.GetRichCurve()->Eval(FMath::Min(TimeMin, EEC_MaxTimeSenseAnEnemy)/EEC_MaxTimeSenseAnEnemy);
 }
 
 float UBTService_UMMaster::EngageEnemyC_AmmoInTotalPercent()

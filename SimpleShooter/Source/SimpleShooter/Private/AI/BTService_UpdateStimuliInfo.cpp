@@ -33,6 +33,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		{
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeSeenAnEnemy"), 9999999.9f);
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 9999999.9f);
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeGotHurt"), 9999999.9f);
 			AIController->bStimuliServiceInitiated = true;
 		}
 	}
@@ -47,11 +48,22 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	
 	if (OwnerCompPtr != nullptr && ShooterCharacter != nullptr && ShooterAIController != nullptr)
 	{
-
 		// Touch Stimuli - Hurt Stimuli
 		if (ShooterAIController->GetHurtStimuli()->GetDamageDealer() != nullptr)
 		{
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(
+				FName("LastKnownEnemyLocation"),
+				ShooterAIController->GetHurtStimuli()->GetDamageDealer()->GetActorLocation()
+				);
+			
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeGotHurt"), 0.0f);
 			ShooterAIController->GetHurtStimuli()->SetDamageDealer(nullptr);
+		}
+		else
+		{
+			float TimeGotHurt = OwnerCompPtr->GetBlackboardComponent()->GetValueAsFloat(FName("TimeGotHurt"));
+			TimeGotHurt += DeltaSeconds;
+			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeGotHurt"), TimeGotHurt);
 		}
 		
 		// Visual Stimuli collection
