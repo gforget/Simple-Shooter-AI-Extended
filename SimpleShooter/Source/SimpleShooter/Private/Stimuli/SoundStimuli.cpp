@@ -12,6 +12,7 @@ ASoundStimuli::ASoundStimuli()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetRootComponent(Root);
 	
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sound Range Component"));
 	SphereComponent->SetupAttachment(Root);
