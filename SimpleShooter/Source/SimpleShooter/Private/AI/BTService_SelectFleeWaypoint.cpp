@@ -59,25 +59,28 @@ AWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 			UNavigationPath* TPath = AICharacter->NavMeshUtility->GetPath(CharLocation, ConsideredWaypoints[i]->GetActorLocation(), CurrentWorldPtr);
 			if (TPath != nullptr)
 			{
-				const FVector FirstPointLocation = TPath->PathPoints[1];
-				FVector2D FirstPointLocation2D = FVector2D(FirstPointLocation.X, FirstPointLocation.Y);
-			
-				FVector2D CharToFirstPoint = FirstPointLocation2D - CharLocation2D;
-				CharToFirstPoint.Normalize();
-
-				FVector2D CharToEnemy = LastKnownEnemyLocation2D - CharLocation2D;
-				CharToEnemy.Normalize();
-			
-				//Is the first point on the opposite side of the last known position of the enemy
-				const float DotProduct = CharToFirstPoint.Dot(CharToEnemy);
-				if (DotProduct < 0.0f)
+				if (TPath->PathPoints.Num() > 0)
 				{
-					NbValidFleePoint++;
-					const float CurrentPathDistanceFromEnemyPosition = AICharacter->NavMeshUtility->GetPathLength(LastKnownEnemyLocation, ConsideredWaypoints[i]->GetActorLocation(), CurrentWorldPtr);
-					if (CurrentPathDistanceFromEnemyPosition > HighestDistance)
+					const FVector FirstPointLocation = TPath->PathPoints[1];
+					FVector2D FirstPointLocation2D = FVector2D(FirstPointLocation.X, FirstPointLocation.Y);
+			
+					FVector2D CharToFirstPoint = FirstPointLocation2D - CharLocation2D;
+					CharToFirstPoint.Normalize();
+
+					FVector2D CharToEnemy = LastKnownEnemyLocation2D - CharLocation2D;
+					CharToEnemy.Normalize();
+			
+					//Is the first point on the opposite side of the last known position of the enemy
+					const float DotProduct = CharToFirstPoint.Dot(CharToEnemy);
+					if (DotProduct < 0.0f)
 					{
-						SelectedFleePoint = ConsideredWaypoints[i];
-						HighestDistance = CurrentPathDistanceFromEnemyPosition;
+						NbValidFleePoint++;
+						const float CurrentPathDistanceFromEnemyPosition = AICharacter->NavMeshUtility->GetPathLength(LastKnownEnemyLocation, ConsideredWaypoints[i]->GetActorLocation(), CurrentWorldPtr);
+						if (CurrentPathDistanceFromEnemyPosition > HighestDistance)
+						{
+							SelectedFleePoint = ConsideredWaypoints[i];
+							HighestDistance = CurrentPathDistanceFromEnemyPosition;
+						}
 					}
 				}
 			}

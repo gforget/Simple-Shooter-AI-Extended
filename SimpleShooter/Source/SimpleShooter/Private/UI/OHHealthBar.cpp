@@ -8,6 +8,7 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/Overlay.h"
 #include "Components/ProgressBar.h"
+#include "GameFramework/SpectatorPawn.h"
 
 
 bool UOHHealthBar::Initialize()
@@ -39,7 +40,11 @@ void UOHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 			
 			FCollisionQueryParams Params;
 			Params.AddIgnoredActor(AssignedCharacter);
-
+			if (ASpectatorPawn* SpectatorPawn = Cast<ASpectatorPawn>(AssignedPlayerController->GetPawn()))
+			{
+				Params.AddIgnoredActor(SpectatorPawn);
+			}
+			
 			FVector ViewPortLocation;
 			FRotator ViewPortRotation;
 			AssignedPlayerController->GetPlayerViewPoint(ViewPortLocation, ViewPortRotation);

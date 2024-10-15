@@ -14,7 +14,10 @@ void AKillEmAllGameMode::BeginPlay()
 	if (APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 	{
 		const AShooterCharacter* PlayerCharacter = Cast<AShooterCharacter>(PlayerPawn);
-		TeamOfPlayer = PlayerCharacter->GetTeam();	
+		if (PlayerCharacter != nullptr)
+		{
+			TeamOfPlayer = PlayerCharacter->GetTeam();		
+		}
 	}
 }
 

@@ -162,13 +162,26 @@ void AShooterCharacter::Death()
 	{
 		OnDeadEvent.Broadcast(this);
 		
-		DetachFromControllerPendingDestroy();
 		ReleaseTrigger();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		VSShooterCharacter->Destroy();
 		RotationViewPointRef->Destroy();
 
 		Dead = true;
+
+		// Become spectator
+		ASpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<ASpectatorPawn>(
+			SpectatorPawnClass,
+			GetActorLocation(),
+			GetActorRotation()
+		);
+		
+		AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+		DetachFromControllerPendingDestroy();
+		if (ShooterPlayerController != nullptr)
+		{
+			ShooterPlayerController->Possess(SpectatorPawn);
+		}
 	}
 }
 
@@ -204,7 +217,6 @@ int AShooterCharacter::AddAmmoReserve(int AmmoAmount)
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
-	//ForwardAxisValue = AxisValue;
 	AddMovementInput(GetActorForwardVector()*AxisValue);
 }
 
@@ -301,17 +313,17 @@ void AShooterCharacter::ActivateDebugSpectatorMode()
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0"));
 		
-		AShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
-			SpectatorPawnClass,
+		AShooterSpectatorPawn* DebugShooterSpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
+			DebugShooterSpectatorPawnClass,
 			GetActorLocation(),
 			GetActorRotation()
 		);
 		
 		UnPossessed();
-		SpectatorPawn->SetPlayerShooterCharacter(this);
+		DebugShooterSpectatorPawn->SetPlayerShooterCharacter(this);
 		ShooterPlayerController->SetTickableWhenPaused(true);
-		SpectatorPawn->SetTickableWhenPaused(true);
-		ShooterPlayerController->Possess(SpectatorPawn);
+		DebugShooterSpectatorPawn->SetTickableWhenPaused(true);
+		ShooterPlayerController->Possess(DebugShooterSpectatorPawn);
 	}
 }
 

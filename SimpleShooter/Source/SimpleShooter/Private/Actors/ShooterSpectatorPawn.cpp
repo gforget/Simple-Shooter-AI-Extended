@@ -41,6 +41,7 @@ void AShooterSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInp
 void AShooterSpectatorPawn::ReturnToPlayerMode()
 {
 	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	
 	GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0.5"));
 	AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
 	if (ShooterPlayerController != nullptr)

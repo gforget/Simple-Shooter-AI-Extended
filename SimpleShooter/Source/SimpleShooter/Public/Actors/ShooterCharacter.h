@@ -174,8 +174,11 @@ private:
 	void GenerateEditorAnchorPositionVisualisation() const;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AShooterSpectatorPawn> SpectatorPawnClass;
-    	
+	TSubclassOf<AShooterSpectatorPawn> DebugShooterSpectatorPawnClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ASpectatorPawn> SpectatorPawnClass;
+	
 	void ActivateDebugSpectatorMode();
 	
 };
