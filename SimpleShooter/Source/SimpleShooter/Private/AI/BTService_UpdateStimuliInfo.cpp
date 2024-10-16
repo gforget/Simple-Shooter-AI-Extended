@@ -51,9 +51,10 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		// Touch Stimuli - Hurt Stimuli
 		if (ShooterAIController->GetHurtStimuli()->GetDamageDealer() != nullptr)
 		{
+			const FVector EnemyLocation = ShooterAIController->GetHurtStimuli()->GetDamageDealer()->GetActorLocation();
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(
 				FName("LastKnownEnemyLocation"),
-				ShooterAIController->GetHurtStimuli()->GetDamageDealer()->GetActorLocation()
+				EnemyLocation
 				);
 			
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeGotHurt"), 0.0f);
