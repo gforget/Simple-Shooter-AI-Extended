@@ -38,6 +38,9 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 # Useful link
 
 ## Introduction
+Video Update 1 (Bots fighting each other):</br>
+https://youtu.be/YsJn5pIpbIA</br>
+
 Video Presentation: </br>
 https://youtu.be/gmx63PSk-uE
   
