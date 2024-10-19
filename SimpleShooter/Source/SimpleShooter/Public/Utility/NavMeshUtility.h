@@ -19,4 +19,11 @@ public :
 	float GetPathLength(const FVector& Start, const FVector& End, UWorld* WorldContext) const;
 	UNavigationPath* GetPath(const FVector& Start, const FVector& End, UWorld* WorldContext) const;
 	bool IsPointOnNavmesh(const FVector& Position, UWorld* WorldContext) const;
+
+	bool FindValidNavmeshPosition(
+		const FVector& Position,
+		UWorld* WorldContext,
+		FVector& ValidPosition,
+		const FVector& SearchExtent = FVector(500.0f,500.0f,500.0f)
+		);
 };

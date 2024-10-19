@@ -45,3 +45,32 @@ bool UNavMeshUtility::IsPointOnNavmesh(const FVector& Position, UWorld* WorldCon
 	FNavLocation NavLocation;
 	return NavSys->ProjectPointToNavigation(Position, NavLocation);
 }
+
+bool UNavMeshUtility::FindValidNavmeshPosition(
+	const FVector& Position,
+	UWorld* WorldContext,
+	FVector& ValidPosition,
+	const FVector& SearchExtent
+	)
+{
+	UNavigationSystemV1* NavSys = UNavigationSystemV1::GetCurrent(WorldContext);
+	if (!NavSys)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Nav System not avaialble"));
+		return false;
+	} 
+
+	FNavLocation NavLocation;
+	const bool ValidPositionFound = NavSys->ProjectPointToNavigation(Position, NavLocation, SearchExtent);
+	
+	if (ValidPositionFound)
+	{
+		ValidPosition = NavLocation.Location;
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No valid position found, extend the search"));
+		return false;
+	}
+}

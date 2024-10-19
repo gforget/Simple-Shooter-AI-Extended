@@ -15,6 +15,7 @@
 #include "GameMode/SimpleShooterGameModeBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
+#include "Utility/NavMeshUtility.h"
 
 UBTService_UpdateStimuliInfo::UBTService_UpdateStimuliInfo()
 {
@@ -44,9 +45,9 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	}
 	
 	AShooterAIController* ShooterAIController = Cast<AShooterAIController>(OwnerCompPtr->GetAIOwner());
-	AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+	AShooterCharacter* ShooterAICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 	
-	if (OwnerCompPtr != nullptr && ShooterCharacter != nullptr && ShooterAIController != nullptr)
+	if (OwnerCompPtr != nullptr && ShooterAICharacter != nullptr && ShooterAIController != nullptr)
 	{
 		// Touch Stimuli - Hurt Stimuli
 		if (ShooterAIController->GetHurtStimuli()->GetDamageDealer() != nullptr)
@@ -71,7 +72,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		TArray<AActor*> VSFound;
 		
 		TArray<AActor*> VSToIgnore;
-		VSToIgnore.Add(ShooterCharacter->GetVSShooterCharacter());
+		VSToIgnore.Add(ShooterAICharacter->GetVSShooterCharacter());
 
 		const TSubclassOf<AActor> filterVS = AVisualStimuli::StaticClass();
 		
@@ -109,7 +110,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 					
 					//Check if it is an enemy
 					const ASimpleShooterGameModeBase* GameMode = Cast<ASimpleShooterGameModeBase>(GetWorld()->GetAuthGameMode());
-					const ETeamRelation TargetTeamRelation = GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterCharacter->GetTeam());
+					const ETeamRelation TargetTeamRelation = GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterAICharacter->GetTeam());
 
 					if (TargetTeamRelation == ETeamRelation::Ally)
 					{
@@ -174,7 +175,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 			{
 				//Skip the analysis if the sound owner is the ShooterCharacter
 				ASoundStimuli* SoundStimuli = Cast<ASoundStimuli> (SSFound[i]);
-				if (SoundStimuli->GetSoundOwner()->GetUniqueID() == ShooterCharacter->GetUniqueID())
+				if (SoundStimuli->GetSoundOwner()->GetUniqueID() == ShooterAICharacter->GetUniqueID())
 				{
 					continue;
 				}
@@ -183,12 +184,17 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 				if (ASoundStimuli_ShootingSound* SS_ShootingSound = Cast<ASoundStimuli_ShootingSound> (SSFound[i]))
 				{
 					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(SS_ShootingSound) &&
-						OwnerCompPtr->GetBlackboardComponent()->GetValueAsInt("SoundPriorityLevel") < SS_ShootingSound->PriorityLevel)
+						OwnerCompPtr->GetBlackboardComponent()->GetValueAsInt("SoundPriorityLevel") <= SS_ShootingSound->PriorityLevel)
 					{
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), SS_ShootingSound->GetActorLocation());
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 0.0f);
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsInt(FName("SoundPriorityLevel"), SS_ShootingSound->PriorityLevel);
-						bJustHeardSomething = true;
+
+						FVector ValidPosition;
+						if (ShooterAICharacter->NavMeshUtility->FindValidNavmeshPosition(SS_ShootingSound->GetActorLocation(), GetWorld(),ValidPosition))
+						{
+							OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), ValidPosition);
+							OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 0.0f);
+							OwnerCompPtr->GetBlackboardComponent()->SetValueAsInt(FName("SoundPriorityLevel"), SS_ShootingSound->PriorityLevel);
+							bJustHeardSomething = true;
+						}
 					}
 				}
 				
@@ -196,12 +202,16 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 				if (ASoundStimuli_BulletImpactSound* SS_BulletImpact= Cast<ASoundStimuli_BulletImpactSound> (SSFound[i]))
 				{
 					if (OwnerCompPtr->GetAIOwner()->LineOfSightTo(SS_BulletImpact) &&
-						OwnerCompPtr->GetBlackboardComponent()->GetValueAsInt("SoundPriorityLevel") < SS_BulletImpact->PriorityLevel)
+						OwnerCompPtr->GetBlackboardComponent()->GetValueAsInt("SoundPriorityLevel") <= SS_BulletImpact->PriorityLevel)
 					{
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), SS_BulletImpact->GetShootingOriginPosition());
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 0.0f);
-						OwnerCompPtr->GetBlackboardComponent()->SetValueAsInt(FName("SoundPriorityLevel"), SS_BulletImpact->PriorityLevel);
-						bJustHeardSomething = true;
+						FVector ValidPosition;
+						if (ShooterAICharacter->NavMeshUtility->FindValidNavmeshPosition(SS_BulletImpact->GetActorLocation(), GetWorld(),ValidPosition))
+						{
+							OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("SoundHeardLocation"), SS_BulletImpact->GetShootingOriginPosition());
+							OwnerCompPtr->GetBlackboardComponent()->SetValueAsFloat(FName("TimeHeardSomething"), 0.0f);
+							OwnerCompPtr->GetBlackboardComponent()->SetValueAsInt(FName("SoundPriorityLevel"), SS_BulletImpact->PriorityLevel);
+							bJustHeardSomething = true;
+						}
 					}
 				}
 			}
