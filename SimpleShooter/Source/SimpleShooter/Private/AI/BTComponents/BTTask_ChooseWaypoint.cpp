@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTask_ChooseWaypoint.h"
+#include "AI/BTComponents/BTTask_ChooseWaypoint.h"
 #include "Actors/Waypoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameMode/SimpleShooterGameModeBase.h"

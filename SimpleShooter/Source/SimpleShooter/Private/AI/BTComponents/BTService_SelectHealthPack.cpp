@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTService_SelectHealthPack.h"
+#include "AI/BTComponents/BTService_SelectHealthPack.h"
 
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"

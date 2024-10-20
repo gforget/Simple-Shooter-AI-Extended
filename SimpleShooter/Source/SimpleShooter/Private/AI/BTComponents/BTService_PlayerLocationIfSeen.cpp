@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTService_PlayerLocationIfSeen.h"
+#include "AI/BTComponents/BTService_PlayerLocationIfSeen.h"
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"

@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTask_ChooseHealthPack.h"
+#include "AI/BTComponents/BTTask_ChooseHealthPack.h"
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"

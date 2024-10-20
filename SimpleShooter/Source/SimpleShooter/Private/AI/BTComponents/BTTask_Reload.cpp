@@ -1,17 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTask_Shoot.h"
+#include "AI/BTComponents/BTTask_Reload.h"
 
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"
 
-UBTTask_Shoot::UBTTask_Shoot()
+UBTTask_Reload::UBTTask_Reload()
 {
-	NodeName = TEXT("Shoot");
+	NodeName = TEXT("Reload");
 }
 
-EBTNodeResult::Type UBTTask_Shoot::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_Reload::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 	if (OwnerComp.GetAIOwner() == nullptr)
@@ -25,6 +25,6 @@ EBTNodeResult::Type UBTTask_Shoot::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 		return EBTNodeResult::Failed;
 	}
 	
-	Character->PullTrigger();
+	Character->Reload();
 	return EBTNodeResult::Succeeded;
 }

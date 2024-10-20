@@ -1,5 +1,5 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "AI/BTService_Shoot.h"
+#include "AI/BTComponents/BTService_Shoot.h"
 
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"

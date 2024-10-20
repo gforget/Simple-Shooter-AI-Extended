@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTask_ClearBlackboardValue.h"
+#include "AI/BTComponents/BTTask_ClearBlackboardValue.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_ClearBlackboardValue::UBTTask_ClearBlackboardValue()

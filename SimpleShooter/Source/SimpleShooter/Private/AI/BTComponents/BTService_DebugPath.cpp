@@ -1,5 +1,5 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "AI/BTService_DebugPath.h"
+#include "AI/BTComponents/BTService_DebugPath.h"
 #include "AIController.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"

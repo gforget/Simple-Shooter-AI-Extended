@@ -1,26 +1,22 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTDecorator_EvaluateState.h"
-
+#include "AI/BTComponents/BTDecorator_FloatLowerOrEqual.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-UBTDecorator_EvaluateState::UBTDecorator_EvaluateState()
+UBTDecorator_FloatLowerOrEqual::UBTDecorator_FloatLowerOrEqual()
 {
-	NodeName = TEXT("State =");
+	NodeName = TEXT("Float Blackboard value <=");
 	NotifyObserver = EBTBlackboardRestart::ResultChange;
 }
 
-bool UBTDecorator_EvaluateState::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
+bool UBTDecorator_FloatLowerOrEqual::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
-	if (StateEvaluated == EAIStateEnum::None) return false;
-	
-	const bool bReturnValue = OwnerComp.GetBlackboardComponent()->GetValueAsEnum(GetSelectedBlackboardKey()) == StateEvaluated;
+	const bool bReturnValue = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(GetSelectedBlackboardKey()) <= TargetValue;
 	return bReturnValue;
 }
 
-EBlackboardNotificationResult UBTDecorator_EvaluateState::OnBlackboardKeyValueChange(
-	const UBlackboardComponent& Blackboard, FBlackboard::FKey ChangedKeyID)
+EBlackboardNotificationResult UBTDecorator_FloatLowerOrEqual::OnBlackboardKeyValueChange( const UBlackboardComponent& Blackboard, FBlackboard::FKey ChangedKeyID)
 {
 	UBehaviorTreeComponent* BehaviorComp = (UBehaviorTreeComponent*)Blackboard.GetBrainComponent();
 	if (BehaviorComp == nullptr)
