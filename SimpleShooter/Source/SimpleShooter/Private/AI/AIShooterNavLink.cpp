@@ -3,9 +3,10 @@
 
 #include "AI/AIShooterNavLink.h"
 
+#include "AIController.h"
 #include "Actors/ShooterCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
-
 
 // Sets default values
 AAIShooterNavLink::AAIShooterNavLink()
@@ -32,15 +33,34 @@ void AAIShooterNavLink::Tick(float DeltaTime)
 
 void AAIShooterNavLink::OnNavLinkReach(AActor* MovingActor, const FVector& DestinationPoint)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Test"));
 	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(MovingActor))
 	{
+		ShooterCharacter->GetMovementComponent()->StopMovementImmediately();
+		// Stop AI pathfinding to prevent interference
+		if (AAIController* AIController = Cast<AAIController>(ShooterCharacter->GetController()))
+		{
+			AIController->StopMovement();
+		}
+		
+		// Calculate direction to destination
 		FVector DeltaToDestination = DestinationPoint - ShooterCharacter->GetActorLocation();
 		DeltaToDestination.Z = 0.0f;
 		DeltaToDestination.Normalize();
+
+		// Draw debug line for visual feedback
+		DrawDebugLine(
+			GetWorld(),
+			ShooterCharacter->GetActorLocation(),
+			ShooterCharacter->GetActorLocation() + DeltaToDestination * 500.0f,
+			FColor::Green,
+			false, 10.0f, 0, 1.0f
+		);
 		
-		//ShooterCharacter->GetMovementComponent()->StopActiveMovement();
-		//ShooterCharacter->AddMovementInput(DeltaToDestination);
+		
+		// Apply horizontal velocity
+		ShooterCharacter->GetCharacterMovement()->Velocity = DeltaToDestination * 500.0f;
+		
+		// Trigger jump
 		ShooterCharacter->Jump();
 	}
 }

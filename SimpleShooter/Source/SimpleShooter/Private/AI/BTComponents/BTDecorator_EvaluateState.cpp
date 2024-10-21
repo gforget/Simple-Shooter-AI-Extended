@@ -13,7 +13,7 @@ UBTDecorator_EvaluateState::UBTDecorator_EvaluateState()
 
 bool UBTDecorator_EvaluateState::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
-	if (StateEvaluated == EAIStateEnum::None) return false;
+	if (StateEvaluated == EAIStateEnum::Default) return false;
 	
 	const bool bReturnValue = OwnerComp.GetBlackboardComponent()->GetValueAsEnum(GetSelectedBlackboardKey()) == StateEvaluated;
 	return bReturnValue;

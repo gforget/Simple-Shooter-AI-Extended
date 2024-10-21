@@ -44,11 +44,12 @@ public:
 	bool bStimuliServiceInitiated = false;
 
 	UHurtStimuli* GetHurtStimuli();
-private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	UBehaviorTree* AIBehavior;
-
+	
+private:
+	
 	UPROPERTY(EditAnywhere)
 	bool bDebug = false;
 

@@ -22,7 +22,8 @@ enum EAIStateEnum
 	LookForAmmo = 2,
 	EngageEnemy = 3,
 	Explore = 4,
-	None = 5
+	Default = 5,
+	Inactive = 6
 };
 
 UCLASS()
@@ -36,7 +37,7 @@ public:
 	bool bDebugActive = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
-	TEnumAsByte<EAIStateEnum> DefaultEnumState = EAIStateEnum::None;
+	TEnumAsByte<EAIStateEnum> DefaultEnumState = EAIStateEnum::Default;
 
 	//Flee considerations
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flee Properties")

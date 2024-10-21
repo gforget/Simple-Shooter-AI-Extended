@@ -9,6 +9,7 @@
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameMode/KillEmAllGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"

@@ -18,7 +18,7 @@ class SIMPLESHOOTER_API UBTDecorator_EvaluateState : public UBTDecorator_Blackbo
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<EAIStateEnum> StateEvaluated = EAIStateEnum::None;
+	TEnumAsByte<EAIStateEnum> StateEvaluated = EAIStateEnum::Default;
 	
 	UBTDecorator_EvaluateState();
 

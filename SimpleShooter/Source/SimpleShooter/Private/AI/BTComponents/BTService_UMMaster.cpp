@@ -8,7 +8,9 @@
 #include "NavigationSystem.h"
 #include "Actors/AmmoPack.h"
 #include "Actors/HealthPack.h"
+#include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 UBTService_UMMaster::UBTService_UMMaster()
 {
@@ -23,7 +25,7 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 
 	if (OwnerCompPtr != nullptr && CurrentWorldPtr != nullptr)
 	{
-		if (DefaultEnumState == EAIStateEnum::None)
+		if (DefaultEnumState == EAIStateEnum::Default)
 		{
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsEnum(FName("State"), ChooseState());
 		}
@@ -31,12 +33,20 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 		{
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsEnum(FName("State"), DefaultEnumState);
 		}
-		
 	}
 }
 
 TEnumAsByte<EAIStateEnum> UBTService_UMMaster::ChooseState()
 {
+
+	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn()))
+	{
+		if (ShooterCharacter->GetCharacterMovement()->IsFalling())
+		{
+			return EAIStateEnum::Inactive;
+		}
+	}
+	
 	const int STATE_ARRAY_SIZE = 5;
 	float StateScoreArray[STATE_ARRAY_SIZE];
 
