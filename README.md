@@ -22,6 +22,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - The bot calculate engagement position so it know how to approach an enemy. It will shoot from high ground and try to never stay at the same place to make it harder to shoot at
 - The bot rotates more naturally, rather than instantly rotating toward its objective.
 - The bot recognize who is his ally and who is his enemy, although it is not program to work as a team for now (it will simply be not hostile to member of it own team)
+- The bot can now jump from ledges when it is appropriate using a custom NavLink that use the same jump mechanic as the player
 
 ## New map
 - A new map was created to allow for shooting from high ground and offer more space to fight in. It is also much lighter than the original exercise map.
