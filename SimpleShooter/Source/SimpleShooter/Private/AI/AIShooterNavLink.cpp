@@ -46,16 +46,6 @@ void AAIShooterNavLink::OnNavLinkReach(AActor* MovingActor, const FVector& Desti
 		FVector DeltaToDestination = DestinationPoint - ShooterCharacter->GetActorLocation();
 		DeltaToDestination.Z = 0.0f;
 		DeltaToDestination.Normalize();
-
-		// Draw debug line for visual feedback
-		DrawDebugLine(
-			GetWorld(),
-			ShooterCharacter->GetActorLocation(),
-			ShooterCharacter->GetActorLocation() + DeltaToDestination * 500.0f,
-			FColor::Green,
-			false, 10.0f, 0, 1.0f
-		);
-		
 		
 		// Apply horizontal velocity
 		ShooterCharacter->GetCharacterMovement()->Velocity = DeltaToDestination * 500.0f;
