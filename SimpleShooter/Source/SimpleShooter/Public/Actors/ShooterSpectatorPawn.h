@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActorComponents/TeamManager.h"
 #include "GameFramework/SpectatorPawn.h"
 #include "ShooterSpectatorPawn.generated.h"
 
@@ -31,9 +32,16 @@ public:
 	void ReturnToPlayerMode();
 
 	void SetPlayerShooterCharacter(AShooterCharacter* PlayerShooterCharacterRef);
+
+	ETeam GetTeam();
+
+	void SetTeam(ETeam TeamValue);
 	
 private:
 	
 	UPROPERTY()
 	AShooterCharacter* PlayerShooterCharacter;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<ETeam> Team = ETeam::NoTeam;
 };

@@ -3,21 +3,22 @@
 
 #include "GameMode/KillEmAllGameMode.h"
 
-#include "EngineUtils.h"
 #include "Actors/ShooterCharacter.h"
+#include "Actors/ShooterSpectatorPawn.h"
+#include "Controllers/ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
 void AKillEmAllGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+
+	// Gather all player controller in the scene
+	TArray<AActor*> AllPlayerControllersRef;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AShooterPlayerController::StaticClass(),AllPlayerControllersRef);
+
+	for (int i=0; i<AllPlayerControllersRef.Num(); i++)
 	{
-		const AShooterCharacter* PlayerCharacter = Cast<AShooterCharacter>(PlayerPawn);
-		if (PlayerCharacter != nullptr)
-		{
-			TeamOfPlayer = PlayerCharacter->GetTeam();		
-		}
+		AllPlayerControllers.Add(Cast<AShooterPlayerController>(AllPlayerControllersRef[i]));
 	}
 }
 
@@ -36,7 +37,7 @@ void AKillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterC
 		FFACount--;
 		if (FFACount == 1)
 		{
-			EndGame(!LostFFA);
+			EndGame();
 		}
 	}
 	else
@@ -44,7 +45,8 @@ void AKillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterC
 		TeamCount[DeadShooterCharacter->GetTeam()]--;
 		if (TeamCount[DeadShooterCharacter->GetTeam()] == 0)
 		{
-			EndGame(TeamOfPlayer != DeadShooterCharacter->GetTeam());
+			const ETeam WinningTeam = DeadShooterCharacter->GetTeam() == ETeam::RedTeam ? ETeam::BlueTeam : ETeam::RedTeam; 
+			EndGame(WinningTeam);
 		}
 	}
 }
@@ -66,11 +68,33 @@ void AKillEmAllGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterChar
 	}
 }
 
-void AKillEmAllGameMode::EndGame(bool bIsPlayerWinner)
+void AKillEmAllGameMode::EndGame(ETeam TeamWin)
 {
-	for (AController* Controller : TActorRange<AController>(GetWorld()))
+	for (int i=0; i<AllPlayerControllers.Num(); i++)
 	{
-		const bool bIsWinner = Controller->IsPlayerController() == bIsPlayerWinner;
-		Controller->GameHasEnded(Controller->GetPawn(), bIsWinner);
+		if (AllianceMode == EAllianceMode::FFA)
+		{
+			if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(AllPlayerControllers[i]->GetPawn()))
+			{
+				AllPlayerControllers[i]->GameHasEnded(ShooterCharacter, true);
+			}
+
+			if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(AllPlayerControllers[i]->GetPawn()))
+			{
+				AllPlayerControllers[i]->GameHasEnded(ShooterSpectator, false);
+			}
+		}
+		else
+		{
+			if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(AllPlayerControllers[i]->GetPawn()))
+			{
+				AllPlayerControllers[i]->GameHasEnded(ShooterCharacter, ShooterCharacter->GetTeam() == TeamWin);
+			}
+
+			if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(AllPlayerControllers[i]->GetPawn()))
+			{
+				AllPlayerControllers[i]->GameHasEnded(ShooterSpectator, ShooterSpectator->GetTeam() == TeamWin);
+			}
+		}
 	}
 }

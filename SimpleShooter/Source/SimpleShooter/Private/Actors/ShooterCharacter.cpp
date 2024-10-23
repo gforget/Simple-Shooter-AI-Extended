@@ -171,12 +171,13 @@ void AShooterCharacter::Death()
 		Dead = true;
 
 		// Become spectator
-		ASpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<ASpectatorPawn>(
-			SpectatorPawnClass,
+		AShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
+			ShooterSpectatorPawnClass,
 			GetActorLocation(),
 			GetActorRotation()
 		);
-		
+		SpectatorPawn->SetTeam(GetTeam());
+
 		AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
 		DetachFromControllerPendingDestroy();
 		if (ShooterPlayerController != nullptr)
@@ -314,17 +315,17 @@ void AShooterCharacter::ActivateDebugSpectatorMode()
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0"));
 		
-		AShooterSpectatorPawn* DebugShooterSpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
-			DebugShooterSpectatorPawnClass,
+		AShooterSpectatorPawn* ShooterSpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
+			ShooterSpectatorPawnClass,
 			GetActorLocation(),
 			GetActorRotation()
 		);
 		
 		UnPossessed();
-		DebugShooterSpectatorPawn->SetPlayerShooterCharacter(this);
+		ShooterSpectatorPawn->SetPlayerShooterCharacter(this);
 		ShooterPlayerController->SetTickableWhenPaused(true);
-		DebugShooterSpectatorPawn->SetTickableWhenPaused(true);
-		ShooterPlayerController->Possess(DebugShooterSpectatorPawn);
+		ShooterSpectatorPawn->SetTickableWhenPaused(true);
+		ShooterPlayerController->Possess(ShooterSpectatorPawn);
 	}
 }
 

@@ -105,7 +105,7 @@ public:
 private:
 
 	UPROPERTY(EditDefaultsOnly)
-	TEnumAsByte<ETeam> Team;
+	TEnumAsByte<ETeam> Team = ETeam::NoTeam;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
@@ -174,10 +174,7 @@ private:
 	void GenerateEditorAnchorPositionVisualisation() const;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AShooterSpectatorPawn> DebugShooterSpectatorPawnClass;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ASpectatorPawn> SpectatorPawnClass;
+	TSubclassOf<AShooterSpectatorPawn> ShooterSpectatorPawnClass;
 	
 	void ActivateDebugSpectatorMode();
 	

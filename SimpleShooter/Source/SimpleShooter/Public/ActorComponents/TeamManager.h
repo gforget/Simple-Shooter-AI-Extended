@@ -11,6 +11,7 @@ enum ETeam
 {
 	BlueTeam = 0,
 	RedTeam = 1,
+	NoTeam = 2
 };
 
 UENUM(BlueprintType)

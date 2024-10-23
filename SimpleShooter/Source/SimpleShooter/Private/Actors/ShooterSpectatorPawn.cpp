@@ -58,3 +58,13 @@ void AShooterSpectatorPawn::SetPlayerShooterCharacter(AShooterCharacter* PlayerS
 	PlayerShooterCharacter = PlayerShooterCharacterRef;
 }
 
+ETeam AShooterSpectatorPawn::GetTeam()
+{
+	return Team;
+}
+
+void AShooterSpectatorPawn::SetTeam(ETeam TeamValue)
+{
+	Team = TeamValue;
+}
+

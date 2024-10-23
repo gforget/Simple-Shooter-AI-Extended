@@ -9,6 +9,7 @@
 /**
  * 
  */
+class AShooterPlayerController;
 UCLASS()
 class SIMPLESHOOTER_API AKillEmAllGameMode : public ASimpleShooterGameModeBase
 {
@@ -20,11 +21,14 @@ public:
 
 	void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister);
 	
+	UPROPERTY(BlueprintReadOnly)
+	TMap<TEnumAsByte<ETeam>, int> TeamCount;
+	
 protected:
 	void BeginPlay();
 	
 private:
-	void EndGame(bool bIsPlayerWinner);
+	void EndGame(ETeam TeamWin = ETeam::NoTeam);
 
 	UPROPERTY()
 	bool LostFFA = false;
@@ -33,8 +37,5 @@ private:
 	int FFACount = 0;
 
 	UPROPERTY()
-	TMap<TEnumAsByte<ETeam>, int> TeamCount;
-
-	UPROPERTY()
-	TEnumAsByte<ETeam> TeamOfPlayer;
+	TArray<AShooterPlayerController*> AllPlayerControllers;
 };
