@@ -3,27 +3,11 @@
 #include "Actors/ShooterCharacter.h"
 #include "GameMode/SimpleShooterGameModeBase.h"
 
-// Sets default values
-AHealthPack::AHealthPack()
-{
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(Root);
-
-	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Component"));
-	BoxComponent->SetupAttachment(Root);
-}
-
 // Called when the game starts or when spawned
 void AHealthPack::BeginPlay()
 {
 	Super::BeginPlay();
-	OnActorBeginOverlap.AddDynamic(this, &AHealthPack::OnOverlapBegin);
-	
+
 	ASimpleShooterGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
 	if (GameModeBase != nullptr)
 	{
@@ -31,35 +15,13 @@ void AHealthPack::BeginPlay()
 	}
 }
 
-// Called every frame
-void AHealthPack::Tick(float DeltaTime)
+bool AHealthPack::PackValidation(AShooterCharacter* TargetShooterCharacter)
 {
-	Super::Tick(DeltaTime);
-	
-	if (RechargeTimer > 0.0f)
-	{
-		RechargeTimer -= DeltaTime;
-		if (RechargeTimer <= 0.0f)
-		{
-			Mesh->SetMaterial(0, HealthPackActiveMaterial);
-			RechargeTimer = 0.0f;
-		}
-	}
+	return TargetShooterCharacter->GetHealthPercent() < 1.0f;
 }
 
-void AHealthPack::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
+void AHealthPack::GivePackTo(AShooterCharacter* TargetShooterCharacter)
 {
-	AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(OtherActor);
-	if (ShooterCharacter != nullptr && !IsRecharging() && ShooterCharacter->GetHealthPercent() < 1.0f)
-	{
-		RechargeTimer = TimeToRecharge;
-		Mesh->SetMaterial(0, HealthPackInactiveMaterial);
-		ShooterCharacter->Heal(HealAmount);
-	}
+	Super::GivePackTo(TargetShooterCharacter);
+	TargetShooterCharacter->Heal(HealAmount);
 }
-
-bool AHealthPack::IsRecharging()
-{
-	return RechargeTimer > 0.0f;
-}
-
