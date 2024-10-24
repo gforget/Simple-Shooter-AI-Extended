@@ -10,6 +10,7 @@
  * 
  */
 class AShooterCharacter;
+class UPlayerHUD;
 
 UCLASS()
 class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
@@ -24,7 +25,9 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-
+	
+	virtual void OnPossess(APawn* InPawn) override;
+	
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> HUDScreenClass;
@@ -37,11 +40,17 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> WinScreenClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> BlueTeamWinScreenClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> RedTeamWinScreenClass;
 	
 	FTimerHandle RestartTimer;
 	UPROPERTY(EditAnywhere)
 	float RestartDelay = 5.0f;
 
 	UPROPERTY()
-	UUserWidget* HUD;
+	UPlayerHUD* HUD;
 };

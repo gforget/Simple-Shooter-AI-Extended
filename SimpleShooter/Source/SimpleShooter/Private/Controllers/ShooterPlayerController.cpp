@@ -2,8 +2,13 @@
 
 
 #include "Controllers/ShooterPlayerController.h"
+
+#include "Actors/ShooterCharacter.h"
+#include "Actors/ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
+#include "GameMode/KillEmAllGameMode.h"
 #include "UI/OHHealthBar.h"
+#include "UI/PlayerHUD.h"
 
 AShooterPlayerController::AShooterPlayerController()
 {
@@ -15,10 +20,28 @@ AShooterPlayerController::AShooterPlayerController()
 void AShooterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	HUD = CreateWidget(this, HUDScreenClass);
-	if (HUD != nullptr)
+}
+
+void AShooterPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	if (HUD == nullptr)
 	{
-		HUD->AddToViewport();
+		HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
+		if (HUD != nullptr)
+		{
+			HUD->AddToViewport();
+		}
+	}
+	
+	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(InPawn))
+	{
+		HUD->OnPlayerModeEvent();
+	}
+	
+	if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn))
+	{
+		HUD->OnSpectatorModeEvent();
 	}
 }
 
@@ -33,21 +56,52 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 {
 	Super::GameHasEnded(EndGameFocus, bIsWinner);
 	HUD->RemoveFromParent();
-	
-	if (bIsWinner)
+
+	bool bWasPureSpectator = false;
+	if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(GetPawn()))
 	{
-		UUserWidget* WinScreen = CreateWidget(this, WinScreenClass);
-		if (WinScreen != nullptr)
+		if (const AKillEmAllGameMode * KillEmAllGameMode = Cast<AKillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
 		{
-			WinScreen->AddToViewport();
+			if (ShooterSpectator->GetTeam() == ETeam::NoTeam && KillEmAllGameMode->AllianceMode == EAllianceMode::Team)
+			{
+				bWasPureSpectator = true;
+				if (KillEmAllGameMode->TeamWhoWon == ETeam::BlueTeam)
+				{
+					UUserWidget* BlueTeamWinScreen = CreateWidget(this, BlueTeamWinScreenClass);
+					if (BlueTeamWinScreen != nullptr)
+					{
+						BlueTeamWinScreen->AddToViewport();
+					}
+				}
+				else
+				{
+					UUserWidget* RedTeamWinScreen = CreateWidget(this, RedTeamWinScreenClass);
+					if (RedTeamWinScreen != nullptr)
+					{
+						RedTeamWinScreen->AddToViewport();
+					}
+				}
+			}
 		}
 	}
-	else
+
+	if (!bWasPureSpectator)
 	{
-		UUserWidget* LoseScreen = CreateWidget(this, LoseScreenClass);
-		if (LoseScreen != nullptr)
+		if (bIsWinner)
 		{
-			LoseScreen->AddToViewport();
+			UUserWidget* WinScreen = CreateWidget(this, WinScreenClass);
+			if (WinScreen != nullptr)
+			{
+				WinScreen->AddToViewport();
+			}
+		}
+		else
+		{
+			UUserWidget* LoseScreen = CreateWidget(this, LoseScreenClass);
+			if (LoseScreen != nullptr)
+			{
+				LoseScreen->AddToViewport();
+			}
 		}
 	}
 	

@@ -47,13 +47,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<EAllianceMode> AllianceMode;
 	
 protected:
 
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditDefaultsOnly)
-	TEnumAsByte<EAllianceMode> AllianceMode;
 	
 	UPROPERTY()
 	TArray<AEnemySpawnPoint*> AllEnemySpawnPoints;

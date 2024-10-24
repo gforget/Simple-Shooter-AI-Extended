@@ -23,6 +23,9 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly)
 	TMap<TEnumAsByte<ETeam>, int> TeamCount;
+
+	UPROPERTY(BlueprintReadOnly)
+	TEnumAsByte<ETeam> TeamWhoWon = ETeam::NoTeam;
 	
 protected:
 	void BeginPlay();

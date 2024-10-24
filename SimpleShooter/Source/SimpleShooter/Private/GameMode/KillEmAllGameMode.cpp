@@ -70,6 +70,8 @@ void AKillEmAllGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterChar
 
 void AKillEmAllGameMode::EndGame(ETeam TeamWin)
 {
+	TeamWhoWon = TeamWin;
+	
 	for (int i=0; i<AllPlayerControllers.Num(); i++)
 	{
 		if (AllianceMode == EAllianceMode::FFA)
