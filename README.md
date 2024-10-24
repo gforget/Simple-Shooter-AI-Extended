@@ -40,11 +40,14 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 
 # Useful link
 
-## Introduction
+## Videos 
+Video Update 2 (Bots fighting each other updated and player vs bot):</br>
+https://youtu.be/L5gJRhCyYng</br>
+
 Video Update 1 (Bots fighting each other):</br>
 https://youtu.be/YsJn5pIpbIA</br>
 
-Video Presentation: </br>
+Video Introduction: </br>
 https://youtu.be/gmx63PSk-uE
   
 ## Link to the game course
