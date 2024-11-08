@@ -24,7 +24,7 @@ void AShooterAIController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	if (AIBehavior != nullptr)
 	{
-		HurtStimuli =NewObject<UHurtStimuli>(GetTransientPackage(), UHurtStimuli::StaticClass());
+		HurtStimuli = NewObject<UHurtStimuli>(GetTransientPackage(), UHurtStimuli::StaticClass());
 		HurtStimuli->Initialize(this, Cast<AShooterCharacter>(InPawn));
 		
 		RunBehaviorTree(AIBehavior);
