@@ -25,15 +25,27 @@ void ASimpleShooterGameModeBase::BeginPlay()
 		for (int i=0; i<AllActors.Num(); i++)
 		{
 			AEnemySpawnPoint* SpawnPointPtr = Cast<AEnemySpawnPoint>(AllActors[i]);
-			if (SpawnPointPtr != nullptr && SpawnPointPtr->ShooterCharacterClass != nullptr)
+			if (SpawnPointPtr != nullptr)
 			{
 				AllEnemySpawnPoints.Add(SpawnPointPtr);
 				
-				AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
-					SpawnPointPtr->ShooterCharacterClass,
-					SpawnPointPtr->GetActorLocation(),
-					SpawnPointPtr->GetActorRotation()
-				);
+				if (SpawnPointPtr->Team == ETeam::BlueTeam && SpawnPointPtr->BlueTeamShooterCharacterClass != nullptr)
+				{
+					AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+						SpawnPointPtr->BlueTeamShooterCharacterClass,
+						SpawnPointPtr->GetActorLocation(),
+						SpawnPointPtr->GetActorRotation()
+					);
+				}
+				
+				if (SpawnPointPtr->Team == ETeam::RedTeam && SpawnPointPtr->RedTeamShooterCharacterClass != nullptr)
+				{
+					AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+						SpawnPointPtr->RedTeamShooterCharacterClass,
+						SpawnPointPtr->GetActorLocation(),
+						SpawnPointPtr->GetActorRotation()
+					);
+				}
 			}
 		}
 	}

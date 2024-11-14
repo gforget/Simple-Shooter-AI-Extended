@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActorComponents/TeamManager.h"
 #include "GameFramework/Actor.h"
 #include "EnemySpawnPoint.generated.h"
 
@@ -18,11 +19,32 @@ public:
 	AEnemySpawnPoint();
 
 	UPROPERTY(EditInstanceOnly)
-	TSubclassOf<AShooterCharacter> ShooterCharacterClass;
+	TEnumAsByte<ETeam> Team = ETeam::BlueTeam; 
+
+	UPROPERTY(EditDefaultsOnly)
+	UTexture2D* BlueTeamIconTexture;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AShooterCharacter> BlueTeamShooterCharacterClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	UTexture2D* RedTeamIconTexture;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AShooterCharacter> RedTeamShooterCharacterClass;
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	#if WITH_EDITOR
+		virtual void PostActorCreated() override;
+		virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+	#endif
 
+private:
+	void ChangeBillboardTexture();
+	
+	UPROPERTY()
+	UBillboardComponent* Billboard; 
 };
