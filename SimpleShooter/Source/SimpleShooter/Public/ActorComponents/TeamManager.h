@@ -40,15 +40,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
 	ETeamRelation GetTeamRelation(ETeam TeamA, ETeam TeamB);
 
-	UFUNCTION(BlueprintCallable, Category="Main Functions")
-	void SetAllianceMode(EAllianceMode AllianceModeValue);
+	UPROPERTY(VisibleAnywhere)
+	TEnumAsByte<EAllianceMode> AllianceMode = EAllianceMode::FFA;
 	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-
-private:
-	UPROPERTY(VisibleAnywhere)
-	TEnumAsByte<EAllianceMode> AllianceMode = EAllianceMode::FFA; 
+	
 };

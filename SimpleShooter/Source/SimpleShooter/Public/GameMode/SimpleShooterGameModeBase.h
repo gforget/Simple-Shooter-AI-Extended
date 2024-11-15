@@ -16,7 +16,7 @@
 class UTeamManager;
 class AShooterCharacter;
 class AAmmoPack;
-class AEnemySpawnPoint;
+class ASpawningPoint;
 class AHealthPack;
 
 UCLASS()
@@ -47,16 +47,19 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
-
-	UPROPERTY(EditDefaultsOnly)
-	TEnumAsByte<EAllianceMode> AllianceMode;
 	
 protected:
 
 	virtual void BeginPlay() override;
 	
 	UPROPERTY()
-	TArray<AEnemySpawnPoint*> AllEnemySpawnPoints;
+	TArray<ASpawningPoint*> AllSpawnPoints;
+
+	UPROPERTY()
+	TArray<ASpawningPoint*> AllRedSpawnPoints;
+
+	UPROPERTY()
+	TArray<ASpawningPoint*> AllBlueSpawnPoints;
 	
 	UPROPERTY()
 	TArray<AWaypoint*> AllWayPoints;

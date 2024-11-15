@@ -26,6 +26,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	TEnumAsByte<ETeam> TeamWhoWon = ETeam::NoTeam;
+
+	UPROPERTY()
+	TArray<AShooterPlayerController*> AllPlayerControllers;
 	
 protected:
 	void BeginPlay();
@@ -39,6 +42,5 @@ private:
 	UPROPERTY()
 	int FFACount = 0;
 
-	UPROPERTY()
-	TArray<AShooterPlayerController*> AllPlayerControllers;
+
 };

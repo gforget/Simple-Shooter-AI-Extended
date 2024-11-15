@@ -30,7 +30,7 @@ protected:
 	
 private:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> HUDScreenClass;
+	TSubclassOf<UPlayerHUD> HUDScreenClass;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> OHHealthBarClass;

@@ -20,28 +20,28 @@ AShooterPlayerController::AShooterPlayerController()
 void AShooterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 void AShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	if (HUD == nullptr)
+
+	HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
+	
+	if (HUD != nullptr)
 	{
-		HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
-		if (HUD != nullptr)
+		HUD->AddToViewport();
+		
+		if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(InPawn))
 		{
-			HUD->AddToViewport();
+			HUD->OnPlayerModeEvent();
 		}
-	}
 	
-	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(InPawn))
-	{
-		HUD->OnPlayerModeEvent();
-	}
-	
-	if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn))
-	{
-		HUD->OnSpectatorModeEvent();
+		if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn))
+		{
+			HUD->OnSpectatorModeEvent();
+		}
 	}
 }
 
@@ -62,7 +62,7 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 	{
 		if (const AKillEmAllGameMode * KillEmAllGameMode = Cast<AKillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
 		{
-			if (ShooterSpectator->GetTeam() == ETeam::NoTeam && KillEmAllGameMode->AllianceMode == EAllianceMode::Team)
+			if (ShooterSpectator->GetTeam() == ETeam::NoTeam && KillEmAllGameMode->FactionManagerComponent->AllianceMode == EAllianceMode::Team)
 			{
 				bWasPureSpectator = true;
 				if (KillEmAllGameMode->TeamWhoWon == ETeam::BlueTeam)

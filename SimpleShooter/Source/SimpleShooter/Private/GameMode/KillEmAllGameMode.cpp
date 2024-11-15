@@ -5,7 +5,9 @@
 
 #include "Actors/ShooterCharacter.h"
 #include "Actors/ShooterSpectatorPawn.h"
+#include "..\..\Public\Actors\SpawningPoint.h"
 #include "Controllers/ShooterPlayerController.h"
+#include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 void AKillEmAllGameMode::BeginPlay()
@@ -13,20 +15,84 @@ void AKillEmAllGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	// Gather all player controller in the scene
-	TArray<AActor*> AllPlayerControllersRef;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AShooterPlayerController::StaticClass(),AllPlayerControllersRef);
+	// TArray<AActor*> AllPlayerControllersRef;
+	// UGameplayStatics::GetAllActorsOfClass(GetWorld(), AShooterPlayerController::StaticClass(),AllPlayerControllersRef);
+	//
+	// for (int i=0; i<AllPlayerControllersRef.Num(); i++)
+	// {
+	// 	AllPlayerControllers.Add(Cast<AShooterPlayerController>(AllPlayerControllersRef[i]));
+	// }
+	
+	UWorld* WorldPtr = GetWorld();
+	TArray<AActor*> AllActors;
+	UGameplayStatics::GetAllActorsOfClass(WorldPtr,AActor::StaticClass(),AllActors);
 
-	for (int i=0; i<AllPlayerControllersRef.Num(); i++)
+	if (WorldPtr && AllActors.Num() > 0 && SpawnEnemy)
 	{
-		AllPlayerControllers.Add(Cast<AShooterPlayerController>(AllPlayerControllersRef[i]));
+		for (int i=0; i<AllActors.Num(); i++)
+		{
+			if (ASpawningPoint* SpawningPoint = Cast<ASpawningPoint>(AllActors[i]))
+			{
+				AllSpawnPoints.Add(SpawningPoint);
+				if (SpawningPoint->Team == ETeam::RedTeam)
+				{
+					AllRedSpawnPoints.Add(SpawningPoint);
+				}
+				else
+				{
+					AllBlueSpawnPoints.Add(SpawningPoint);
+				}
+			}
+		}
 	}
+	
+	if (const UMainGameInstance* MainGameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+	{
+		const EAllianceMode CurrentAllianceMode = MainGameInstance->AllianceMode;
+		
+		FactionManagerComponent->AllianceMode = CurrentAllianceMode;
+		if (CurrentAllianceMode == EAllianceMode::FFA)
+		{
+			// Spawn a blue player + number of red bots where there are spawn point
+			for (int i=0; i<(1+MainGameInstance->NbRedBots); i++)
+			{
+				const int SpawnIndex = FMath::RandRange(0, AllSpawnPoints.Num()-1);
+				const ASpawningPoint* CurrentSpawningPoint = AllSpawnPoints[SpawnIndex];
+				
+				if (i==0) // put the spawned player at a spawn position
+				{
+					if (const AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+					{
+						AActor* PlayerCharacter = ShooterPlayerController->GetPawn();
+						PlayerCharacter->SetActorLocation(CurrentSpawningPoint->GetActorLocation());
+						PlayerCharacter->SetActorRotation(CurrentSpawningPoint->GetActorRotation());
+					}
+				}
+				else
+				{
+					AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+						CurrentSpawningPoint->RedTeamShooterCharacterClass,
+						CurrentSpawningPoint->GetActorLocation(),
+						CurrentSpawningPoint->GetActorRotation()
+					);
+				}
+				
+				AllSpawnPoints.RemoveAt(SpawnIndex);
+			}
+		}
+		else
+		{
+			// Spawn a blue player + number of respective team bots where there are spawn point
+		}
+	}
+	
 }
 
 void AKillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
 	
-	if (AllianceMode == EAllianceMode::FFA)
+	if (FactionManagerComponent->AllianceMode == EAllianceMode::FFA)
 	{
 		const APlayerController* PlayerController = Cast<APlayerController>(DeadShooterCharacter->GetController());
 		if (PlayerController != nullptr)
@@ -53,7 +119,7 @@ void AKillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterC
 
 void AKillEmAllGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister)
 {
-	if (AllianceMode == EAllianceMode::FFA)
+	if (FactionManagerComponent->AllianceMode == EAllianceMode::FFA)
 	{
 		FFACount++;
 	}
@@ -74,7 +140,7 @@ void AKillEmAllGameMode::EndGame(ETeam TeamWin)
 	
 	for (int i=0; i<AllPlayerControllers.Num(); i++)
 	{
-		if (AllianceMode == EAllianceMode::FFA)
+		if (FactionManagerComponent->AllianceMode == EAllianceMode::FFA)
 		{
 			if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(AllPlayerControllers[i]->GetPawn()))
 			{

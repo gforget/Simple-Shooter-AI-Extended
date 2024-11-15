@@ -2,8 +2,9 @@
 #include "GameMode/SimpleShooterGameModeBase.h"
 
 #include "Actors/AmmoPack.h"
-#include "Actors/EnemySpawnPoint.h"
+#include "..\..\Public\Actors\SpawningPoint.h"
 #include "Actors/ShooterCharacter.h"
+#include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 ASimpleShooterGameModeBase::ASimpleShooterGameModeBase()
@@ -14,43 +15,6 @@ ASimpleShooterGameModeBase::ASimpleShooterGameModeBase()
 void ASimpleShooterGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UWorld* WorldPtr = GetWorld();
-
-	TArray<AActor*> AllActors;
-	UGameplayStatics::GetAllActorsOfClass(WorldPtr,AActor::StaticClass(),AllActors);
-
-	if (WorldPtr && AllActors.Num() > 0 && SpawnEnemy)
-	{
-		for (int i=0; i<AllActors.Num(); i++)
-		{
-			AEnemySpawnPoint* SpawnPointPtr = Cast<AEnemySpawnPoint>(AllActors[i]);
-			if (SpawnPointPtr != nullptr)
-			{
-				AllEnemySpawnPoints.Add(SpawnPointPtr);
-				
-				if (SpawnPointPtr->Team == ETeam::BlueTeam && SpawnPointPtr->BlueTeamShooterCharacterClass != nullptr)
-				{
-					AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
-						SpawnPointPtr->BlueTeamShooterCharacterClass,
-						SpawnPointPtr->GetActorLocation(),
-						SpawnPointPtr->GetActorRotation()
-					);
-				}
-				
-				if (SpawnPointPtr->Team == ETeam::RedTeam && SpawnPointPtr->RedTeamShooterCharacterClass != nullptr)
-				{
-					AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
-						SpawnPointPtr->RedTeamShooterCharacterClass,
-						SpawnPointPtr->GetActorLocation(),
-						SpawnPointPtr->GetActorRotation()
-					);
-				}
-			}
-		}
-	}
-	
-	FactionManagerComponent->SetAllianceMode(AllianceMode);
 }
 
 void ASimpleShooterGameModeBase::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
