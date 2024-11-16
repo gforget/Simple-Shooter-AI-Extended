@@ -16,7 +16,7 @@ class SIMPLESHOOTER_API UMainGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TEnumAsByte<EAllianceMode> AllianceMode;
 	
 	UPROPERTY()

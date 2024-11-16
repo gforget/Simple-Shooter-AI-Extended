@@ -49,8 +49,8 @@ void AKillEmAllGameMode::BeginPlay()
 	if (const UMainGameInstance* MainGameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
 	{
 		const EAllianceMode CurrentAllianceMode = MainGameInstance->AllianceMode;
-		
 		FactionManagerComponent->AllianceMode = CurrentAllianceMode;
+		
 		if (CurrentAllianceMode == EAllianceMode::FFA)
 		{
 			// Spawn a blue player + number of red bots where there are spawn point
@@ -82,7 +82,47 @@ void AKillEmAllGameMode::BeginPlay()
 		}
 		else
 		{
-			// Setup the position of the player and spawn number of respective team bots where there are spawn point
+			// Spawn a blue player + blue team
+			for (int i=0; i<(1+MainGameInstance->NbBlueBots); i++)
+			{
+				const int SpawnIndex = FMath::RandRange(0, AllBlueSpawnPoints.Num()-1);
+				const ASpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
+				
+				if (i==0) // put the spawned player at a spawn position
+					{
+					if (const AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+					{
+						AActor* PlayerCharacter = ShooterPlayerController->GetPawn();
+						PlayerCharacter->SetActorLocation(CurrentSpawningPoint->GetActorLocation());
+						PlayerCharacter->SetActorRotation(CurrentSpawningPoint->GetActorRotation());
+					}
+					}
+				else
+				{
+					AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+						CurrentSpawningPoint->BlueTeamShooterCharacterClass,
+						CurrentSpawningPoint->GetActorLocation(),
+						CurrentSpawningPoint->GetActorRotation()
+					);
+				}
+				
+				AllBlueSpawnPoints.RemoveAt(SpawnIndex);
+			}
+			
+			// Spawn Red team
+			for (int i=0; i<MainGameInstance->NbRedBots; i++)
+			{
+				const int SpawnIndex = FMath::RandRange(0, AllRedSpawnPoints.Num()-1);
+				const ASpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
+				
+				AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+					CurrentSpawningPoint->RedTeamShooterCharacterClass,
+					CurrentSpawningPoint->GetActorLocation(),
+					CurrentSpawningPoint->GetActorRotation()
+				);
+
+				AllRedSpawnPoints.RemoveAt(SpawnIndex);
+			}
 		}
 	}
 	
