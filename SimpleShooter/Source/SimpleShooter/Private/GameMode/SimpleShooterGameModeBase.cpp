@@ -2,10 +2,8 @@
 #include "GameMode/SimpleShooterGameModeBase.h"
 
 #include "Actors/AmmoPack.h"
-#include "..\..\Public\Actors\SpawningPoint.h"
+#include "Actors/SpawningPoint.h"
 #include "Actors/ShooterCharacter.h"
-#include "GameMode/MainGameInstance.h"
-#include "Kismet/GameplayStatics.h"
 
 ASimpleShooterGameModeBase::ASimpleShooterGameModeBase()
 {

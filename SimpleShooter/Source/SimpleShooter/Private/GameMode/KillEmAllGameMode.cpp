@@ -5,7 +5,7 @@
 
 #include "Actors/ShooterCharacter.h"
 #include "Actors/ShooterSpectatorPawn.h"
-#include "..\..\Public\Actors\SpawningPoint.h"
+#include "Actors/SpawningPoint.h"
 #include "Controllers/ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -15,13 +15,13 @@ void AKillEmAllGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	// Gather all player controller in the scene
-	// TArray<AActor*> AllPlayerControllersRef;
-	// UGameplayStatics::GetAllActorsOfClass(GetWorld(), AShooterPlayerController::StaticClass(),AllPlayerControllersRef);
-	//
-	// for (int i=0; i<AllPlayerControllersRef.Num(); i++)
-	// {
-	// 	AllPlayerControllers.Add(Cast<AShooterPlayerController>(AllPlayerControllersRef[i]));
-	// }
+	TArray<AActor*> AllPlayerControllersRef;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AShooterPlayerController::StaticClass(),AllPlayerControllersRef);
+	
+	for (int i=0; i<AllPlayerControllersRef.Num(); i++)
+	{
+		AllPlayerControllers.Add(Cast<AShooterPlayerController>(AllPlayerControllersRef[i]));
+	}
 	
 	UWorld* WorldPtr = GetWorld();
 	TArray<AActor*> AllActors;
@@ -82,7 +82,7 @@ void AKillEmAllGameMode::BeginPlay()
 		}
 		else
 		{
-			// Spawn a blue player + number of respective team bots where there are spawn point
+			// Setup the position of the player and spawn number of respective team bots where there are spawn point
 		}
 	}
 	

@@ -161,8 +161,6 @@ void AShooterCharacter::Death()
 {
 	if (!IsDead())
 	{
-		OnDeadEvent.Broadcast(this);
-		
 		ReleaseTrigger();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		VSShooterCharacter->Destroy();
@@ -184,6 +182,8 @@ void AShooterCharacter::Death()
 		{
 			ShooterPlayerController->Possess(SpectatorPawn);
 		}
+		
+		OnDeadEvent.Broadcast(this);
 	}
 }
 

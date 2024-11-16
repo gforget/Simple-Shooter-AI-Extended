@@ -40,7 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
 	ETeamRelation GetTeamRelation(ETeam TeamA, ETeam TeamB);
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TEnumAsByte<EAllianceMode> AllianceMode = EAllianceMode::FFA;
 	
 protected:

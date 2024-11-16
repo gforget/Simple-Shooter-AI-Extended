@@ -26,22 +26,20 @@ void AShooterPlayerController::BeginPlay()
 void AShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
-	HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
-	
-	if (HUD != nullptr)
+	if (HUD == nullptr)
 	{
+		HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
 		HUD->AddToViewport();
+	}
 		
-		if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(InPawn))
-		{
-			HUD->OnPlayerModeEvent();
-		}
-	
-		if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn))
-		{
-			HUD->OnSpectatorModeEvent();
-		}
+	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(InPawn))
+	{
+		HUD->OnPlayerModeEvent();
+	}
+
+	if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn))
+	{
+		HUD->OnSpectatorModeEvent();
 	}
 }
 

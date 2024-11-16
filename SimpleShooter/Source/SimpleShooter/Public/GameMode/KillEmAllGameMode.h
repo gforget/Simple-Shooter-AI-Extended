@@ -25,6 +25,9 @@ public:
 	TMap<TEnumAsByte<ETeam>, int> TeamCount;
 
 	UPROPERTY(BlueprintReadOnly)
+	int FFACount = 0;
+	
+	UPROPERTY(BlueprintReadOnly)
 	TEnumAsByte<ETeam> TeamWhoWon = ETeam::NoTeam;
 
 	UPROPERTY()
@@ -39,8 +42,4 @@ private:
 	UPROPERTY()
 	bool LostFFA = false;
 	
-	UPROPERTY()
-	int FFACount = 0;
-
-
 };
