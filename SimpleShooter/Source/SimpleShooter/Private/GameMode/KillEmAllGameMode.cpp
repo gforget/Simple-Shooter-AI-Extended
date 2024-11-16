@@ -22,7 +22,8 @@ void AKillEmAllGameMode::BeginPlay()
 	{
 		AllPlayerControllers.Add(Cast<AShooterPlayerController>(AllPlayerControllersRef[i]));
 	}
-	
+
+	//Gather all spawn point
 	UWorld* WorldPtr = GetWorld();
 	TArray<AActor*> AllActors;
 	UGameplayStatics::GetAllActorsOfClass(WorldPtr,AActor::StaticClass(),AllActors);
