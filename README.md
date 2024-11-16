@@ -42,6 +42,9 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 # Useful link
 
 ## Videos 
+Video Update 3 (Intro Menu - Single Player):</br>
+https://www.youtube.com/watch?v=5MKI4MPX8jI
+
 Video Update 2 (Bots fighting each other updated and player vs bot):</br>
 https://youtu.be/L5gJRhCyYng</br>
 
