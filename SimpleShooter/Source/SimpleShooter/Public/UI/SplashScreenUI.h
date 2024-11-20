@@ -7,6 +7,7 @@
 #include "Blueprint/UserWidget.h"
 #include "SplashScreenUI.generated.h"
 
+class UVerticalBox;
 /**
  * 
  */
@@ -19,4 +20,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Main Functions")
 	void CallSinglePlayerMap(TEnumAsByte<EAllianceMode> AllianceMode, int NbRedBots, int NbBlueBots, FName LevelName);
+
+	UFUNCTION(BlueprintCallable, Category = "Main Functions")
+	void VerticalBoxReplaceChildAt(UVerticalBox* VerticalBox, int32 Index, UWidget* NewWidget);
 };
