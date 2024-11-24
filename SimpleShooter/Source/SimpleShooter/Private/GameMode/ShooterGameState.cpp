@@ -15,3 +15,14 @@ TArray<AShooterPlayerState*> AShooterGameState::ReplaceTeamInPlayerState(
 	
 	return NewPlayerStates;
 }
+
+TArray<TEnumAsByte<ETeam>> AShooterGameState::ReplaceTeamInBotsList(
+	TArray<TEnumAsByte<ETeam>> BotsList,
+	int IndexBot,
+	TEnumAsByte<ETeam> NewTeam)
+{
+	TArray<TEnumAsByte<ETeam>> NewBotsList = BotsList;
+	NewBotsList[IndexBot] = NewTeam;
+	
+	return NewBotsList;
+}

@@ -19,4 +19,7 @@ class SIMPLESHOOTER_API AShooterGameState : public AGameState
 public:
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
 	TArray<AShooterPlayerState*> ReplaceTeamInPlayerState(TArray<AShooterPlayerState*> AllPlayerStates, int IndexPlayerState, TEnumAsByte<ETeam> NewTeam);
+
+	UFUNCTION(BlueprintCallable, Category="Main Functions")
+	TArray<TEnumAsByte<ETeam>> ReplaceTeamInBotsList(TArray<TEnumAsByte<ETeam>> BotsList, int IndexBot, TEnumAsByte<ETeam> NewTeam);
 };
