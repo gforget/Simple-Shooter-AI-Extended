@@ -23,4 +23,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Main Functions")
 	void VerticalBoxReplaceChildAt(UVerticalBox* VerticalBox, int32 Index, UWidget* NewWidget);
+
+	UFUNCTION(BlueprintCallable, Category="Main Functions")
+	ETeam GetTeamEnumFromString(FString StringValue);
 };

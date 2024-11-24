@@ -4,7 +4,6 @@
 #include "UI/SplashScreenUI.h"
 
 #include "Components/VerticalBox.h"
-#include "Components/VerticalBoxSlot.h"
 #include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -60,5 +59,20 @@ void USplashScreenUI::VerticalBoxReplaceChildAt(UVerticalBox* VerticalBox, int32
     VerticalBox->InvalidateLayoutAndVolatility();
 
     UE_LOG(LogTemp, Warning, TEXT("New widget added at index %d."), Index);
+}
+
+ETeam USplashScreenUI::GetTeamEnumFromString(FString StringValue)
+{
+	if (StringValue == "Blue Team")
+	{
+		return ETeam::BlueTeam;
+	}
+
+	if (StringValue == "Red Team")
+	{
+		return ETeam::RedTeam;
+	}
+
+	return ETeam::NoTeam;
 }
 
