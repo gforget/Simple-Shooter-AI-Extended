@@ -76,3 +76,18 @@ ETeam USplashScreenUI::GetTeamEnumFromString(FString StringValue)
 	return ETeam::NoTeam;
 }
 
+EAllianceMode USplashScreenUI::GetAllianceModeEnumFromString(FString StringValue)
+{
+	if (StringValue == "FFA")
+	{
+		return EAllianceMode::FFA;
+	}
+
+	if (StringValue == "Team")
+	{
+		return EAllianceMode::Team;
+	}
+
+	return EAllianceMode::None;
+}
+

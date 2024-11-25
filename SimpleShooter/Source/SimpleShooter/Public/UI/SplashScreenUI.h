@@ -26,4 +26,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
 	ETeam GetTeamEnumFromString(FString StringValue);
+
+	UFUNCTION(BlueprintCallable, Category="Main Functions")
+	EAllianceMode GetAllianceModeEnumFromString(FString StringValue);
 };

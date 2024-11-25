@@ -25,7 +25,8 @@ UENUM(BlueprintType)
 enum EAllianceMode
 {
 	FFA,
-	Team
+	Team,
+	None
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
