@@ -91,3 +91,8 @@ EAllianceMode USplashScreenUI::GetAllianceModeEnumFromString(FString StringValue
 	return EAllianceMode::None;
 }
 
+void USplashScreenUI::StartMultiplayerGame()
+{
+	GetWorld()->ServerTravel("/Game/Levels/MultiplayerLevel?listen", true, true);
+}
+

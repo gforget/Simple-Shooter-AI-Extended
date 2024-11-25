@@ -8,6 +8,12 @@
 ASimpleShooterGameModeBase::ASimpleShooterGameModeBase()
 {
 	FactionManagerComponent = CreateDefaultSubobject<UTeamManager>(TEXT("Faction Manager Component"));
+	bUseSeamlessTravel = true;
+}
+
+void ASimpleShooterGameModeBase::HandleSeamlessTravelPlayer(AController*& Controller)
+{
+	Super::HandleSeamlessTravelPlayer(Controller);
 }
 
 void ASimpleShooterGameModeBase::BeginPlay()

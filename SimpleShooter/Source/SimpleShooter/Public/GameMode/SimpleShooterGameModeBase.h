@@ -47,7 +47,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
-	
+
+	virtual void HandleSeamlessTravelPlayer(AController*& Controller) override;
+
 protected:
 
 	virtual void BeginPlay() override;
