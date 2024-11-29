@@ -6,7 +6,7 @@
 #include "Actors/ShooterCharacter.h"
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
-#include "GameMode/KillEmAllGameMode.h"
+#include "GameMode/SinglePlayer/SinglePlayer_KillEmAllGameMode.h"
 #include "UI/OHHealthBar.h"
 #include "UI/PlayerHUD.h"
 
@@ -58,7 +58,7 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 	bool bWasPureSpectator = false;
 	if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(GetPawn()))
 	{
-		if (const AKillEmAllGameMode * KillEmAllGameMode = Cast<AKillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
+		if (const ASinglePlayer_KillEmAllGameMode * KillEmAllGameMode = Cast<ASinglePlayer_KillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
 		{
 			if (ShooterSpectator->GetTeam() == ETeam::NoTeam && KillEmAllGameMode->FactionManagerComponent->AllianceMode == EAllianceMode::Team)
 			{

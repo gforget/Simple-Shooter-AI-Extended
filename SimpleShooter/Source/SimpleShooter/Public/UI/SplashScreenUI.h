@@ -29,7 +29,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
 	EAllianceMode GetAllianceModeEnumFromString(FString StringValue);
-
-	UFUNCTION(BlueprintCallable, Category="Main Functions")
-	void StartMultiplayerGame();
 };

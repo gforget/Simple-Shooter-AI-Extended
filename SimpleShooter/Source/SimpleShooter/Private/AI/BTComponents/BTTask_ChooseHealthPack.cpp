@@ -5,7 +5,7 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/SimpleShooterGameModeBase.h"
+#include "GameMode/ShooterGameMode.h"
 
 UBTTask_ChooseHealthPack::UBTTask_ChooseHealthPack()
 {
@@ -20,7 +20,7 @@ EBTNodeResult::Type UBTTask_ChooseHealthPack::ExecuteTask(UBehaviorTreeComponent
 		return EBTNodeResult::Failed;
 	}
 	
-	ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+	AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return EBTNodeResult::Failed;

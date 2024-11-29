@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SimpleShooterGameModeBase.h"
-#include "KillEmAllGameMode.generated.h"
+#include "GameMode/ShooterGameMode.h"
+#include "SinglePlayer_KillEmAllGameMode.generated.h"
 
 /**
  * 
  */
 class AShooterPlayerController;
 UCLASS()
-class SIMPLESHOOTER_API AKillEmAllGameMode : public ASimpleShooterGameModeBase
+class SIMPLESHOOTER_API ASinglePlayer_KillEmAllGameMode : public AShooterGameMode
 {
 	GENERATED_BODY()
 

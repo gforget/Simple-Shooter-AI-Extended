@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Actors/AmmoPack.h"
 #include "Actors/ShooterCharacter.h"
-#include "GameMode/SimpleShooterGameModeBase.h"
+#include "GameMode/ShooterGameMode.h"
 
 // Called when the game starts or when spawned
 void AAmmoPack::BeginPlay()
 {
 	Super::BeginPlay();
-	ASimpleShooterGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+	AShooterGameMode* GameModeBase = GetWorld()->GetAuthGameMode<AShooterGameMode>();
 	if (GameModeBase != nullptr)
 	{
 		GameModeBase->AddAmmoPack(this);

@@ -1,14 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Actors/HealthPack.h"
 #include "Actors/ShooterCharacter.h"
-#include "GameMode/SimpleShooterGameModeBase.h"
+#include "GameMode/ShooterGameMode.h"
 
 // Called when the game starts or when spawned
 void AHealthPack::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ASimpleShooterGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+	AShooterGameMode* GameModeBase = GetWorld()->GetAuthGameMode<AShooterGameMode>();
 	if (GameModeBase != nullptr)
 	{
 		GameModeBase->AddHealthPack(this);

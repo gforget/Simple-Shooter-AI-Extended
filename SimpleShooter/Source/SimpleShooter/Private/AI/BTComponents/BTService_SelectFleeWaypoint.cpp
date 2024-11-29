@@ -7,7 +7,7 @@
 #include "NavigationPath.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/SimpleShooterGameModeBase.h"
+#include "..\..\..\Public\GameMode\ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
 UBTService_SelectFleeWaypoint::UBTService_SelectFleeWaypoint()
@@ -44,7 +44,7 @@ AWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 	const FVector LastKnownEnemyLocation = OwnerCompPtr->GetBlackboardComponent()->GetValueAsVector(FName("LastKnownEnemyLocation"));
 	const FVector2D LastKnownEnemyLocation2D = FVector2D(LastKnownEnemyLocation.X, LastKnownEnemyLocation.Y);
 	
-	ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+	AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
 	TArray<AWaypoint*> ConsideredWaypoints = GameMode->GetAllWayPoints();
 
 	float HighestDistance = 0.0f;

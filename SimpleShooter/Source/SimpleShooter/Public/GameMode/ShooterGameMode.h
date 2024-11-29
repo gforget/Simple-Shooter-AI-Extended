@@ -6,8 +6,8 @@
 #include "ActorComponents/TeamManager.h"
 #include "Actors/HealthPack.h"
 #include "Actors/Waypoint.h"
-#include "GameFramework/GameModeBase.h"
-#include "SimpleShooterGameModeBase.generated.h"
+#include "GameFramework/GameMode.h"
+#include "ShooterGameMode.generated.h"
 
 /**
  * 
@@ -20,13 +20,13 @@ class ASpawningPoint;
 class AHealthPack;
 
 UCLASS()
-class SIMPLESHOOTER_API ASimpleShooterGameModeBase : public AGameModeBase
+class SIMPLESHOOTER_API AShooterGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
 public:
 
-	ASimpleShooterGameModeBase();
+	AShooterGameMode();
 
 	UFUNCTION()
 	virtual void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter);
@@ -47,8 +47,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
-
-	virtual void HandleSeamlessTravelPlayer(AController*& Controller) override;
 
 protected:
 

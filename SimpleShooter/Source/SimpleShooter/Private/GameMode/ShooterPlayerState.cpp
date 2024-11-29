@@ -13,5 +13,6 @@ AShooterPlayerState::AShooterPlayerState()
 void AShooterPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
 	DOREPLIFETIME(AShooterPlayerState, Team);
 }

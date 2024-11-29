@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/SimpleShooterGameModeBase.h"
+#include "..\..\..\Public\GameMode\ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
 UBTService_SelectHealthPack::UBTService_SelectHealthPack()
@@ -29,7 +29,7 @@ void UBTService_SelectHealthPack::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 AHealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
 {
 	AHealthPack* SelectedHealthPack = nullptr;
-	ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+	AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return SelectedHealthPack;

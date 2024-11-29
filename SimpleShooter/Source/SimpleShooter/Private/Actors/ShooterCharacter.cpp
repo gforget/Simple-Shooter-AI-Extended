@@ -2,15 +2,14 @@
 
 #include "SimpleShooter/Public/Actors/ShooterCharacter.h"
 #include "Actors/Gun.h"
-#include "GameMode/SimpleShooterGameModeBase.h"
+#include "GameMode/ShooterGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/RotationViewPointRef.h"
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "GameMode/KillEmAllGameMode.h"
+#include "..\..\Public\GameMode\SinglePlayer\SinglePlayer_KillEmAllGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
@@ -62,9 +61,9 @@ void AShooterCharacter::BeginPlay()
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 
-	Cast<ASimpleShooterGameModeBase>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
+	Cast<AShooterGameMode>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
 
-	if (AKillEmAllGameMode* KillEmAllGameMode = Cast<AKillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
+	if (ASinglePlayer_KillEmAllGameMode* KillEmAllGameMode = Cast<ASinglePlayer_KillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
 	{
 		KillEmAllGameMode->AddShooterCharacterCount(this);
 	}
