@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/ShooterPlayerState.h"
+#include "GameMode/Multiplayer/ShooterPlayerState.h"
 
 #include "Net/UnrealNetwork.h"
 

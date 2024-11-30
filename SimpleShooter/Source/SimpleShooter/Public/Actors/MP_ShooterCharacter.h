@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Test_ShooterCharacter.generated.h"
+#include "MP_ShooterCharacter.generated.h"
 
 UCLASS()
-class SIMPLESHOOTER_API ATest_ShooterCharacter : public ACharacter
+class SIMPLESHOOTER_API AMP_ShooterCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ATest_ShooterCharacter();
+	AMP_ShooterCharacter();
 
 protected:
 	// Called when the game starts or when spawned

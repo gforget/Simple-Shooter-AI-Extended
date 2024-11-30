@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/ShooterGameState.h"
+#include "GameMode/Multiplayer/ShooterGameState.h"
 
-#include "GameMode/ShooterPlayerState.h"
+#include "GameMode/Multiplayer/ShooterPlayerState.h"
 
 TArray<AShooterPlayerState*> AShooterGameState::ReplaceTeamInPlayerState(
 	TArray<AShooterPlayerState*> AllPlayerStates,
