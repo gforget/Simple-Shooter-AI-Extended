@@ -9,7 +9,7 @@
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
-#include "..\..\Public\GameMode\SinglePlayer\SinglePlayer_KillEmAllGameMode.h"
+#include "..\..\Public\GameMode\SinglePlayer\SP_KillEmAllGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
@@ -63,7 +63,7 @@ void AShooterCharacter::BeginPlay()
 
 	Cast<AShooterGameMode>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
 
-	if (ASinglePlayer_KillEmAllGameMode* KillEmAllGameMode = Cast<ASinglePlayer_KillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
+	if (ASP_KillEmAllGameMode* KillEmAllGameMode = Cast<ASP_KillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
 	{
 		KillEmAllGameMode->AddShooterCharacterCount(this);
 	}
@@ -238,7 +238,10 @@ void AShooterCharacter::LookRightRate(float AxisValue)
 
 void AShooterCharacter::PullTrigger()
 {
-	Gun->PullTrigger();
+	if (Gun != nullptr)
+	{
+		Gun->PullTrigger();
+	}
 }
 
 void AShooterCharacter::ReleaseTrigger()

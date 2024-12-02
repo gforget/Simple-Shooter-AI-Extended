@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameMode/ShooterGameMode.h"
-#include "SinglePlayer_KillEmAllGameMode.generated.h"
+#include "SP_KillEmAllGameMode.generated.h"
 
 /**
  * 
  */
 class AShooterPlayerController;
 UCLASS()
-class SIMPLESHOOTER_API ASinglePlayer_KillEmAllGameMode : public AShooterGameMode
+class SIMPLESHOOTER_API ASP_KillEmAllGameMode : public AShooterGameMode
 {
 	GENERATED_BODY()
 

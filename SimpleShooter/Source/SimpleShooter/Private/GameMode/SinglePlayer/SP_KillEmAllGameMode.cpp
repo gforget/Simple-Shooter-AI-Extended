@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/SinglePlayer/SinglePlayer_KillEmAllGameMode.h"
+#include "GameMode/SinglePlayer/SP_KillEmAllGameMode.h"
 
 #include "Actors/ShooterCharacter.h"
 #include "Actors/ShooterSpectatorPawn.h"
@@ -10,7 +10,7 @@
 #include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
-void ASinglePlayer_KillEmAllGameMode::BeginPlay()
+void ASP_KillEmAllGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -129,7 +129,7 @@ void ASinglePlayer_KillEmAllGameMode::BeginPlay()
 	
 }
 
-void ASinglePlayer_KillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
+void ASP_KillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
 	
@@ -158,7 +158,7 @@ void ASinglePlayer_KillEmAllGameMode::OnShooterCharacterDeath(AShooterCharacter*
 	}
 }
 
-void ASinglePlayer_KillEmAllGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister)
+void ASP_KillEmAllGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister)
 {
 	if (FactionManagerComponent->AllianceMode == EAllianceMode::FFA)
 	{
@@ -175,7 +175,7 @@ void ASinglePlayer_KillEmAllGameMode::AddShooterCharacterCount(AShooterCharacter
 	}
 }
 
-void ASinglePlayer_KillEmAllGameMode::EndGame(ETeam TeamWin)
+void ASP_KillEmAllGameMode::EndGame(ETeam TeamWin)
 {
 	TeamWhoWon = TeamWin;
 	

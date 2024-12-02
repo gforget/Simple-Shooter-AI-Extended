@@ -94,12 +94,12 @@ public:
 
 	void PullTrigger();
 	void ReleaseTrigger();
-	
 	void Reload();
 
 	void SelfDamage();
 	
 	AVisualStimuli_ShooterCharacter* GetVSShooterCharacter();
+	
 	ARotationViewPointRef* GetRotationViewPointRef();
 	
 private:
