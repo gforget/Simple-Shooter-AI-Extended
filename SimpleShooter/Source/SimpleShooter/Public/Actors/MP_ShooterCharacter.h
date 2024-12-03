@@ -8,6 +8,7 @@
 
 class AMP_Gun;
 class ARotationViewPointRef;
+class UPlayMontageCallbackProxy;
 
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterCharacter : public ACharacter
@@ -44,6 +45,21 @@ public:
 
 	ARotationViewPointRef* GetRotationViewPointRef();
 
+	UFUNCTION(BlueprintCallable)
+	float GetHealthPercent() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetAmmoReservePercent() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetAmmoTotalPercent() const;
+	
+	UFUNCTION(BlueprintCallable)
+	FString GetAmmoReserveRatio() const;
+
+	UFUNCTION(BlueprintCallable)
+	AMP_Gun* GetGunReference() const;
+	
 protected:
 
 	//Pull Trigger RPC
@@ -82,4 +98,28 @@ private:
 	
 	UPROPERTY()
 	AMP_Gun* Gun;
+
+	UPROPERTY(EditDefaultsOnly)
+	float MaxHealth = 100.0f;
+
+	UPROPERTY(VisibleAnywhere)
+	float Health = 10.0f;
+	
+	UPROPERTY()
+	bool IsReloading = false;
+
+	UPROPERTY(EditDefaultsOnly)
+	int MaxAmmoReserve = 100;
+	
+	UPROPERTY(EditDefaultsOnly)
+	int AmmoReserve = 20;
+
+	UPROPERTY()
+	UPlayMontageCallbackProxy* ProxyReloadPlayMontage;
+
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* ReloadMontage;
+
+	UFUNCTION()
+	void OnReloadAnimationCompleted(FName NotifyName);
 };

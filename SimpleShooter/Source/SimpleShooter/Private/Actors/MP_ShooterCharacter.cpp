@@ -1,6 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Actors/MP_ShooterCharacter.h"
+
+#include "PlayMontageCallbackProxy.h"
 #include "Actors/MP_Gun.h"
 #include "Actors/RotationViewPointRef.h"
 
@@ -62,6 +64,34 @@ void AMP_ShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 ARotationViewPointRef* AMP_ShooterCharacter::GetRotationViewPointRef()
 {
 	return RotationViewPointRef;
+}
+
+float AMP_ShooterCharacter::GetHealthPercent() const
+{
+	return Health/MaxHealth;
+}
+
+float AMP_ShooterCharacter::GetAmmoReservePercent() const
+{
+	return (float)AmmoReserve/(float)MaxAmmoReserve;
+}
+
+float AMP_ShooterCharacter::GetAmmoTotalPercent() const
+{
+	int AmmoTotal = AmmoReserve + GetGunReference()->GetAmmoAmount();
+	int AmmoMaxTotal = MaxAmmoReserve + GetGunReference()->GetMaxAmmo();
+	
+	return (float)AmmoTotal/(float)AmmoMaxTotal;
+}
+
+FString AMP_ShooterCharacter::GetAmmoReserveRatio() const
+{
+	return FString::FromInt(AmmoReserve) + "/" + FString::FromInt(MaxAmmoReserve);
+}
+
+AMP_Gun* AMP_ShooterCharacter::GetGunReference() const
+{
+	return Gun;
 }
 
 void AMP_ShooterCharacter::MoveForward(float AxisValue)
@@ -160,6 +190,33 @@ void AMP_ShooterCharacter::PerformReleaseTrigger()
 
 void AMP_ShooterCharacter::Reload()
 {
-	
+	if (!IsReloading && AmmoReserve > 0 && Gun->GetAmmoPercent() < 1.0f )
+	{
+		ProxyReloadPlayMontage = UPlayMontageCallbackProxy::CreateProxyObjectForPlayMontage(
+			GetMesh(),
+			ReloadMontage
+		);
+		
+		ProxyReloadPlayMontage->OnCompleted.AddDynamic(this, &AMP_ShooterCharacter::OnReloadAnimationCompleted);
+		IsReloading = true;
+	}
+	else
+	{
+		//TODO: clip sound
+	}
 }
 
+void AMP_ShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
+{
+	IsReloading = false;
+	int ReloadAmount = Gun->GetMaxAmmo();
+	int CurrentReloadAmount = ReloadAmount;
+	if (AmmoReserve - ReloadAmount < 0)
+	{
+		CurrentReloadAmount = ReloadAmount - FMath::Abs(AmmoReserve-ReloadAmount);
+	}
+	
+	AmmoReserve -= CurrentReloadAmount;
+	const int LeftOver = Gun->Reload(CurrentReloadAmount);
+	AmmoReserve += LeftOver;
+}

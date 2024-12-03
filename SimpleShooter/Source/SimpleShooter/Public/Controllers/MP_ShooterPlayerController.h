@@ -9,8 +9,27 @@
 /**
  * 
  */
+
+class UPlayerHUD;
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+	AMP_ShooterPlayerController();
+
+protected:
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnRep_Pawn() override;
+	
+private:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UPlayerHUD> HUDScreenClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> OHHealthBarClass;
+
+	UPROPERTY()
+	UPlayerHUD* HUD;
 };
