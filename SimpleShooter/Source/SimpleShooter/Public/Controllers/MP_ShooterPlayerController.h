@@ -20,10 +20,14 @@ public:
 	AMP_ShooterPlayerController();
 
 protected:
+	
 	virtual void OnPossess(APawn* InPawn) override;
-	virtual void OnRep_Pawn() override;
+	virtual void BeginPlay() override;
 	
 private:
+
+	void InstantiateHUD(APawn* InPawn);
+	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UPlayerHUD> HUDScreenClass;
 

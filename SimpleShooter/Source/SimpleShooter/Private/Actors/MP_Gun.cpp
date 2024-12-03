@@ -21,7 +21,7 @@ AMP_Gun::AMP_Gun()
 void AMP_Gun::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Ammo = MaxAmmo;
 }
 
 // Called every frame

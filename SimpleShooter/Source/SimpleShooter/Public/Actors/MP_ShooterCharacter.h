@@ -32,6 +32,19 @@ public:
 	
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
+
+	// Look Up functionality
+	void LookUp(float AxisValue);
+	
+	//Replication of ReplicatedControlRotation (variable in private section)
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerSetControlRotation(const FRotator& NewRotation);
+	
+	UFUNCTION()
+	void OnRep_ControlRotation();
+	
+	UFUNCTION(BlueprintPure)
+	FRotator GetReplicatedControlRotation() const { return ReplicatedControlRotation; }
 	
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
@@ -61,7 +74,7 @@ public:
 	AMP_Gun* GetGunReference() const;
 	
 protected:
-
+	
 	//Pull Trigger RPC
 	// Server RPC - executed on the server
 	UFUNCTION(Server, Reliable, WithValidation)
@@ -86,7 +99,25 @@ protected:
 	// Function to perform the actual shooting logic
 	void PerformReleaseTrigger();
 
+	//Reload Trigger RPC
+	// Server RPC - executed on the server
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerReload();
+
+	// Multicast RPC - executed on all clients
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastReload();
+
+	// Function to perform the actual shooting logic
+	void PerformReload();
+
 private:
+	UPROPERTY(ReplicatedUsing = OnRep_ControlRotation)
+	FRotator ReplicatedControlRotation;
+
+	// Function to directly modify the control rotation
+	void UpdateControlRotation(const FRotator& NewRotation);
+	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
 

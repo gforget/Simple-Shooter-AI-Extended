@@ -5,6 +5,7 @@
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/MP_Gun.h"
 #include "Actors/RotationViewPointRef.h"
+#include "Net/UnrealNetwork.h"
 
 
 // Sets default values
@@ -18,6 +19,7 @@ AMP_ShooterCharacter::AMP_ShooterCharacter()
 void AMP_ShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	Health = MaxHealth;
 	
 	Gun = GetWorld()->SpawnActor<AMP_Gun>(GunClass);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), PBO_None);
@@ -26,10 +28,10 @@ void AMP_ShooterCharacter::BeginPlay()
 	Gun->SetOwner(this);
 
 	RotationViewPointRef = GetWorld()->SpawnActor<ARotationViewPointRef>(
-	RotationViewPointRefClass,
-	FVector(0.0f, 0.0f, 0.0f),
-	FRotator(0.0f, 0.0f, 0.0f)
-);
+		RotationViewPointRefClass,
+		FVector(0.0f, 0.0f, 0.0f),
+		FRotator(0.0f, 0.0f, 0.0f)
+	);
 
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
@@ -48,7 +50,8 @@ void AMP_ShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMP_ShooterCharacter::MoveForward);
-	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
+	//PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AMP_ShooterCharacter::LookUp);
 	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &AMP_ShooterCharacter::LookUpRate);
 	
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMP_ShooterCharacter::MoveRight);
@@ -104,6 +107,55 @@ void AMP_ShooterCharacter::MoveRight(float AxisValue)
 	AddMovementInput(GetActorRightVector()*AxisValue);
 }
 
+//---- Look UP RPC ----/
+void AMP_ShooterCharacter::LookUp(float AxisValue)
+{
+	if (Controller && AxisValue != 0.0f)
+	{
+		// Locally modify the rotation for immediate response
+		FRotator NewRotation = Controller->GetControlRotation();
+		NewRotation.Pitch -= AxisValue;
+		
+		UpdateControlRotation(NewRotation);
+
+		// Send the rotation to the server
+		if (!HasAuthority())
+		{
+			ServerSetControlRotation(NewRotation);
+		}
+	}
+}
+
+void AMP_ShooterCharacter::ServerSetControlRotation_Implementation(const FRotator& NewRotation)
+{
+	UpdateControlRotation(NewRotation); // Update the server's rotation
+}
+
+bool AMP_ShooterCharacter::ServerSetControlRotation_Validate(const FRotator& NewRotation)
+{
+	return true;
+}
+
+void AMP_ShooterCharacter::UpdateControlRotation(const FRotator& NewRotation)
+{
+	ReplicatedControlRotation = NewRotation;
+
+	if (Controller)
+	{
+		Controller->SetControlRotation(NewRotation);
+	}
+}
+
+void AMP_ShooterCharacter::OnRep_ControlRotation()
+{
+	if (!IsLocallyControlled())
+	{
+		UpdateControlRotation(ReplicatedControlRotation);
+	}
+}
+
+//---- [END] Look UP RPC ----/
+
 void AMP_ShooterCharacter::LookUpRate(float AxisValue)
 {
 	AddControllerPitchInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
@@ -114,6 +166,7 @@ void AMP_ShooterCharacter::LookRightRate(float AxisValue)
 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
 }
 
+//---- Pull Trigger ----/
 void AMP_ShooterCharacter::PullTrigger()
 {
 	if (HasAuthority())
@@ -151,6 +204,7 @@ void AMP_ShooterCharacter::PerformPullTrigger()
 	}
 }
 
+//---- Release Trigger ----/
 void AMP_ShooterCharacter::ReleaseTrigger()
 {
 	if (HasAuthority())
@@ -188,7 +242,35 @@ void AMP_ShooterCharacter::PerformReleaseTrigger()
 	}
 }
 
+//---- Reload ----/
 void AMP_ShooterCharacter::Reload()
+{
+	if (HasAuthority())
+	{
+		MulticastReload();
+	}
+	else
+	{
+		ServerReload();
+	}
+}
+
+void AMP_ShooterCharacter::ServerReload_Implementation()
+{
+	MulticastReload();
+}
+
+bool AMP_ShooterCharacter::ServerReload_Validate()
+{
+	return true;
+}
+
+void AMP_ShooterCharacter::MulticastReload_Implementation()
+{
+	PerformReload();
+}
+
+void AMP_ShooterCharacter::PerformReload()
 {
 	if (!IsReloading && AmmoReserve > 0 && Gun->GetAmmoPercent() < 1.0f )
 	{
@@ -219,4 +301,12 @@ void AMP_ShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
 	AmmoReserve -= CurrentReloadAmount;
 	const int LeftOver = Gun->Reload(CurrentReloadAmount);
 	AmmoReserve += LeftOver;
+}
+
+void AMP_ShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	// Ensure ReplicatedControlRotation is replicated
+	DOREPLIFETIME(AMP_ShooterCharacter, ReplicatedControlRotation);
 }
