@@ -24,6 +24,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION(BlueprintPure)
+	bool GetIsReloading() const;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

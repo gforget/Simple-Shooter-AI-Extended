@@ -19,6 +19,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(Replicated)
+	FVector ShooterViewPointLocation;
+
+	UPROPERTY(Replicated)
+	FRotator ShooterViewPointRotation;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

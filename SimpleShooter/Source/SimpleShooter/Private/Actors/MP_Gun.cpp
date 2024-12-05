@@ -5,10 +5,14 @@
 #include "Actors/RotationViewPointRef.h"
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AMP_Gun::AMP_Gun()
 {
+	bReplicates = true;
+	PrimaryActorTick.bCanEverTick = true;
+	
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
@@ -28,6 +32,13 @@ void AMP_Gun::BeginPlay()
 void AMP_Gun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (HasAuthority())
+	{
+		if (const AController* OwnerController = GetOwnerController())
+		{
+			OwnerController->GetPlayerViewPoint(ShooterViewPointLocation, ShooterViewPointRotation);
+		}
+	}
 }
 
 void AMP_Gun::Fire()
@@ -40,7 +51,7 @@ void AMP_Gun::Fire()
 	
 	if (UseAmmo())
 	{
-		//if (CharacterOwner->GetIsReloading()) return; //TODO: implement reloading
+		if (CharacterOwner->GetIsReloading()) return;
 		
 		UParticleSystemComponent* MuzzleFlashParticle = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
 		UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
@@ -56,6 +67,7 @@ void AMP_Gun::Fire()
 		
 		FHitResult Hit;
 		FVector ShotDirection;
+		
 		bool bSuccess = GunTrace(Hit, ShotDirection);
 		
 		if (bSuccess)
@@ -153,18 +165,14 @@ int AMP_Gun::GetMaxAmmo() const
 
 bool AMP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 {
-	const AController* OwnerController = GetOwnerController();
+
 	AMP_ShooterCharacter* CharacterOwner = Cast<AMP_ShooterCharacter>(GetOwner());
 	
-	if (OwnerController == nullptr || CharacterOwner == nullptr) return false;
+	if (CharacterOwner == nullptr) return false;
 	
-	FVector Location;
-	FRotator Rotation;
+	ShotDirection = -ShooterViewPointRotation.Vector();
 	
-	OwnerController->GetPlayerViewPoint(Location, Rotation);
-	ShotDirection = -Rotation.Vector();
-	
-	FVector End = Location + Rotation.Vector()*MaxRange;
+	FVector End = ShooterViewPointLocation + ShooterViewPointRotation.Vector()*MaxRange;
 	
 	//Random offset
 	FVector2D result = FVector2D(FMath::VRand()); 
@@ -179,7 +187,7 @@ bool AMP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
 	
-	return GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	return GetWorld()->LineTraceSingleByChannel(Hit, ShooterViewPointLocation, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 }
 
 bool AMP_Gun::UseAmmo()
@@ -204,3 +212,10 @@ AController* AMP_Gun::GetOwnerController() const
 	return OwnerPawn->GetController();
 }
 
+void AMP_Gun::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMP_Gun, ShooterViewPointLocation);
+	DOREPLIFETIME(AMP_Gun, ShooterViewPointRotation);
+}

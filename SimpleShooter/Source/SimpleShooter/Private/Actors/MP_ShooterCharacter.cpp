@@ -38,6 +38,11 @@ void AMP_ShooterCharacter::BeginPlay()
 	
 }
 
+bool AMP_ShooterCharacter::GetIsReloading() const
+{
+	return IsReloading;
+}
+
 // Called every frame
 void AMP_ShooterCharacter::Tick(float DeltaTime)
 {
