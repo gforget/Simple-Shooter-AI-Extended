@@ -23,10 +23,10 @@ void AMP_ShooterCharacter::BeginPlay()
 	
 	Gun = GetWorld()->SpawnActor<AMP_Gun>(GunClass);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), PBO_None);
-	
+
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
-
+		
 	RotationViewPointRef = GetWorld()->SpawnActor<ARotationViewPointRef>(
 		RotationViewPointRefClass,
 		FVector(0.0f, 0.0f, 0.0f),
@@ -47,6 +47,21 @@ bool AMP_ShooterCharacter::GetIsReloading() const
 void AMP_ShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (HasAuthority())
+	{
+		if (Controller)
+		{
+			FVector NewLocation;
+			FRotator NewRotation;
+			Controller->GetPlayerViewPoint(NewLocation, NewRotation);
+
+			if (!ShooterViewPointLocation.Equals(NewLocation, 0.01f) || !ShooterViewPointRotation.Equals(NewRotation, 0.1f))
+			{
+				ShooterViewPointLocation = NewLocation;
+				ShooterViewPointRotation = NewRotation;
+			}
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -55,7 +70,6 @@ void AMP_ShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMP_ShooterCharacter::MoveForward);
-	//PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AMP_ShooterCharacter::LookUp);
 	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &AMP_ShooterCharacter::LookUpRate);
 	
@@ -314,4 +328,6 @@ void AMP_ShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 
 	// Ensure ReplicatedControlRotation is replicated
 	DOREPLIFETIME(AMP_ShooterCharacter, ReplicatedControlRotation);
+	DOREPLIFETIME(AMP_ShooterCharacter, ShooterViewPointLocation);
+	DOREPLIFETIME(AMP_ShooterCharacter, ShooterViewPointRotation);
 }

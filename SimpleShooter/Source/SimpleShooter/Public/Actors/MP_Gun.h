@@ -15,22 +15,9 @@ public:
 	// Sets default values for this actor's properties
 	AMP_Gun();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UPROPERTY(Replicated)
-	FVector ShooterViewPointLocation;
-
-	UPROPERTY(Replicated)
-	FRotator ShooterViewPointRotation;
-	
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UFUNCTION()
 	void Fire();
+	
 	FTimerDelegate FireTimerTimerDel;
 	FTimerHandle FireTimerHandle;
 	
@@ -50,6 +37,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	int GetMaxAmmo() const;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -97,3 +91,5 @@ private:
 
 	AController* GetOwnerController() const;
 };
+
+

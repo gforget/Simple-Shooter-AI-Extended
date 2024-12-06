@@ -10,8 +10,8 @@
 // Sets default values
 AMP_Gun::AMP_Gun()
 {
-	bReplicates = true;
-	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = false;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -32,13 +32,6 @@ void AMP_Gun::BeginPlay()
 void AMP_Gun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (HasAuthority())
-	{
-		if (const AController* OwnerController = GetOwnerController())
-		{
-			OwnerController->GetPlayerViewPoint(ShooterViewPointLocation, ShooterViewPointRotation);
-		}
-	}
 }
 
 void AMP_Gun::Fire()
@@ -85,13 +78,13 @@ void AMP_Gun::Fire()
 			//SoundStimuli_BulletImpactSound->SetSoundOwner(CharacterOwner);
 			//SoundStimuli_BulletImpactSound->SetShootingOriginPosition(CharacterOwner->GetActorLocation()); //want a position that is relevant to the sound, the position of the shooter is more relevant
 			
-			AActor* HitActor = Hit.GetActor();
-			if (HitActor != nullptr)
-			{
-				FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
-				AController* OwnerController = GetOwnerController();
-				HitActor->TakeDamage(Damage, DamageEvent, OwnerController, GetOwner());
-			}
+			// AActor* HitActor = Hit.GetActor();
+			// if (HitActor != nullptr)
+			// {
+			// 	FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+			// 	AController* OwnerController = GetOwnerController();
+			// 	HitActor->TakeDamage(Damage, DamageEvent, OwnerController, GetOwner());
+			// }
 		}
 	}
 	else
@@ -170,15 +163,16 @@ bool AMP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	
 	if (CharacterOwner == nullptr) return false;
 	
-	ShotDirection = -ShooterViewPointRotation.Vector();
+	ShotDirection = -CharacterOwner->ShooterViewPointRotation.Vector();
 	
-	FVector End = ShooterViewPointLocation + ShooterViewPointRotation.Vector()*MaxRange;
-	
+	FVector End = CharacterOwner->ShooterViewPointLocation + CharacterOwner->ShooterViewPointRotation.Vector()*MaxRange;
+
+	//TODO: the random has to be replicated, or some bullet might miss on the client
 	//Random offset
 	FVector2D result = FVector2D(FMath::VRand()); 
 	result.Normalize();
 	result *= FMath::RandRange(0.0f,BulletSpreadRadius);
-
+	
 	End += CharacterOwner->GetRotationViewPointRef()->GetActorRightVector()*result.X; //Offset Right
 	End += CharacterOwner->GetRotationViewPointRef()->GetActorUpVector()*result.Y; //Offset Up
 	//End Random offset
@@ -187,7 +181,7 @@ bool AMP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
 	
-	return GetWorld()->LineTraceSingleByChannel(Hit, ShooterViewPointLocation, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	return GetWorld()->LineTraceSingleByChannel(Hit, CharacterOwner->ShooterViewPointLocation, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 }
 
 bool AMP_Gun::UseAmmo()
@@ -210,12 +204,4 @@ AController* AMP_Gun::GetOwnerController() const
 	if (OwnerPawn == nullptr) return nullptr;
 	
 	return OwnerPawn->GetController();
-}
-
-void AMP_Gun::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(AMP_Gun, ShooterViewPointLocation);
-	DOREPLIFETIME(AMP_Gun, ShooterViewPointRotation);
 }
