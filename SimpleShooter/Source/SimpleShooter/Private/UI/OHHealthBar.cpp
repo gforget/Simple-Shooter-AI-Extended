@@ -19,10 +19,6 @@ bool UOHHealthBar::Initialize()
 void UOHHealthBar::InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef)
 {
 	AssignedCharacter = AssignedCharacterRef;
-	
-	UpdateHealthBar();
-	AssignedCharacter->OnTakeAnyDamage.AddDynamic(this, &UOHHealthBar::OnCharacterHit);
-	AssignedCharacter->OnHealEvent.AddDynamic(this, &UOHHealthBar::OnCharacterHeal);
 	AssignedCharacter->OnDeadEvent.AddDynamic(this, &UOHHealthBar::OnCharacterDeath);
 }
 
@@ -76,30 +72,7 @@ void UOHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 }
 
-void UOHHealthBar::OnCharacterHit(
-	AActor* DamagedActor,
-	float Damage,
-	const UDamageType* DamageType,
-	AController* InstigatedBy,
-	AActor* DamageCauser)
-{
-	UpdateHealthBar();
-}
-
-void UOHHealthBar::OnCharacterHeal()
-{
-	UpdateHealthBar();
-}
-
 void UOHHealthBar::OnCharacterDeath(AShooterCharacter* DeadCharacter)
 {
 	RemoveFromParent();
-}
-
-void UOHHealthBar::UpdateHealthBar()
-{
-	if (AssignedCharacter != nullptr && OHHealthBarProgressBar != nullptr)
-	{
-		OHHealthBarProgressBar->SetPercent(AssignedCharacter->GetHealthPercent());
-	}
 }

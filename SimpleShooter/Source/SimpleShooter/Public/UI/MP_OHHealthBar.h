@@ -29,19 +29,11 @@ class SIMPLESHOOTER_API UMP_OHHealthBar : public UUserWidget
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UProgressBar* OHHealthBarProgressBar;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	AMP_ShooterCharacter* AssignedCharacter;
 
 	UFUNCTION()
-	void OnCharacterHit(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
-
-	UFUNCTION()
-	void OnCharacterHeal();
-
-	UFUNCTION()
 	void OnCharacterDeath(AMP_ShooterCharacter* DeadCharacter);
-	
-	void UpdateHealthBar();
 
 	void InitializeAssignedCharacterAndPlayerController(AMP_ShooterCharacter* AssignedCharacterRef);
 };

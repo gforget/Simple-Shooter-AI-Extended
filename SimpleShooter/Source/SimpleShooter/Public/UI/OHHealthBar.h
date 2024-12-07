@@ -29,19 +29,11 @@ public :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UProgressBar* OHHealthBarProgressBar;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	AShooterCharacter* AssignedCharacter;
 
 	UFUNCTION()
-	void OnCharacterHit(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
-
-	UFUNCTION()
-	void OnCharacterHeal();
-
-	UFUNCTION()
 	void OnCharacterDeath(AShooterCharacter* DeadCharacter);
-	
-	void UpdateHealthBar();
 
 	void InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef);
 };

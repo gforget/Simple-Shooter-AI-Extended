@@ -33,7 +33,7 @@ void AMP_ShooterCharacter::BeginPlay()
 
 	if (!IsLocallyControlled())
 	{
-		//ADD OverHead Healthbar
+		//ADD OverHead Healthbar to the player view
 		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 		Cast<AMP_ShooterPlayerController>(PlayerController)->AddOHHealthBar(this);
 	}
@@ -291,7 +291,10 @@ void AMP_ShooterCharacter::MulticastDeath_Implementation()
 
 		Dead = true;
 		DetachFromControllerPendingDestroy();
+
 		//TODO: Implement spectator mode
+
+		OnDeadEvent.Broadcast(this);
 	}
 }
 
