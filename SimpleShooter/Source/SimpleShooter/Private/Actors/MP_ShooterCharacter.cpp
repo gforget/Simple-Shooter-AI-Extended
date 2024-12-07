@@ -6,7 +6,9 @@
 #include "Actors/MP_Gun.h"
 #include "Actors/RotationViewPointRef.h"
 #include "Components/CapsuleComponent.h"
+#include "Controllers/MP_ShooterPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -28,7 +30,14 @@ void AMP_ShooterCharacter::BeginPlay()
 
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
-		
+
+	if (!IsLocallyControlled())
+	{
+		//ADD OverHead Healthbar
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		Cast<AMP_ShooterPlayerController>(PlayerController)->AddOHHealthBar(this);
+	}
+	
 	RotationViewPointRef = GetWorld()->SpawnActor<ARotationViewPointRef>(
 		RotationViewPointRefClass,
 		FVector(0.0f, 0.0f, 0.0f),
@@ -37,6 +46,43 @@ void AMP_ShooterCharacter::BeginPlay()
 
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+}
+
+void AMP_ShooterCharacter::PostActorCreated()
+{
+	Super::PostActorCreated();
+	GenerateEditorAnchorPositionVisualisation();
+}
+
+void AMP_ShooterCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	GenerateEditorAnchorPositionVisualisation();
+}
+
+void AMP_ShooterCharacter::PostEditMove(bool bFinished)
+{
+	Super::PostEditMove(bFinished);
+	GenerateEditorAnchorPositionVisualisation();
+}
+
+void AMP_ShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
+{
+#if WITH_EDITOR
+	if (const UWorld* World = GetWorld())
+	{
+		if (World->WorldType == EWorldType::EditorPreview)
+		{
+			UKismetSystemLibrary::FlushPersistentDebugLines(this);
+			const FVector ActorLocation = GetActorLocation();
+			
+			// HealtBar Anchor
+			DrawDebugSphere(GetWorld(), ActorLocation + HealthBarAnchor, 5.0f, 12, FColor::Cyan, true, 0.0f, 0, 0.0f);
+			DrawDebugSphere(GetWorld(), ActorLocation + FootPositionAnchor, 5.0f, 12, FColor::Purple, true, 0.0f, 0, 0.0f);
+			DrawDebugSphere(GetWorld(), ActorLocation + BodyPositionAnchor, 5.0f, 12, FColor::Blue, true, 0.0f, 0, 0.0f);
+		}
+	}
+#endif
 }
 
 bool AMP_ShooterCharacter::GetIsReloading() const

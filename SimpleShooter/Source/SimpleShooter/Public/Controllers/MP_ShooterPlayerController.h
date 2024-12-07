@@ -11,6 +11,8 @@
  */
 
 class UPlayerHUD;
+class AMP_ShooterCharacter;
+
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterPlayerController : public APlayerController
 {
@@ -18,7 +20,8 @@ class SIMPLESHOOTER_API AMP_ShooterPlayerController : public APlayerController
 
 public:
 	AMP_ShooterPlayerController();
-
+	void AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter);
+	
 protected:
 	
 	virtual void OnPossess(APawn* InPawn) override;

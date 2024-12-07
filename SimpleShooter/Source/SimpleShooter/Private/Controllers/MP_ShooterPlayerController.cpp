@@ -6,6 +6,7 @@
 #include "Actors/MP_ShooterCharacter.h"
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
+#include "UI/MP_OHHealthBar.h"
 #include "UI/PlayerHUD.h"
 
 AMP_ShooterPlayerController::AMP_ShooterPlayerController()
@@ -14,6 +15,13 @@ AMP_ShooterPlayerController::AMP_ShooterPlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bTickEvenWhenPaused = true;
 	bReplicates = true;
+}
+
+void AMP_ShooterPlayerController::AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter)
+{
+	UMP_OHHealthBar* OHHealthBar = Cast<UMP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
+	OHHealthBar->AddToViewport();
+	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
 }
 
 void AMP_ShooterPlayerController::BeginPlay()

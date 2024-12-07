@@ -1,8 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/OHHealthBar.h"
+#include "UI/MP_OHHealthBar.h"
 
+#include "Actors/MP_ShooterCharacter.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Actors/ShooterCharacter.h"
 #include "Components/CanvasPanelSlot.h"
@@ -10,23 +11,22 @@
 #include "Components/ProgressBar.h"
 #include "GameFramework/SpectatorPawn.h"
 
-
-bool UOHHealthBar::Initialize()
+bool UMP_OHHealthBar::Initialize()
 {
 	return Super::Initialize();
 }
 
-void UOHHealthBar::InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef)
+void UMP_OHHealthBar::InitializeAssignedCharacterAndPlayerController(AMP_ShooterCharacter* AssignedCharacterRef)
 {
 	AssignedCharacter = AssignedCharacterRef;
 	
 	UpdateHealthBar();
-	AssignedCharacter->OnTakeAnyDamage.AddDynamic(this, &UOHHealthBar::OnCharacterHit);
-	AssignedCharacter->OnHealEvent.AddDynamic(this, &UOHHealthBar::OnCharacterHeal);
-	AssignedCharacter->OnDeadEvent.AddDynamic(this, &UOHHealthBar::OnCharacterDeath);
+	AssignedCharacter->OnTakeAnyDamage.AddDynamic(this, &UMP_OHHealthBar::OnCharacterHit);
+	AssignedCharacter->OnHealEvent.AddDynamic(this, &UMP_OHHealthBar::OnCharacterHeal);
+	AssignedCharacter->OnDeadEvent.AddDynamic(this, &UMP_OHHealthBar::OnCharacterDeath);
 }
 
-void UOHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UMP_OHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	if (AssignedCharacter != nullptr)
@@ -76,30 +76,28 @@ void UOHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 }
 
-void UOHHealthBar::OnCharacterHit(
-	AActor* DamagedActor,
-	float Damage,
-	const UDamageType* DamageType,
-	AController* InstigatedBy,
-	AActor* DamageCauser)
+void UMP_OHHealthBar::OnCharacterHit(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigatedBy, AActor* DamageCauser)
 {
 	UpdateHealthBar();
 }
 
-void UOHHealthBar::OnCharacterHeal()
+void UMP_OHHealthBar::OnCharacterHeal()
 {
 	UpdateHealthBar();
 }
 
-void UOHHealthBar::OnCharacterDeath(AShooterCharacter* DeadCharacter)
+void UMP_OHHealthBar::OnCharacterDeath(AMP_ShooterCharacter* DeadCharacter)
 {
 	RemoveFromParent();
 }
 
-void UOHHealthBar::UpdateHealthBar()
+void UMP_OHHealthBar::UpdateHealthBar()
 {
 	if (AssignedCharacter != nullptr && OHHealthBarProgressBar != nullptr)
 	{
 		OHHealthBarProgressBar->SetPercent(AssignedCharacter->GetHealthPercent());
 	}
 }
+
+

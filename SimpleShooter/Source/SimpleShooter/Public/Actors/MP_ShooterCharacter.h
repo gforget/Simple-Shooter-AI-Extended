@@ -10,6 +10,9 @@ class AMP_Gun;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMP_HealEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMP_DeadEvent, AMP_ShooterCharacter*, DeadShooterCharacter);
+
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterCharacter : public ACharacter
 {
@@ -23,7 +26,29 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+#if WITH_EDITOR
+	virtual void PostActorCreated() override;
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+	virtual void PostEditMove(bool bFinished) override;
+#endif
+	
 public:
+	
+	UPROPERTY()
+	FMP_HealEvent OnHealEvent;
+
+	UPROPERTY()
+	FMP_DeadEvent OnDeadEvent;
+
+	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
+
+	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
+
+	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
+	
 	UFUNCTION(BlueprintPure)
 	bool GetIsReloading() const;
 	
@@ -177,6 +202,8 @@ private:
 
 	UPROPERTY()
 	bool Dead = false;
+	
+	void GenerateEditorAnchorPositionVisualisation() const;
 };
 
 

@@ -4,22 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "OHHealthBar.generated.h"
+#include "MP_OHHealthBar.generated.h"
 
 class UProgressBar;
-class AShooterCharacter;
+class AMP_ShooterCharacter;
 class APlayerController;
 class UOverlay;
+
 /**
  * 
  */
-
 UCLASS()
-class SIMPLESHOOTER_API UOHHealthBar : public UUserWidget
+class SIMPLESHOOTER_API UMP_OHHealthBar : public UUserWidget
 {
 	GENERATED_BODY()
 	
-public :
+	public :
 	virtual bool Initialize() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
@@ -30,7 +30,7 @@ public :
 	UProgressBar* OHHealthBarProgressBar;
 	
 	UPROPERTY()
-	AShooterCharacter* AssignedCharacter;
+	AMP_ShooterCharacter* AssignedCharacter;
 
 	UFUNCTION()
 	void OnCharacterHit(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
@@ -39,9 +39,9 @@ public :
 	void OnCharacterHeal();
 
 	UFUNCTION()
-	void OnCharacterDeath(AShooterCharacter* DeadCharacter);
+	void OnCharacterDeath(AMP_ShooterCharacter* DeadCharacter);
 	
 	void UpdateHealthBar();
 
-	void InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef);
+	void InitializeAssignedCharacterAndPlayerController(AMP_ShooterCharacter* AssignedCharacterRef);
 };

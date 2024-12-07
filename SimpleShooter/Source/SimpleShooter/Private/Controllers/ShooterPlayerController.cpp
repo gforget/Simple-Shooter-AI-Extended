@@ -47,7 +47,7 @@ void AShooterPlayerController::AddOHHealthBar(AShooterCharacter* AssignedCharact
 {
 	UOHHealthBar* OHHealthBar = Cast<UOHHealthBar>(CreateWidget(this, OHHealthBarClass));
 	OHHealthBar->AddToViewport();
-	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter, this);
+	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
 }
 
 void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
