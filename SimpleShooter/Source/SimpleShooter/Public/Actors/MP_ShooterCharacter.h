@@ -74,6 +74,11 @@ public:
 	UPROPERTY(Replicated)
 	FRotator ShooterViewPointRotation;
 	
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
+	
 protected:
 	
 	//Pull Trigger RPC
@@ -109,9 +114,14 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastReload();
 
-	// Function to perform the actual shooting logic
+	// Function to perform the actual Reload logic
 	void PerformReload();
 
+	// Death RPC
+	// Multicast RPC - executed on all clients
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastDeath();
+	
 	//ControlRotation Replication
 	//Replicated Variable
 	UPROPERTY(ReplicatedUsing = OnRep_ControlRotation)
@@ -144,7 +154,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float MaxHealth = 100.0f;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(Replicated, VisibleAnywhere)
 	float Health = 10.0f;
 	
 	UPROPERTY()
@@ -164,4 +174,9 @@ private:
 
 	UFUNCTION()
 	void OnReloadAnimationCompleted(FName NotifyName);
+
+	UPROPERTY()
+	bool Dead = false;
 };
+
+

@@ -5,6 +5,8 @@
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/MP_Gun.h"
 #include "Actors/RotationViewPointRef.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -35,7 +37,6 @@ void AMP_ShooterCharacter::BeginPlay()
 
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
-	
 }
 
 bool AMP_ShooterCharacter::GetIsReloading() const
@@ -215,6 +216,44 @@ void AMP_ShooterCharacter::MulticastPullTrigger_Implementation()
 	PerformPullTrigger();
 }
 
+float AMP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+	AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+
+	if (Health <= 0.0f)
+	{
+		MulticastDeath();
+	}
+	
+	return DamageToApply;
+}
+
+void AMP_ShooterCharacter::MulticastDeath_Implementation()
+{
+	if (!IsDead())
+	{
+		ReleaseTrigger();
+		
+		GetCharacterMovement()->GravityScale = 0.0f; //client for some reason pass through floor when no collision
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		
+		//VSShooterCharacter->Destroy();
+		RotationViewPointRef->Destroy();
+
+		Dead = true;
+		DetachFromControllerPendingDestroy();
+		//TODO: Implement spectator mode
+	}
+}
+
+bool AMP_ShooterCharacter::IsDead() const
+{
+	return Dead;
+}
+
 void AMP_ShooterCharacter::PerformPullTrigger()
 {
 	if (Gun != nullptr)
@@ -326,8 +365,9 @@ void AMP_ShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	// Ensure ReplicatedControlRotation is replicated
+	// Ensure All Replicated variable to be replicated
 	DOREPLIFETIME(AMP_ShooterCharacter, ReplicatedControlRotation);
 	DOREPLIFETIME(AMP_ShooterCharacter, ShooterViewPointLocation);
 	DOREPLIFETIME(AMP_ShooterCharacter, ShooterViewPointRotation);
+	DOREPLIFETIME(AMP_ShooterCharacter, Health);
 }

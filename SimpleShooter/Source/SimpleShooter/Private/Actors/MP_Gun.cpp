@@ -77,14 +77,17 @@ void AMP_Gun::Fire()
 			
 			//SoundStimuli_BulletImpactSound->SetSoundOwner(CharacterOwner);
 			//SoundStimuli_BulletImpactSound->SetShootingOriginPosition(CharacterOwner->GetActorLocation()); //want a position that is relevant to the sound, the position of the shooter is more relevant
-			
-			// AActor* HitActor = Hit.GetActor();
-			// if (HitActor != nullptr)
-			// {
-			// 	FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
-			// 	AController* OwnerController = GetOwnerController();
-			// 	HitActor->TakeDamage(Damage, DamageEvent, OwnerController, GetOwner());
-			// }
+
+			if (HasAuthority())
+			{
+				AActor* HitActor = Hit.GetActor();
+				if (HitActor != nullptr)
+				{
+					FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+					AController* OwnerController = GetOwnerController();
+					HitActor->TakeDamage(Damage, DamageEvent, OwnerController, GetOwner());
+				}
+			}
 		}
 	}
 	else
@@ -166,9 +169,8 @@ bool AMP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	ShotDirection = -CharacterOwner->ShooterViewPointRotation.Vector();
 	
 	FVector End = CharacterOwner->ShooterViewPointLocation + CharacterOwner->ShooterViewPointRotation.Vector()*MaxRange;
-
-	//TODO: the random has to be replicated, or some bullet might miss on the client
-	//Random offset
+	
+	//Random offset //TODO: the random has to be replicated, or some bullet might miss on the client
 	FVector2D result = FVector2D(FMath::VRand()); 
 	result.Normalize();
 	result *= FMath::RandRange(0.0f,BulletSpreadRadius);
