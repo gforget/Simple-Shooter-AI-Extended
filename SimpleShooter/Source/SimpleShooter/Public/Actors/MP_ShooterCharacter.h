@@ -101,6 +101,10 @@ public:
 	
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	float Heal(float HealAmount);
+
+	int AddAmmoReserve(int AmmoAmount);
+	
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 	

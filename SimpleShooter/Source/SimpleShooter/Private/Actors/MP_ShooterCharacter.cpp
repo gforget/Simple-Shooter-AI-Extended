@@ -277,6 +277,36 @@ float AMP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 	return DamageToApply;
 }
 
+float AMP_ShooterCharacter::Heal(float HealAmount)
+{
+	if (Health+HealAmount <= MaxHealth)
+	{
+		Health += HealAmount;
+		OnHealEvent.Broadcast();
+		return HealAmount;
+	}
+	else
+	{
+		Health = MaxHealth;
+		OnHealEvent.Broadcast();
+		return (Health+HealAmount) - MaxHealth;
+	}	
+}
+
+int AMP_ShooterCharacter::AddAmmoReserve(int AmmoAmount)
+{
+	if (AmmoReserve+AmmoAmount <= MaxAmmoReserve)
+	{
+		AmmoReserve += AmmoAmount;
+		return AmmoAmount;
+	}
+	else
+	{
+		AmmoReserve = MaxAmmoReserve;
+		return (AmmoReserve+AmmoAmount) - MaxAmmoReserve;
+	}
+}
+
 void AMP_ShooterCharacter::MulticastDeath_Implementation()
 {
 	if (!IsDead())
