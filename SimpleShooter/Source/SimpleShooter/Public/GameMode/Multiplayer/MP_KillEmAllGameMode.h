@@ -16,4 +16,7 @@ class SIMPLESHOOTER_API AMP_KillEmAllGameMode : public AShooterGameMode
 	
 public:
 	AMP_KillEmAllGameMode();
+
+protected:
+	virtual void BeginPlay() override;
 };

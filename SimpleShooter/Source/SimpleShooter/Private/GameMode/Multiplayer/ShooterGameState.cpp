@@ -2,7 +2,7 @@
 
 
 #include "GameMode/Multiplayer/ShooterGameState.h"
-
+#include "GameMode/MainGameInstance.h"
 #include "GameMode/Multiplayer/ShooterPlayerState.h"
 
 TArray<AShooterPlayerState*> AShooterGameState::ReplaceTeamInPlayerState(
@@ -16,13 +16,13 @@ TArray<AShooterPlayerState*> AShooterGameState::ReplaceTeamInPlayerState(
 	return NewPlayerStates;
 }
 
-TArray<TEnumAsByte<ETeam>> AShooterGameState::ReplaceTeamInBotsList(
-	TArray<TEnumAsByte<ETeam>> BotsList,
+TArray<FBotData> AShooterGameState::ReplaceTeamInBotDatasArray(
+	TArray<FBotData> BotDatasArray,
 	int IndexBot,
 	TEnumAsByte<ETeam> NewTeam)
 {
-	TArray<TEnumAsByte<ETeam>> NewBotsList = BotsList;
-	NewBotsList[IndexBot] = NewTeam;
+	TArray<FBotData> NewBotsArray = BotDatasArray;
+	NewBotsArray[IndexBot].Team = NewTeam;
 	
-	return NewBotsList;
+	return NewBotsArray;
 }
