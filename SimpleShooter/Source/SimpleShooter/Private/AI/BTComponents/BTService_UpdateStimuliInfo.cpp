@@ -12,7 +12,7 @@
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Controllers/ShooterAIController.h"
-#include "..\..\..\Public\GameMode\ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
 #include "Utility/NavMeshUtility.h"

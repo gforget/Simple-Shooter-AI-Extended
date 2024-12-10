@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "..\..\..\Public\GameMode\ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
 UBTService_SelectHealthPack::UBTService_SelectHealthPack()

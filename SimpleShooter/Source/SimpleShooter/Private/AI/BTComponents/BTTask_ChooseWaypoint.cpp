@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTTask_ChooseWaypoint.h"
 #include "Actors/Waypoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 
 UBTTask_ChooseWaypoint::UBTTask_ChooseWaypoint()
 {

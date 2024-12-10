@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "Actors/AmmoPack.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "..\..\..\Public\GameMode\ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 
 UBTTask_ChooseAmmoPack::UBTTask_ChooseAmmoPack()
 {

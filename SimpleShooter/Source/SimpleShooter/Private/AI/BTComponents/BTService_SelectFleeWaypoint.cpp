@@ -7,7 +7,7 @@
 #include "NavigationPath.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "..\..\..\Public\GameMode\ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
 UBTService_SelectFleeWaypoint::UBTService_SelectFleeWaypoint()

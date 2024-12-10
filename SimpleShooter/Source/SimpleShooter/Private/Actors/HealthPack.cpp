@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Actors/HealthPack.h"
 #include "Actors/ShooterCharacter.h"
-#include "GameMode/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 
 // Called when the game starts or when spawned
 void AHealthPack::BeginPlay()

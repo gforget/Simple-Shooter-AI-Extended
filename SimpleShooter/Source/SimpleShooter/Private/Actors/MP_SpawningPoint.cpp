@@ -1,12 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/SpawningPoint.h"
+#include "Actors/MP_SpawningPoint.h"
 #include "Components/BillboardComponent.h"
 
-
 // Sets default values
-ASpawningPoint::ASpawningPoint()
+AMP_SpawningPoint::AMP_SpawningPoint()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -17,24 +16,25 @@ ASpawningPoint::ASpawningPoint()
 }
 
 // Called when the game starts or when spawned
-void ASpawningPoint::BeginPlay()
+void AMP_SpawningPoint::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
-void ASpawningPoint::PostActorCreated()
+void AMP_SpawningPoint::PostActorCreated()
 {
 	Super::PostActorCreated();
 	ChangeBillboardTexture();
 }
 
-void ASpawningPoint::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+void AMP_SpawningPoint::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 	ChangeBillboardTexture();
 }
 
-void ASpawningPoint::ChangeBillboardTexture()
+void AMP_SpawningPoint::ChangeBillboardTexture()
 {
 	// Load a custom texture to use as the icon (must be in the project content)
 	if (BlueTeamIconTexture != nullptr && RedTeamIconTexture != nullptr)
@@ -53,4 +53,3 @@ void ASpawningPoint::ChangeBillboardTexture()
 		}
 	}
 }
-

@@ -5,7 +5,7 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 
 UBTTask_ChooseHealthPack::UBTTask_ChooseHealthPack()
 {

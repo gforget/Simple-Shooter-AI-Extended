@@ -2,7 +2,7 @@
 
 #include "SimpleShooter/Public/Actors/ShooterCharacter.h"
 #include "Actors/Gun.h"
-#include "GameMode/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/RotationViewPointRef.h"

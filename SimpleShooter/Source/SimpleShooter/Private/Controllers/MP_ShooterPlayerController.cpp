@@ -40,25 +40,30 @@ void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
 {
 	if (IsLocalController())
 	{
-		if (HUD == nullptr)
+		AMP_ShooterCharacter* ShooterCharacter = Cast<AMP_ShooterCharacter>(InPawn);
+		AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn);
+
+		if (ShooterCharacter != nullptr || ShooterSpectator != nullptr)
 		{
-			HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
+			if (HUD == nullptr)
+			{
+				HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
+				if (HUD != nullptr)
+				{
+					HUD->AddToViewport();
+				}
+			}
+		
 			if (HUD != nullptr)
 			{
-				HUD->AddToViewport();
-			}
-		}
-		
-		if (HUD != nullptr)
-		{
-			if (AMP_ShooterCharacter* ShooterCharacter = Cast<AMP_ShooterCharacter>(InPawn))
-			{
-				HUD->OnPlayerModeEvent();
-			}
-		
-			if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn))
-			{
-				HUD->OnSpectatorModeEvent();
+				if (ShooterCharacter != nullptr)
+				{
+					HUD->OnPlayerModeEvent();
+				}
+				else if (ShooterSpectator != nullptr)
+				{
+					HUD->OnSpectatorModeEvent();
+				}
 			}
 		}
 	}

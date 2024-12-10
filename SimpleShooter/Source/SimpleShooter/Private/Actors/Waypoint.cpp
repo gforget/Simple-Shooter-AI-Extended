@@ -2,7 +2,7 @@
 
 
 #include "Actors/Waypoint.h"
-#include "GameMode/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 
 // Sets default values
 AWaypoint::AWaypoint()

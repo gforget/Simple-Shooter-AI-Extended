@@ -7,7 +7,7 @@
 #include "Actors/AmmoPack.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "..\..\..\Public\GameMode\ShooterGameMode.h"
+#include "GameMode/SinglePlayer/ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
 UBTService_SelectAmmoPack::UBTService_SelectAmmoPack()
