@@ -40,16 +40,38 @@ void AShooterSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AShooterSpectatorPawn::ReturnToPlayerMode()
 {
-	UGameplayStatics::SetGamePaused(GetWorld(), false);
 	
-	GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0.5"));
-	AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
-	if (ShooterPlayerController != nullptr)
+	if (UGameplayStatics::IsGamePaused(GetWorld()))
 	{
-		UnPossessed();
-		ShooterPlayerController->Possess(PlayerShooterCharacter);
-		ShooterPlayerController->SetTickableWhenPaused(false);
-		Destroy();
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+	
+		GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0.5"));
+		AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+		if (ShooterPlayerController != nullptr)
+		{
+			if (PlayerShooterCharacter)
+			{
+				UnPossessed();
+				ShooterPlayerController->Possess(PlayerShooterCharacter);
+				ShooterPlayerController->SetTickableWhenPaused(false);
+				Destroy();
+			}
+			else
+			{
+				ShooterPlayerController->SetTickableWhenPaused(false);
+			}
+		}
+	}
+	else
+	{
+		AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+		if (ShooterPlayerController != nullptr)
+		{
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+			GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0"));
+			ShooterPlayerController->SetTickableWhenPaused(true);
+			SetTickableWhenPaused(true);
+		}
 	}
 }
 

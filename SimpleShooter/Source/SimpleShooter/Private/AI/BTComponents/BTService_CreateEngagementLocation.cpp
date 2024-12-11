@@ -95,21 +95,25 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 									}
 									else
 									{
+										// position is too close
 										if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Purple, false, 0.25f, 0, 1.0);
 									}
 								}
 								else
 								{
-									if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Cyan, false, 0.25f, 0, 1.0);
+									// can't shoot the target from this position
+									if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Yellow, false, 0.25f, 0, 1.0);
 								}
 							}
 							else
 							{
+								// point is not on the navmesh
 								if (bDebug)DrawDebugSphere(GetWorld(), GroundLocation, 5.0f, 12, FColor::Blue, false, 0.25f, 0, 1.0);
 							}
 						}
 						else
 						{
+							// obstacle between the bot and the point (likely to be a wall)
 							if (bDebug)DrawDebugSphere(GetWorld(), Hit2.Location, 5.0f, 12, FColor::Red, false, 0.25f, 0, 1.0);
 						}
 						
@@ -160,7 +164,7 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 			}
 			
 			OwnerCompPtr->GetBlackboardComponent()->SetValueAsVector(FName("EngagementLocation"), AllValidPositions[IndexValidPosition]);
-			if (bDebug)DrawDebugSphere(GetWorld(), AllValidPositions[IndexValidPosition], 10.0f, 12, FColor::Green, false, 0.25f, 0, 1.0);
+			if (bDebug)DrawDebugSphere(GetWorld(), AllValidPositions[IndexValidPosition], 20.0f, 12, FColor::Cyan, false, 0.25f, 0, 1.0);
 		}
 		else
 		{
