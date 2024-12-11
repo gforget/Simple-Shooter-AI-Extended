@@ -21,12 +21,12 @@ void AMP_ShooterGameMode::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShoo
 	
 }
 
-TArray<AWaypoint*> AMP_ShooterGameMode::GetAllWayPoints()
+TArray<AMP_Waypoint*> AMP_ShooterGameMode::GetAllWayPoints()
 {
 	return AllWayPoints;
 }
 
-void AMP_ShooterGameMode::AddWayPoint(AWaypoint* Waypoint)
+void AMP_ShooterGameMode::AddWayPoint(AMP_Waypoint* Waypoint)
 {
 	AllWayPoints.Add(Waypoint);
 }

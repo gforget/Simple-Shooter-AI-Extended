@@ -24,4 +24,11 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void OnPostLogin(AController* NewPlayer) override;
+	virtual void Logout(AController* Exiting) override;
+
+private:
+	bool SpawningPointsHaveBeenFilled = false;
+	void FillSpawningPoints();
 };

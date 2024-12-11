@@ -14,7 +14,7 @@ class AMP_ShooterCharacter;
 class AMP_AmmoPack;
 class AMP_SpawningPoint;
 class AMP_HealthPack;
-class AWaypoint;
+class AMP_Waypoint;
 
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterGameMode : public AGameMode
@@ -30,8 +30,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	bool SpawnEnemy = true;
 	
-	TArray<AWaypoint*> GetAllWayPoints();
-	void AddWayPoint(AWaypoint* WayPoint);
+	TArray<AMP_Waypoint*> GetAllWayPoints();
+	void AddWayPoint(AMP_Waypoint* WayPoint);
 	
 	TArray<AMP_AmmoPack*> GetAllAmmoPacks();
 	void AddAmmoPack(AMP_AmmoPack* AmmoPack);
@@ -58,7 +58,7 @@ protected:
 	TArray<AMP_SpawningPoint*> AllBlueSpawnPoints;
 	
 	UPROPERTY()
-	TArray<AWaypoint*> AllWayPoints;
+	TArray<AMP_Waypoint*> AllWayPoints;
 	
 	UPROPERTY()
 	TArray<AMP_AmmoPack*> AllAmmoPacks;
