@@ -25,6 +25,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AimOffset = 15000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bPullTrigger = true;
 	
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;

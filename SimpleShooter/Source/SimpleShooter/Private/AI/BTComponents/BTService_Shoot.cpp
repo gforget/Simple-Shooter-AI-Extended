@@ -8,7 +8,7 @@
 
 UBTService_Shoot::UBTService_Shoot()
 {
-	NodeName = TEXT("Shoot");
+	NodeName = TEXT("Aim and Shoot");
 }
 
 void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -42,7 +42,7 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		if (OwnerComp.GetBlackboardComponent()->GetValueAsFloat(FName("TimerBeforeShooting")) > TimeBeforeStartingShooting)
 		{
 			OwnerComp.GetAIOwner()->SetFocalPoint(OwnerComp.GetBlackboardComponent()->GetValueAsVector("CurrentAimPosition"));
-			Character->PullTrigger();
+			if (bPullTrigger) Character->PullTrigger();
 		}
 		else
 		{

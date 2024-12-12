@@ -50,7 +50,7 @@ public:
 	
 private:
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")
 	bool bDebug = false;
 
 	UPROPERTY(EditAnywhere, Category = "Custom Stimulus System")

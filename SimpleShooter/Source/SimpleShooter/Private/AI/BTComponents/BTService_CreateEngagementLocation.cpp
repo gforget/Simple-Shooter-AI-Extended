@@ -50,6 +50,7 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 		OwnerCompPtr->GetAIOwner()->GetPlayerViewPoint(Location, Rotation);
 		FVector DeltaEyesPosition = Location - OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation();
 
+		// Current Max Distance to target
 		float MaxDistanceFromTarget = 0.0f;
 		
 		for (int i=0; i<nbVerticalPoints; i++)
@@ -140,15 +141,22 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 			
 				FVector DeltaToPosition = AllValidPositions[i] - (OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation() + FootAnchorPosition);
 				float DistanceToNewPosition = DeltaToPosition.Length();
-			
+
+				//Desired Distance Score
 				float DesiredXYScore = 1.0f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
-				float DistanceToEnemy = 1.0f-(DistancePointXYToEnemy/MaxDistanceFromTarget);
+				
+				//TODO: Might have a better way to deal with high distance uncertainty
+				//all the point return 0 because the enemy is too far, take the closest point known so far so you get closer to the enemy
+				float DistanceToEnemy = 1.0f-(DistancePointXYToEnemy/MaxDistanceFromTarget); // Max distance to target is the highest distance among the valid point
+				
 				float AggregatedDistanceToEnemyScore = DesiredXYScore*0.5f + DistanceToEnemy*0.5f;
 				AggregatedDistanceToEnemyScore = AggregatedDistanceToEnemyCurve.GetRichCurveConst()->Eval(AggregatedDistanceToEnemyScore);
-				
+
+				//Higher Ground Score
 				float HigherGroundScore = FMath::Min(FMath::Max(0.0f, ZDistance), HigherGroundDistance)/HigherGroundDistance;
 				HigherGroundScore = HigherGroundDistanceCurve.GetRichCurveConst()->Eval(HigherGroundScore);
-				
+
+				//Distance from current position score
 				float DistanceFromCurrentPositionScore = FMath::Min(DistanceToNewPosition, MinDistanceFromCurrentPosition) / MinDistanceFromCurrentPosition;
 				DistanceFromCurrentPositionScore = MinDistanceFromCurrentPositionCurve.GetRichCurveConst()->Eval(DistanceFromCurrentPositionScore);
 				

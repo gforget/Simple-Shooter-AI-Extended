@@ -39,6 +39,8 @@ void AShooterAIController::Tick(float DeltaTime)
 
 	if (bDebug)
 	{
+		if (!GetWorld() || !GetPawn()) return;
+		
 		DrawDebugSphere(
 			GetWorld(),
 			GetPawn()->GetActorLocation(),
