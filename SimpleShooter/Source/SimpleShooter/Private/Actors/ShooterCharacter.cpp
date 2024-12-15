@@ -2,7 +2,7 @@
 
 #include "SimpleShooter/Public/Actors/ShooterCharacter.h"
 #include "Actors/Gun.h"
-#include "GameMode/SinglePlayer/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/RotationViewPointRef.h"
@@ -32,15 +32,7 @@ void AShooterCharacter::BeginPlay()
 	
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
-
-	//Add OHHealthBar to the Only player instantiated
-	//TODO: when multiplayer arrive, find a way to do this on every player controller
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if (GetController()->GetUniqueID() != PlayerController->GetUniqueID())
-	{
-		Cast<AShooterPlayerController>(PlayerController)->AddOHHealthBar(this);
-	}
-
+	
 	NavMeshUtility = NewObject<UNavMeshUtility>(GetTransientPackage(), UNavMeshUtility::StaticClass());
 
 	VSShooterCharacter = GetWorld()->SpawnActor<AVisualStimuli_ShooterCharacter>(
@@ -61,11 +53,11 @@ void AShooterCharacter::BeginPlay()
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 
-	Cast<AShooterGameMode>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
+	Cast<ASP_ShooterGameMode>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
 
-	if (ASP_KillEmAllGameMode* KillEmAllGameMode = Cast<ASP_KillEmAllGameMode>(GetWorld()->GetAuthGameMode()))
+	if (ASP_ShooterGameMode* ShooterGameMode = Cast<ASP_ShooterGameMode>(GetWorld()->GetAuthGameMode()))
 	{
-		KillEmAllGameMode->AddShooterCharacterCount(this);
+		ShooterGameMode->AddShooterCharacterCount(this);
 	}
 }
 
@@ -143,7 +135,6 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
 	AActor* DamageCauser)
 {
-	
 	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
@@ -360,4 +351,3 @@ ARotationViewPointRef* AShooterCharacter::GetRotationViewPointRef()
 {
 	return RotationViewPointRef;
 }
-

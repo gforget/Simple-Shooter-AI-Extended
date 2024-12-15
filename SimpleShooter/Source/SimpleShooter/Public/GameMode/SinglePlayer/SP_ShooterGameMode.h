@@ -7,7 +7,7 @@
 #include "Actors/HealthPack.h"
 #include "Actors/Waypoint.h"
 #include "GameFramework/GameMode.h"
-#include "ShooterGameMode.generated.h"
+#include "SP_ShooterGameMode.generated.h"
 
 /**
  * 
@@ -20,17 +20,19 @@ class ASpawningPoint;
 class AHealthPack;
 
 UCLASS()
-class SIMPLESHOOTER_API AShooterGameMode : public AGameModeBase
+class SIMPLESHOOTER_API ASP_ShooterGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
 
-	AShooterGameMode();
+	ASP_ShooterGameMode();
 
 	UFUNCTION()
 	virtual void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter);
 
+	virtual void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister);
+	
 	UPROPERTY(EditDefaultsOnly)
 	bool SpawnEnemy = true;
 	

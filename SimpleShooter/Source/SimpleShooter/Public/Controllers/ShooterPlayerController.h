@@ -11,6 +11,7 @@
  */
 class AShooterCharacter;
 class UPlayerHUD;
+class UGameModeHUD;
 
 UCLASS()
 class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
@@ -20,10 +21,13 @@ class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 public:
 	AShooterPlayerController();
 	
-	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
+	void GameOver(TSubclassOf<UUserWidget> EndScreenClass);
 	void AddOHHealthBar(AShooterCharacter* AssignedCharacter);
+
+	void InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass);
 	
 protected:
+	
 	virtual void BeginPlay() override;
 	
 	virtual void OnPossess(APawn* InPawn) override;
@@ -52,5 +56,8 @@ private:
 	float RestartDelay = 5.0f;
 
 	UPROPERTY()
-	UPlayerHUD* HUD;
+	UPlayerHUD* PlayerHUD;
+	
+	UPROPERTY()
+	UGameModeHUD* GameModeHUD;
 };

@@ -2,7 +2,7 @@
 
 
 #include "Actors/Waypoint.h"
-#include "GameMode/SinglePlayer/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 // Sets default values
 AWaypoint::AWaypoint()
@@ -15,7 +15,7 @@ AWaypoint::AWaypoint()
 void AWaypoint::BeginPlay()
 {
 	Super::BeginPlay();
-	AShooterGameMode* GameModeBase = GetWorld()->GetAuthGameMode<AShooterGameMode>();
+	ASP_ShooterGameMode* GameModeBase = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
 	if (GameModeBase != nullptr)
 	{
 		GameModeBase->AddWayPoint(this);

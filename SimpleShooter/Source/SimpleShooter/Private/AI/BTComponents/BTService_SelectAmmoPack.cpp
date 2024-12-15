@@ -7,7 +7,7 @@
 #include "Actors/AmmoPack.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/SinglePlayer/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
 UBTService_SelectAmmoPack::UBTService_SelectAmmoPack()
@@ -30,7 +30,7 @@ void UBTService_SelectAmmoPack::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 AAmmoPack* UBTService_SelectAmmoPack::GetClosestAmmoPack()
 {
 	AAmmoPack* SelectedAmmoPack = nullptr;
-	AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
+	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return SelectedAmmoPack;

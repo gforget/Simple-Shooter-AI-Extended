@@ -12,7 +12,7 @@
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Controllers/ShooterAIController.h"
-#include "GameMode/SinglePlayer/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
 #include "Utility/NavMeshUtility.h"
@@ -109,7 +109,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 					}
 					
 					//Check if it is an enemy
-					const AShooterGameMode* GameMode = Cast<AShooterGameMode>(GetWorld()->GetAuthGameMode());
+					const ASP_ShooterGameMode* GameMode = Cast<ASP_ShooterGameMode>(GetWorld()->GetAuthGameMode());
 					const ETeamRelation TargetTeamRelation = GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterAICharacter->GetTeam());
 
 					if (TargetTeamRelation == ETeamRelation::Ally)

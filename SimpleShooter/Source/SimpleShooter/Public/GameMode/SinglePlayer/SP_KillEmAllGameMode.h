@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameMode/SinglePlayer/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "SP_KillEmAllGameMode.generated.h"
 
 /**
@@ -11,7 +11,7 @@
  */
 class AShooterPlayerController;
 UCLASS()
-class SIMPLESHOOTER_API ASP_KillEmAllGameMode : public AShooterGameMode
+class SIMPLESHOOTER_API ASP_KillEmAllGameMode : public ASP_ShooterGameMode
 {
 	GENERATED_BODY()
 
@@ -19,7 +19,7 @@ public:
 	
 	void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter) override;
 
-	void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister);
+	void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister) override;
 	
 	UPROPERTY(BlueprintReadOnly)
 	TMap<TEnumAsByte<ETeam>, int> TeamCount;

@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "Actors/AmmoPack.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/SinglePlayer/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 UBTTask_ChooseAmmoPack::UBTTask_ChooseAmmoPack()
 {
@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTTask_ChooseAmmoPack::ExecuteTask(UBehaviorTreeComponent& 
 		return EBTNodeResult::Failed;
 	}
 	
-	AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
+	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return EBTNodeResult::Failed;

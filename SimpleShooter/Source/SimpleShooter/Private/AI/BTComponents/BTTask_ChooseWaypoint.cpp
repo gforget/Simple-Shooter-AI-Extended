@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTTask_ChooseWaypoint.h"
 #include "Actors/Waypoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "GameMode/SinglePlayer/ShooterGameMode.h"
+#include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 UBTTask_ChooseWaypoint::UBTTask_ChooseWaypoint()
 {
@@ -14,7 +14,7 @@ UBTTask_ChooseWaypoint::UBTTask_ChooseWaypoint()
 EBTNodeResult::Type UBTTask_ChooseWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-	AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
+	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return EBTNodeResult::Failed;
