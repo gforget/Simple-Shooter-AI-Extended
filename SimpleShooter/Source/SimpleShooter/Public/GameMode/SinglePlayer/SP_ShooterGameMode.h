@@ -32,9 +32,9 @@ public:
 	virtual void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter);
 
 	virtual void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister);
-	
+
 	UPROPERTY(EditDefaultsOnly)
-	bool SpawnEnemy = true;
+	bool bBasicOHHealthBarAssociation = false;
 	
 	TArray<AWaypoint*> GetAllWayPoints();
 	void AddWayPoint(AWaypoint* WayPoint);

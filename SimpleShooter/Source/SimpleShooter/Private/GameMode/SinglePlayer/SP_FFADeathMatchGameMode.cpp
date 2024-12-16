@@ -24,7 +24,7 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 	TArray<AActor*> AllActors;
 	UGameplayStatics::GetAllActorsOfClass(WorldPtr,AActor::StaticClass(),AllActors);
 
-	if (WorldPtr && AllActors.Num() > 0 && SpawnEnemy)
+	if (WorldPtr && AllActors.Num() > 0)
 	{
 		for (int i=0; i<AllActors.Num(); i++)
 		{

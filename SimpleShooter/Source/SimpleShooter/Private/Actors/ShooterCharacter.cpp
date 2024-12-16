@@ -9,7 +9,6 @@
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/ShooterPlayerController.h"
-#include "..\..\Public\GameMode\SinglePlayer\SP_KillEmAllGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
@@ -53,11 +52,21 @@ void AShooterCharacter::BeginPlay()
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 
-	Cast<ASP_ShooterGameMode>(GetWorld()->GetAuthGameMode())->RegisterEvent(this);
-
 	if (ASP_ShooterGameMode* ShooterGameMode = Cast<ASP_ShooterGameMode>(GetWorld()->GetAuthGameMode()))
 	{
+		ShooterGameMode->RegisterEvent(this);
 		ShooterGameMode->AddShooterCharacterCount(this);
+
+		if (ShooterGameMode->bBasicOHHealthBarAssociation)
+		{
+			if (AShooterPlayerController* PlayerController = Cast<AShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+			{
+				if (Cast<AShooterCharacter>(PlayerController->GetPawn()) != this)
+				{
+					PlayerController->AddOHHealthBar(this);
+				}
+			}
+		}
 	}
 }
 

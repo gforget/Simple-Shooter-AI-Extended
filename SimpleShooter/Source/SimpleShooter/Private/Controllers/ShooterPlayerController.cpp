@@ -25,6 +25,7 @@ void AShooterPlayerController::BeginPlay()
 void AShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	
 	if (PlayerHUD == nullptr)
 	{
 		PlayerHUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
@@ -45,6 +46,9 @@ void AShooterPlayerController::OnPossess(APawn* InPawn)
 void AShooterPlayerController::GameOver(TSubclassOf<UUserWidget> EndScreenClass)
 {
 	GameHasEnded(GetPawn());
+	
+	PlayerHUD->RemoveFromParent();
+	GameModeHUD->RemoveFromParent();
 	
 	UUserWidget* EndScreenWidget = CreateWidget(this, EndScreenClass);
 	if (EndScreenWidget != nullptr)

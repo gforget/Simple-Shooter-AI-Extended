@@ -4,31 +4,33 @@
 
 #include "CoreMinimal.h"
 #include "SP_ShooterGameMode.h"
-#include "SP_FFADeathMatchGameMode.generated.h"
+#include "SP_TeamDeathMatchGameMode.generated.h"
 
 /**
  * 
  */
 class UGameModeHUD;
 UCLASS()
-class SIMPLESHOOTER_API ASP_FFADeathMatchGameMode : public ASP_ShooterGameMode
+class SIMPLESHOOTER_API ASP_TeamDeathMatchGameMode : public ASP_ShooterGameMode
 {
 	GENERATED_BODY()
 	
 public:
-	ASP_FFADeathMatchGameMode();
+	ASP_TeamDeathMatchGameMode();
 	
 	void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter) override;
 	void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister) override;
 
 	UPROPERTY(BlueprintReadOnly)
-	int NbShooterAlive;
+	TMap<TEnumAsByte<ETeam>, int> TeamCount;
 	
 protected:
 	void BeginPlay();
 	
 private:
-	void EndGame();
+	void EndGame(ETeam TeamWin);
+
+	ETeam PlayerTeam = ETeam::BlueTeam;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameModeHUD> GameModeHUDClass;
@@ -39,5 +41,3 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> LoseScreenClass;
 };
-
-
