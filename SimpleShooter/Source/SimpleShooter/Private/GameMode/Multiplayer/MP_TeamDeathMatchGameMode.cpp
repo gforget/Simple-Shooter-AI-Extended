@@ -85,10 +85,10 @@ void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 
 		if (ShooterCharacter != nullptr)
 		{
-			if (AMP_TeamDeathMatchGameState* TeamDeathMatchGameState = Cast<AMP_TeamDeathMatchGameState>(GetWorld()->GetGameState()))
-			{
-				TeamDeathMatchGameState->AddShooterCharacterCount(ShooterCharacter);
-			}
+			// if (AMP_TeamDeathMatchGameState* TeamDeathMatchGameState = Cast<AMP_TeamDeathMatchGameState>(GetWorld()->GetGameState()))
+			// {
+			// 	TeamDeathMatchGameState->AddShooterCharacterCount(ShooterCharacter);
+			// }
 			
 			if (AMP_ShooterPlayerController* ShooterPlayerController = Cast<AMP_ShooterPlayerController>(NewPlayer))
 			{

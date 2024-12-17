@@ -48,12 +48,9 @@ void AMP_ShooterCharacter::BeginPlay()
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 
 	//Only add the proxy and not the replicated characters
-	if (!HasAuthority())
+	if (AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState()))
 	{
-		if (AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState()))
-		{
-			GameState->AddShooterCharacterCount(this);
-		}
+		GameState->AddShooterCharacterCount(this);
 	}
 }
 
