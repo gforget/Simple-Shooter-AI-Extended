@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ActorComponents/TeamManager.h"
 #include "GameFramework/GameState.h"
 #include "ShooterGameState.generated.h"
 
+class UGameModeHUD;
+class AMP_ShooterCharacter;
 class AShooterPlayerState;
 /**
  * 
@@ -17,9 +18,14 @@ class SIMPLESHOOTER_API AShooterGameState : public AGameState
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, Category="Main Functions")
-	TArray<AShooterPlayerState*> ReplaceTeamInPlayerState(TArray<AShooterPlayerState*> AllPlayerStates, int IndexPlayerState, TEnumAsByte<ETeam> NewTeam);
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UGameModeHUD> GameModeHUDClass;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> WinScreenClass;
 
-	UFUNCTION(BlueprintCallable, Category="Main Functions")
-	TArray<FBotData> ReplaceTeamInBotDatasArray(TArray<FBotData> BotDatasArray, int IndexBot, TEnumAsByte<ETeam> NewTeam);
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> LoseScreenClass;
+	
+	virtual void AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister);
 };

@@ -6,6 +6,8 @@
 #include "Actors/MP_ShooterCharacter.h"
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
+#include "GameMode/Multiplayer/ShooterGameState.h"
+#include "UI/GameModeHUD.h"
 #include "UI/MP_OHHealthBar.h"
 #include "UI/PlayerHUD.h"
 
@@ -22,6 +24,12 @@ void AMP_ShooterPlayerController::AddOHHealthBar(AMP_ShooterCharacter* AssignedC
 	UMP_OHHealthBar* OHHealthBar = Cast<UMP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
 	OHHealthBar->AddToViewport();
 	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
+}
+
+void AMP_ShooterPlayerController::InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass)
+{
+	GameModeHUD = Cast<UGameModeHUD>(CreateWidget(this, GameModeHUDClass));
+	GameModeHUD->AddToViewport();
 }
 
 void AMP_ShooterPlayerController::BeginPlay()
@@ -63,6 +71,21 @@ void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
 				else if (ShooterSpectator != nullptr)
 				{
 					HUD->OnSpectatorModeEvent();
+				}
+			}
+
+			if (GameModeHUD == nullptr)
+			{
+				if (AShooterGameState* ShooterGameState = Cast<AShooterGameState>(GetWorld()->GetGameState()))
+				{
+					if (ShooterGameState->GameModeHUDClass != nullptr)
+					{
+						GameModeHUD = Cast<UGameModeHUD>(CreateWidget(this, ShooterGameState->GameModeHUDClass));
+						if (GameModeHUD != nullptr)
+						{
+							GameModeHUD->AddToViewport();
+						}
+					}
 				}
 			}
 		}

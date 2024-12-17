@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Controllers/MP_ShooterPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameMode/Multiplayer/ShooterGameState.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 
@@ -33,7 +34,6 @@ void AMP_ShooterCharacter::BeginPlay()
 
 	if (!IsLocallyControlled())
 	{
-		//ADD OverHead Healthbar to the player view
 		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 		Cast<AMP_ShooterPlayerController>(PlayerController)->AddOHHealthBar(this);
 	}
@@ -46,6 +46,15 @@ void AMP_ShooterCharacter::BeginPlay()
 
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+
+	//Only add the proxy and not the replicated characters
+	if (!HasAuthority())
+	{
+		if (AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState()))
+		{
+			GameState->AddShooterCharacterCount(this);
+		}
+	}
 }
 
 void AMP_ShooterCharacter::PostActorCreated()
@@ -331,6 +340,11 @@ void AMP_ShooterCharacter::MulticastDeath_Implementation()
 bool AMP_ShooterCharacter::IsDead() const
 {
 	return Dead;
+}
+
+ETeam AMP_ShooterCharacter::GetTeam() const
+{
+	return Team;
 }
 
 void AMP_ShooterCharacter::PerformPullTrigger()

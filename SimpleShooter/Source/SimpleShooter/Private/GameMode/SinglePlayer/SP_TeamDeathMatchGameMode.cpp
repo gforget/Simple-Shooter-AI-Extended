@@ -4,7 +4,6 @@
 #include "GameMode/SinglePlayer/SP_TeamDeathMatchGameMode.h"
 
 #include "Actors/ShooterCharacter.h"
-#include "Actors/ShooterSpectatorPawn.h"
 #include "Actors/SpawningPoint.h"
 #include "Controllers/ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"

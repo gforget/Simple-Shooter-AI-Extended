@@ -10,6 +10,7 @@
  * 
  */
 
+class UGameModeHUD;
 class UPlayerHUD;
 class AMP_ShooterCharacter;
 
@@ -22,6 +23,7 @@ public:
 	AMP_ShooterPlayerController();
 	void AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter);
 	
+	void InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass);
 protected:
 	
 	virtual void OnPossess(APawn* InPawn) override;
@@ -39,4 +41,7 @@ private:
 
 	UPROPERTY()
 	UPlayerHUD* HUD;
+	
+	UPROPERTY()
+	UGameModeHUD* GameModeHUD;
 };

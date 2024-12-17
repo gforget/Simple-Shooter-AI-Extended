@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActorComponents/TeamManager.h"
 #include "GameFramework/GameMode.h"
 #include "MP_ShooterGameMode.generated.h"
 
@@ -26,9 +27,6 @@ public:
 
 	UFUNCTION()
 	virtual void OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter);
-
-	UPROPERTY(EditDefaultsOnly)
-	bool SpawnEnemy = true;
 	
 	TArray<AMP_Waypoint*> GetAllWayPoints();
 	void AddWayPoint(AMP_Waypoint* WayPoint);

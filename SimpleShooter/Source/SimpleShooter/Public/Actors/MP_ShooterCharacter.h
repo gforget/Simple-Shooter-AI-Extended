@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActorComponents/TeamManager.h"
 #include "GameFramework/Character.h"
 #include "MP_ShooterCharacter.generated.h"
 
@@ -108,6 +109,8 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 	
+	UFUNCTION(BlueprintPure)
+	ETeam GetTeam() const;
 protected:
 	
 	//Pull Trigger RPC
@@ -167,6 +170,8 @@ protected:
 	void UpdateControlRotation(const FRotator& NewRotation);
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<ETeam> Team = ETeam::NoTeam;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;

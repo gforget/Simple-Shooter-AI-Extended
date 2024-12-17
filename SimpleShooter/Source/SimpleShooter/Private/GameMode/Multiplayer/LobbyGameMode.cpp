@@ -12,7 +12,7 @@ void ALobbyGameMode::StartMultiplayerGame(FString LevelName)
 {
 	if (HasAuthority())
 	{
-		FString LevelPath = "/Game/Levels/";
+		FString LevelPath = "/Game/Levels/Multiplayer/";
 		LevelPath.Append(LevelName);
 		LevelPath.Append("?listen");
 		
