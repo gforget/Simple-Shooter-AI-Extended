@@ -29,4 +29,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
 	EAllianceMode GetAllianceModeEnumFromString(FString StringValue);
+	
+	UFUNCTION(BlueprintCallable, Category="Main Functions")
+	bool ValidateTeamMatchUp(TArray<AShooterPlayerState*> PlayerStateArray, TArray<FBotData> BotDataArray);
 };

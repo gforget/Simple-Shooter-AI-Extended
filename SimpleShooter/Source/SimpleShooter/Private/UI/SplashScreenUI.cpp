@@ -5,6 +5,7 @@
 
 #include "Components/VerticalBox.h"
 #include "GameMode/MainGameInstance.h"
+#include "GameMode/Multiplayer/ShooterPlayerState.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -89,5 +90,43 @@ EAllianceMode USplashScreenUI::GetAllianceModeEnumFromString(FString StringValue
 	}
 
 	return EAllianceMode::None;
+}
+
+bool USplashScreenUI::ValidateTeamMatchUp(TArray<AShooterPlayerState*> PlayerStateArray, TArray<FBotData> BotDataArray)
+{
+	bool bFoundBlueMember = false;
+	bool bFoundRedMember = false;
+	
+	for (int i=0; i < PlayerStateArray.Num(); i++)
+	{
+		if (!bFoundBlueMember)
+		{
+			bFoundBlueMember = PlayerStateArray[i]->Team == ETeam::BlueTeam;
+		}
+
+		if (!bFoundRedMember)
+		{
+			bFoundRedMember = PlayerStateArray[i]->Team == ETeam::RedTeam;
+		}
+
+		if (bFoundBlueMember && bFoundRedMember) break;
+	}
+
+	for (int i=0; i < BotDataArray.Num(); i++)
+	{
+		if (!bFoundBlueMember)
+		{
+			bFoundBlueMember = BotDataArray[i].Team == ETeam::BlueTeam;
+		}
+
+		if (!bFoundRedMember)
+		{
+			bFoundRedMember = BotDataArray[i].Team == ETeam::RedTeam;
+		}
+		
+		if (bFoundBlueMember && bFoundRedMember) break;
+	}
+	
+	return bFoundBlueMember && bFoundRedMember;
 }
 
