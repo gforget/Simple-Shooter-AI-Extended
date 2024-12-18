@@ -69,4 +69,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void FeedPlayerStateDataAndBotData(TArray<AShooterPlayerState*> PlayerStateArray, TArray<FBotData> BotDataArray);
+
+	//TODO: will have to create session implementation in C++ entirely later
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Main Events")
+	void CallBPLeaveSession();
 };

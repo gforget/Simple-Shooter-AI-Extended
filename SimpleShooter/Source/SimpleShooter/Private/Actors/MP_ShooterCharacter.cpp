@@ -46,11 +46,11 @@ void AMP_ShooterCharacter::BeginPlay()
 
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
-
-	//Only add the proxy and not the replicated characters
+	
 	if (AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState()))
 	{
 		GameState->AddShooterCharacterCount(this);
+		GameState->RegisterEvent(this);
 	}
 }
 
@@ -329,7 +329,6 @@ void AMP_ShooterCharacter::MulticastDeath_Implementation()
 		DetachFromControllerPendingDestroy();
 
 		//TODO: Implement spectator mode
-
 		OnDeadEvent.Broadcast(this);
 	}
 }

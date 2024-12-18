@@ -3,6 +3,9 @@
 
 #include "GameMode/Multiplayer/MP_TeamDeathMatchGameState.h"
 #include "Actors/MP_ShooterCharacter.h"
+#include "Controllers/MP_ShooterPlayerController.h"
+#include "GameMode/Multiplayer/MP_ShooterGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 void AMP_TeamDeathMatchGameState::AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister)
 {
@@ -12,4 +15,40 @@ void AMP_TeamDeathMatchGameState::AddShooterCharacterCount(AMP_ShooterCharacter*
 	}
 		
 	TeamCount[ShooterCharacterToRegister->GetTeam()]++;
+}
+
+void AMP_TeamDeathMatchGameState::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)
+{
+	Super::OnShooterCharacterDeath(DeadShooterCharacter);
+	
+	TeamCount[DeadShooterCharacter->GetTeam()]--;
+	if (TeamCount[DeadShooterCharacter->GetTeam()] == 0)
+	{
+		const ETeam WinningTeam = DeadShooterCharacter->GetTeam() == ETeam::RedTeam ? ETeam::BlueTeam : ETeam::RedTeam; 
+		EndGame(WinningTeam);
+	}
+}
+
+void AMP_TeamDeathMatchGameState::EndGame(ETeam WinningTeam)
+{
+	if (AMP_ShooterPlayerController* LocalShooterController = Cast<AMP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+	{
+		if (WinningTeam == ETeam::BlueTeam)
+		{
+			LocalShooterController->GameOver(BlueWinScreenClass);
+		}
+		else
+		{
+			LocalShooterController->GameOver(RedWinScreenClass);
+		}
+	}
+
+	if (HasAuthority())
+	{
+		
+		if (AMP_ShooterGameMode* ShooterGameMode = Cast<AMP_ShooterGameMode>(GetWorld()->GetAuthGameMode()))
+		{
+			ShooterGameMode->CallLeaveSession();
+		}
+	}
 }

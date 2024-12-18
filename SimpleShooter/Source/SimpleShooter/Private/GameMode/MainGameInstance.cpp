@@ -2,7 +2,6 @@
 
 
 #include "GameMode/MainGameInstance.h"
-
 #include "GameMode/Multiplayer/ShooterPlayerState.h"
 
 void UMainGameInstance::FeedPlayerStateDataAndBotData(
@@ -22,4 +21,8 @@ void UMainGameInstance::FeedPlayerStateDataAndBotData(
 	}
 
 	BotDataStructs = BotDataArray;
+}
+
+void UMainGameInstance::CallBPLeaveSession_Implementation()
+{
 }

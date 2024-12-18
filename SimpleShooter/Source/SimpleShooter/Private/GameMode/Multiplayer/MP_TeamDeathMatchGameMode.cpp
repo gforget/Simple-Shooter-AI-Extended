@@ -11,11 +11,6 @@
 #include "GameMode/Multiplayer/ShooterPlayerState.h"
 #include "Kismet/GameplayStatics.h"
 
-AMP_TeamDeathMatchGameMode::AMP_TeamDeathMatchGameMode()
-{
-	bUseSeamlessTravel = true;
-}
-
 void AMP_TeamDeathMatchGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -85,11 +80,6 @@ void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 
 		if (ShooterCharacter != nullptr)
 		{
-			// if (AMP_TeamDeathMatchGameState* TeamDeathMatchGameState = Cast<AMP_TeamDeathMatchGameState>(GetWorld()->GetGameState()))
-			// {
-			// 	TeamDeathMatchGameState->AddShooterCharacterCount(ShooterCharacter);
-			// }
-			
 			if (AMP_ShooterPlayerController* ShooterPlayerController = Cast<AMP_ShooterPlayerController>(NewPlayer))
 			{
 				ShooterPlayerController->Possess(ShooterCharacter);
@@ -132,29 +122,4 @@ void AMP_TeamDeathMatchGameMode::FillSpawningPoints()
 		}
 		SpawningPointsHaveBeenFilled = true;
 	}
-}
-
-void AMP_TeamDeathMatchGameMode::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)
-{
-	// TeamCount[DeadShooterCharacter->GetTeam()]--;
-	// if (TeamCount[DeadShooterCharacter->GetTeam()] == 0)
-	// {
-	// 	const ETeam WinningTeam = DeadShooterCharacter->GetTeam() == ETeam::RedTeam ? ETeam::BlueTeam : ETeam::RedTeam; 
-	// 	EndGame(WinningTeam);
-	// }
-}
-
-void AMP_TeamDeathMatchGameMode::EndGame(ETeam TeamWin)
-{
-	// if (AMP_ShooterPlayerController* PlayerController = Cast<AMP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
-	// {
-	// 	if (PlayerTeam == TeamWin)
-	// 	{
-	// 		PlayerController->GameOver(WinScreenClass);
-	// 	}
-	// 	else
-	// 	{
-	// 		PlayerController->GameOver(LoseScreenClass);
-	// 	}
-	// }
 }

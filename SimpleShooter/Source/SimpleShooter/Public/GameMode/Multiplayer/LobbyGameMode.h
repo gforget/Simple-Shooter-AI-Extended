@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MP_GeneralGameMode.h"
 #include "GameFramework/GameMode.h"
 #include "LobbyGameMode.generated.h"
 
@@ -10,13 +11,7 @@
  * 
  */
 UCLASS()
-class SIMPLESHOOTER_API ALobbyGameMode : public AGameMode
+class SIMPLESHOOTER_API ALobbyGameMode : public AMP_GeneralGameMode
 {
 	GENERATED_BODY()
-	
-public:
-	ALobbyGameMode();
-
-	UFUNCTION(BlueprintCallable)
-	void StartMultiplayerGame(FString LevelName);
 };

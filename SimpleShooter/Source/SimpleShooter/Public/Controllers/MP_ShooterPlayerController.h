@@ -21,6 +21,8 @@ class SIMPLESHOOTER_API AMP_ShooterPlayerController : public APlayerController
 
 public:
 	AMP_ShooterPlayerController();
+	
+	void GameOver(TSubclassOf<UUserWidget> EndScreenClass);
 	void AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter);
 	
 	void InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass);
@@ -40,8 +42,10 @@ private:
 	TSubclassOf<UUserWidget> OHHealthBarClass;
 
 	UPROPERTY()
-	UPlayerHUD* HUD;
+	UPlayerHUD* PlayerHUD;
 	
 	UPROPERTY()
 	UGameModeHUD* GameModeHUD;
+
+
 };

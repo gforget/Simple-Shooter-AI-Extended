@@ -15,10 +15,6 @@ UCLASS()
 class SIMPLESHOOTER_API AMP_TeamDeathMatchGameMode : public AMP_ShooterGameMode
 {
 	GENERATED_BODY()
-public:
-	AMP_TeamDeathMatchGameMode();
-	
-	void OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter) override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -28,7 +24,5 @@ protected:
 
 private:
 	bool SpawningPointsHaveBeenFilled = false;
-	void FillSpawningPoints();
-
-	void EndGame(ETeam TeamWin);
+	void FillSpawningPoints();;
 };

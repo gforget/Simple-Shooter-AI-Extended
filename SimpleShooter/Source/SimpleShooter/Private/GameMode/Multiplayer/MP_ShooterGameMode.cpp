@@ -5,6 +5,7 @@
 #include "Actors/MP_AmmoPack.h"
 #include "Actors/MP_SpawningPoint.h"
 #include "Actors/MP_ShooterCharacter.h"
+#include "GameMode/MainGameInstance.h"
 
 AMP_ShooterGameMode::AMP_ShooterGameMode()
 {
@@ -14,6 +15,19 @@ AMP_ShooterGameMode::AMP_ShooterGameMode()
 void AMP_ShooterGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AMP_ShooterGameMode::CallLeaveSession()
+{
+	GetWorldTimerManager().SetTimer(RestartTimer, this, &AMP_ShooterGameMode::LeaveSession, RestartDelay);
+}
+
+void AMP_ShooterGameMode::LeaveSession()
+{
+	if (UMainGameInstance* MainGameInstance = Cast<UMainGameInstance>(GetWorld()->GetGameInstance()))
+	{
+		MainGameInstance->CallBPLeaveSession();
+	}
 }
 
 void AMP_ShooterGameMode::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)

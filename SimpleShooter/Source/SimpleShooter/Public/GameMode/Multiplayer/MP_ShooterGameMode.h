@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MP_GeneralGameMode.h"
 #include "ActorComponents/TeamManager.h"
 #include "GameFramework/GameMode.h"
 #include "MP_ShooterGameMode.generated.h"
@@ -18,7 +19,7 @@ class AMP_HealthPack;
 class AMP_Waypoint;
 
 UCLASS()
-class SIMPLESHOOTER_API AMP_ShooterGameMode : public AGameMode
+class SIMPLESHOOTER_API AMP_ShooterGameMode : public AMP_GeneralGameMode
 {
 	GENERATED_BODY()
 
@@ -42,6 +43,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
 
+	void CallLeaveSession();
+	
 protected:
 
 	virtual void BeginPlay() override;
@@ -63,4 +66,12 @@ protected:
 	
 	UPROPERTY()
 	TArray<AMP_HealthPack*> AllHealthPacks;
+
+private:
+	FTimerHandle RestartTimer;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float RestartDelay = 5.0f;
+	
+	void LeaveSession();
 };

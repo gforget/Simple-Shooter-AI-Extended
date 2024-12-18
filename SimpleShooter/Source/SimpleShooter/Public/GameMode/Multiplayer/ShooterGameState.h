@@ -18,14 +18,14 @@ class SIMPLESHOOTER_API AShooterGameState : public AGameState
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Wdiget Classes")
 	TSubclassOf<UGameModeHUD> GameModeHUDClass;
 	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> WinScreenClass;
-
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> LoseScreenClass;
+	UFUNCTION()
+	virtual void OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter);
 	
 	virtual void AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister);
+
+	void RegisterEvent (AMP_ShooterCharacter* ShooterCharacterRef);
+	
 };

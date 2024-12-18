@@ -19,6 +19,20 @@ AMP_ShooterPlayerController::AMP_ShooterPlayerController()
 	bReplicates = true;
 }
 
+void AMP_ShooterPlayerController::GameOver(TSubclassOf<UUserWidget> EndScreenClass)
+{
+	GameHasEnded(GetPawn());
+	
+	PlayerHUD->RemoveFromParent();
+	GameModeHUD->RemoveFromParent();
+	
+	UUserWidget* EndScreenWidget = CreateWidget(this, EndScreenClass);
+	if (EndScreenWidget != nullptr)
+	{
+		EndScreenWidget->AddToViewport();
+	}
+}
+
 void AMP_ShooterPlayerController::AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter)
 {
 	UMP_OHHealthBar* OHHealthBar = Cast<UMP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
@@ -53,24 +67,24 @@ void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
 
 		if (ShooterCharacter != nullptr || ShooterSpectator != nullptr)
 		{
-			if (HUD == nullptr)
+			if (PlayerHUD == nullptr)
 			{
-				HUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
-				if (HUD != nullptr)
+				PlayerHUD = Cast<UPlayerHUD>(CreateWidget(this, HUDScreenClass));
+				if (PlayerHUD != nullptr)
 				{
-					HUD->AddToViewport();
+					PlayerHUD->AddToViewport();
 				}
 			}
 		
-			if (HUD != nullptr)
+			if (PlayerHUD != nullptr)
 			{
 				if (ShooterCharacter != nullptr)
 				{
-					HUD->OnPlayerModeEvent();
+					PlayerHUD->OnPlayerModeEvent();
 				}
 				else if (ShooterSpectator != nullptr)
 				{
-					HUD->OnSpectatorModeEvent();
+					PlayerHUD->OnSpectatorModeEvent();
 				}
 			}
 
