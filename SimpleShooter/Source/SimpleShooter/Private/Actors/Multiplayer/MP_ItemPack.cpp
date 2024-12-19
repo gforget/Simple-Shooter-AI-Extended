@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/MP_ItemPack.h"
-#include "Actors/MP_ShooterCharacter.h"
+#include "Actors/Multiplayer/MP_ItemPack.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values

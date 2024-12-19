@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/Multiplayer/MP_FFADeathMatchGameState.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_FFADeathMatchGameState.h"
 
-#include "Actors/MP_ShooterCharacter.h"
-#include "Controllers/MP_ShooterPlayerController.h"
-#include "GameMode/Multiplayer/MP_ShooterGameMode.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
+#include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 
 void AMP_FFADeathMatchGameState::AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister)
 {

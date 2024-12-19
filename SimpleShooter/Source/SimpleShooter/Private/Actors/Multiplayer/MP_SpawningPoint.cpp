@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/MP_SpawningPoint.h"
+#include "Actors/Multiplayer/MP_SpawningPoint.h"
 #include "Components/BillboardComponent.h"
 
 // Sets default values

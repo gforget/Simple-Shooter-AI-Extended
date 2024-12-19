@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "OHHealthBar.generated.h"
+#include "SP_OHHealthBar.generated.h"
 
 class UProgressBar;
 class AShooterCharacter;
@@ -15,7 +15,7 @@ class UOverlay;
  */
 
 UCLASS()
-class SIMPLESHOOTER_API UOHHealthBar : public UUserWidget
+class SIMPLESHOOTER_API USP_OHHealthBar : public UUserWidget
 {
 	GENERATED_BODY()
 	

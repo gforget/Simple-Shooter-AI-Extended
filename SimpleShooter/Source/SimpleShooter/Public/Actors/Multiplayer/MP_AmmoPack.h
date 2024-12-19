@@ -3,20 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MP_ItemPack.h"
-#include "MP_HealthPack.generated.h"
-class AMP_ShooterCharacter;
+#include "Actors/Multiplayer/MP_ItemPack.h"
+#include "MP_AmmoPack.generated.h"
+
 UCLASS()
-class SIMPLESHOOTER_API AMP_HealthPack : public AMP_ItemPack
+class SIMPLESHOOTER_API AMP_AmmoPack : public AMP_ItemPack
 {
 	GENERATED_BODY()
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 public:
 	UPROPERTY(EditDefaultsOnly)
-	float HealAmount = 10.0f;
+	int AmmoAmount = 20;
 
 private:
 	virtual bool PackValidation(AMP_ShooterCharacter* TargetShooterCharacter) override;

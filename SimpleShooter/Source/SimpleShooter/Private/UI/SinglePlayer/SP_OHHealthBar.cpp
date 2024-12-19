@@ -1,9 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/MP_OHHealthBar.h"
+#include "UI/SinglePlayer/SP_OHHealthBar.h"
 
-#include "Actors/MP_ShooterCharacter.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Actors/ShooterCharacter.h"
 #include "Components/CanvasPanelSlot.h"
@@ -11,18 +10,19 @@
 #include "Components/ProgressBar.h"
 #include "GameFramework/SpectatorPawn.h"
 
-bool UMP_OHHealthBar::Initialize()
+
+bool USP_OHHealthBar::Initialize()
 {
 	return Super::Initialize();
 }
 
-void UMP_OHHealthBar::InitializeAssignedCharacterAndPlayerController(AMP_ShooterCharacter* AssignedCharacterRef)
+void USP_OHHealthBar::InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef)
 {
 	AssignedCharacter = AssignedCharacterRef;
-	AssignedCharacter->OnDeadEvent.AddDynamic(this, &UMP_OHHealthBar::OnCharacterDeath);
+	AssignedCharacter->OnDeadEvent.AddDynamic(this, &USP_OHHealthBar::OnCharacterDeath);
 }
 
-void UMP_OHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void USP_OHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	if (AssignedCharacter != nullptr)
@@ -72,9 +72,7 @@ void UMP_OHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 }
 
-void UMP_OHHealthBar::OnCharacterDeath(AMP_ShooterCharacter* DeadCharacter)
+void USP_OHHealthBar::OnCharacterDeath(AShooterCharacter* DeadCharacter)
 {
 	RemoveFromParent();
 }
-
-

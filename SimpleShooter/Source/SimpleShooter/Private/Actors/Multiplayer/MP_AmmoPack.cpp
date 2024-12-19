@@ -1,16 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "Actors/MP_AmmoPack.h"
-#include "Actors/MP_ShooterCharacter.h"
+#include "Actors/Multiplayer/MP_AmmoPack.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
 
 // Called when the game starts or when spawned
 void AMP_AmmoPack::BeginPlay()
 {
 	Super::BeginPlay();
-	// AShooterGameMode* GameModeBase = GetWorld()->GetAuthGameMode<AShooterGameMode>();
-	// if (GameModeBase != nullptr)
-	// {
-	// 	GameModeBase->AddAmmoPack(this);
-	// }
 }
 
 bool AMP_AmmoPack::PackValidation(AMP_ShooterCharacter* TargetShooterCharacter)

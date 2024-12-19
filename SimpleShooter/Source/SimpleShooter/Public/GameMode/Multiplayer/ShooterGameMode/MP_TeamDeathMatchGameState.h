@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
-#include "ShooterGameState.h"
+#include "GameMode/Multiplayer/ShooterGameState.h"
 #include "MP_TeamDeathMatchGameState.generated.h"
 
 /**

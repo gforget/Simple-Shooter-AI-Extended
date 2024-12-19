@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MP_GeneralGameMode.h"
+#include "GameMode/Multiplayer/MP_GeneralGameMode.h"
 #include "ActorComponents/TeamManager.h"
-#include "GameFramework/GameMode.h"
 #include "MP_ShooterGameMode.generated.h"
 
 /**

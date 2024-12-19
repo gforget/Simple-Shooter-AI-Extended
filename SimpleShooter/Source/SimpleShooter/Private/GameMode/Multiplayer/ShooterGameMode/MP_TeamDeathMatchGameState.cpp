@@ -1,11 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/Multiplayer/MP_TeamDeathMatchGameState.h"
-#include "Actors/MP_ShooterCharacter.h"
-#include "Controllers/MP_ShooterPlayerController.h"
-#include "GameMode/Multiplayer/MP_ShooterGameMode.h"
-#include "Kismet/GameplayStatics.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_TeamDeathMatchGameState.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
+#include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 
 void AMP_TeamDeathMatchGameState::AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister)
 {

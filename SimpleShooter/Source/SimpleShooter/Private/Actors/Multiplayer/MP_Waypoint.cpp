@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/MP_Waypoint.h"
+#include "Actors/Multiplayer/MP_Waypoint.h"
 
-#include "GameMode/Multiplayer/MP_ShooterGameMode.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 
 
 // Sets default values

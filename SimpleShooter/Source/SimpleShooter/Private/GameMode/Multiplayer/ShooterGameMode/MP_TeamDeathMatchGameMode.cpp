@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/Multiplayer/MP_TeamDeathMatchGameMode.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_TeamDeathMatchGameMode.h"
 
-#include "Actors/MP_ShooterCharacter.h"
-#include "Actors/MP_SpawningPoint.h"
-#include "Controllers/MP_ShooterPlayerController.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
+#include "Actors/Multiplayer/MP_SpawningPoint.h"
+#include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
 #include "GameMode/Multiplayer/ShooterPlayerState.h"
 

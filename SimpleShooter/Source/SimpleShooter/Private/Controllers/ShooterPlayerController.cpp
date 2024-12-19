@@ -7,8 +7,8 @@
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
 #include "UI/GameModeHUD.h"
-#include "UI/OHHealthBar.h"
 #include "UI/PlayerHUD.h"
+#include "UI/SinglePlayer/SP_OHHealthBar.h"
 
 AShooterPlayerController::AShooterPlayerController()
 {
@@ -61,7 +61,7 @@ void AShooterPlayerController::GameOver(TSubclassOf<UUserWidget> EndScreenClass)
 
 void AShooterPlayerController::AddOHHealthBar(AShooterCharacter* AssignedCharacter)
 {
-	UOHHealthBar* OHHealthBar = Cast<UOHHealthBar>(CreateWidget(this, OHHealthBarClass));
+	USP_OHHealthBar* OHHealthBar = Cast<USP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
 	OHHealthBar->AddToViewport();
 	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
 }

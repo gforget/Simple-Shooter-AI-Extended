@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/Multiplayer/MP_ShooterGameMode.h"
-#include "Actors/MP_AmmoPack.h"
-#include "Actors/MP_SpawningPoint.h"
-#include "Actors/MP_ShooterCharacter.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
+#include "Actors/Multiplayer/MP_AmmoPack.h"
+#include "Actors/Multiplayer/MP_SpawningPoint.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
 #include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 

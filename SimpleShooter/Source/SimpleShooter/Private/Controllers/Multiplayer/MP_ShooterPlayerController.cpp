@@ -1,14 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Controllers/MP_ShooterPlayerController.h"
+#include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 
-#include "Actors/MP_ShooterCharacter.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
 #include "Actors/ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
 #include "GameMode/Multiplayer/ShooterGameState.h"
 #include "UI/GameModeHUD.h"
-#include "UI/MP_OHHealthBar.h"
+#include "UI/Multiplayer/MP_OHHealthBar.h"
 #include "UI/PlayerHUD.h"
 
 AMP_ShooterPlayerController::AMP_ShooterPlayerController()

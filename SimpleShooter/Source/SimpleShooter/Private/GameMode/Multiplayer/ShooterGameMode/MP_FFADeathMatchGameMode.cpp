@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GameMode/Multiplayer/MP_FFADeathMatchGameMode.h"
-#include "Actors/MP_SpawningPoint.h"
-#include "Actors/MP_ShooterCharacter.h"
-#include "Controllers/MP_ShooterPlayerController.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_FFADeathMatchGameMode.h"
+#include "Actors/Multiplayer/MP_SpawningPoint.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
+#include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
 
 AMP_FFADeathMatchGameMode::AMP_FFADeathMatchGameMode()

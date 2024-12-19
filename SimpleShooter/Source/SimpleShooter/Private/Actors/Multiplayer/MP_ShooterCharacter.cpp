@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Actors/MP_ShooterCharacter.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
 
 #include "PlayMontageCallbackProxy.h"
-#include "Actors/MP_Gun.h"
+#include "Actors/Multiplayer/MP_Gun.h"
 #include "Actors/RotationViewPointRef.h"
 #include "Components/CapsuleComponent.h"
-#include "Controllers/MP_ShooterPlayerController.h"
+#include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameMode/Multiplayer/ShooterGameState.h"
 #include "Kismet/KismetSystemLibrary.h"

@@ -3,7 +3,7 @@
 
 #include "GameMode/Multiplayer/ShooterGameState.h"
 
-#include "Actors/MP_ShooterCharacter.h"
+#include "Actors/Multiplayer/MP_ShooterCharacter.h"
 
 void AShooterGameState::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)
 {
