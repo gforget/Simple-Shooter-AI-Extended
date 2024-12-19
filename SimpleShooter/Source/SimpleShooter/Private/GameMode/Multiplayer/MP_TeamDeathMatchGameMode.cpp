@@ -7,40 +7,21 @@
 #include "Actors/MP_SpawningPoint.h"
 #include "Controllers/MP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
-#include "GameMode/Multiplayer/MP_TeamDeathMatchGameState.h"
 #include "GameMode/Multiplayer/ShooterPlayerState.h"
-#include "Kismet/GameplayStatics.h"
+
+AMP_TeamDeathMatchGameMode::AMP_TeamDeathMatchGameMode()
+{
+	FactionManagerComponent->AllianceMode = EAllianceMode::Team;
+}
 
 void AMP_TeamDeathMatchGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	FillSpawningPoints();
-	
-	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Team Alliance = %d"), GameInstance->AllianceMode.GetIntValue());
-
-		for (const TPair<FString, FPlayerStateData>& Pair : GameInstance->PlayerStateDataStructs)
-		{
-			const FString& PlayerId = Pair.Key;
-			const FPlayerStateData& PlayerData = Pair.Value;
-
-			UE_LOG(LogTemp, Warning, TEXT("PlayerId: %s, Team: %d"), *PlayerId, PlayerData.Team.GetIntValue());
-		}
-
-		for (int i=0; i<GameInstance->BotDataStructs.Num(); i++)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Bot Index: %d, Team: %d"), i, GameInstance->BotDataStructs[i].Team.GetIntValue());
-		}
-		
-		UE_LOG(LogTemp, Warning, TEXT("------------------"));
-	}
 }
 
 void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 {
 	Super::OnPostLogin(NewPlayer);
-	FillSpawningPoints();
 	
 	UWorld* WorldPtr = GetWorld();
 	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
@@ -91,35 +72,4 @@ void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 void AMP_TeamDeathMatchGameMode::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);
-}
-
-void AMP_TeamDeathMatchGameMode::FillSpawningPoints()
-{
-	if (!SpawningPointsHaveBeenFilled)
-	{
-		//Gather all spawn point
-		UWorld* WorldPtr = GetWorld();
-		TArray<AActor*> AllActors;
-		UGameplayStatics::GetAllActorsOfClass(WorldPtr,AActor::StaticClass(),AllActors);
-
-		if (WorldPtr && AllActors.Num() > 0)
-		{
-			for (int i=0; i<AllActors.Num(); i++)
-			{
-				if (AMP_SpawningPoint* SpawningPoint = Cast<AMP_SpawningPoint>(AllActors[i]))
-				{
-					AllSpawnPoints.Add(SpawningPoint);
-					if (SpawningPoint->Team == ETeam::RedTeam)
-					{
-						AllRedSpawnPoints.Add(SpawningPoint);
-					}
-					else
-					{
-						AllBlueSpawnPoints.Add(SpawningPoint);
-					}
-				}
-			}
-		}
-		SpawningPointsHaveBeenFilled = true;
-	}
 }

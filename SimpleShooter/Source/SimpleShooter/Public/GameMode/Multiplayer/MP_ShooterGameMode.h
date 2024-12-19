@@ -48,6 +48,7 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
+	virtual void OnPostLogin(AController* NewPlayer) override;
 	
 	UPROPERTY()
 	TArray<AMP_SpawningPoint*> AllSpawnPoints;
@@ -67,6 +68,9 @@ protected:
 	UPROPERTY()
 	TArray<AMP_HealthPack*> AllHealthPacks;
 
+	bool SpawningPointsHaveBeenFilled = false;
+	void FillSpawningPoints();
+	
 private:
 	FTimerHandle RestartTimer;
 	

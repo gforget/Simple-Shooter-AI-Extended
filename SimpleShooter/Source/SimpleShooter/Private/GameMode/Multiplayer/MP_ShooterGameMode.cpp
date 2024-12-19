@@ -6,6 +6,7 @@
 #include "Actors/MP_SpawningPoint.h"
 #include "Actors/MP_ShooterCharacter.h"
 #include "GameMode/MainGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 AMP_ShooterGameMode::AMP_ShooterGameMode()
 {
@@ -15,11 +16,49 @@ AMP_ShooterGameMode::AMP_ShooterGameMode()
 void AMP_ShooterGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	FillSpawningPoints();
+}
+
+void AMP_ShooterGameMode::OnPostLogin(AController* NewPlayer)
+{
+	Super::OnPostLogin(NewPlayer);
+	FillSpawningPoints();
 }
 
 void AMP_ShooterGameMode::CallLeaveSession()
 {
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &AMP_ShooterGameMode::LeaveSession, RestartDelay);
+}
+
+void AMP_ShooterGameMode::FillSpawningPoints()
+{
+	if (!SpawningPointsHaveBeenFilled)
+	{
+		//Gather all spawn point
+		UWorld* WorldPtr = GetWorld();
+		TArray<AActor*> AllActors;
+		UGameplayStatics::GetAllActorsOfClass(WorldPtr,AActor::StaticClass(),AllActors);
+
+		if (WorldPtr && AllActors.Num() > 0)
+		{
+			for (int i=0; i<AllActors.Num(); i++)
+			{
+				if (AMP_SpawningPoint* SpawningPoint = Cast<AMP_SpawningPoint>(AllActors[i]))
+				{
+					AllSpawnPoints.Add(SpawningPoint);
+					if (SpawningPoint->Team == ETeam::RedTeam)
+					{
+						AllRedSpawnPoints.Add(SpawningPoint);
+					}
+					else
+					{
+						AllBlueSpawnPoints.Add(SpawningPoint);
+					}
+				}
+			}
+		}
+		SpawningPointsHaveBeenFilled = true;
+	}
 }
 
 void AMP_ShooterGameMode::LeaveSession()

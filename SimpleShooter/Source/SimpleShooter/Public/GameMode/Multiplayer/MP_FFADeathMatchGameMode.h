@@ -4,25 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "MP_ShooterGameMode.h"
-#include "MP_TeamDeathMatchGameMode.generated.h"
+#include "MP_FFADeathMatchGameMode.generated.h"
 
 /**
  * 
  */
-class UGameModeHUD;
-class AMP_ShooterPlayerController;
 UCLASS()
-class SIMPLESHOOTER_API AMP_TeamDeathMatchGameMode : public AMP_ShooterGameMode
+class SIMPLESHOOTER_API AMP_FFADeathMatchGameMode : public AMP_ShooterGameMode
 {
 	GENERATED_BODY()
-
+	
 public:
-	AMP_TeamDeathMatchGameMode();
+	AMP_FFADeathMatchGameMode();
 	
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void OnPostLogin(AController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
-	
 };

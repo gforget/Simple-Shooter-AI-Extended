@@ -45,7 +45,6 @@ void AMP_TeamDeathMatchGameState::EndGame(ETeam WinningTeam)
 
 	if (HasAuthority())
 	{
-		
 		if (AMP_ShooterGameMode* ShooterGameMode = Cast<AMP_ShooterGameMode>(GetWorld()->GetAuthGameMode()))
 		{
 			ShooterGameMode->CallLeaveSession();
