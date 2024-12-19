@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTService_UpdateGunInfo.h"
 
 #include "AIController.h"
-#include "Actors/Gun.h"
+#include "Actors/SinglePlayer/SP_Gun.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 

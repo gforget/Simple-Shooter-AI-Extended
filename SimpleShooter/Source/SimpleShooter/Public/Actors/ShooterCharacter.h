@@ -8,7 +8,7 @@
 #include "ActorComponents/TeamManager.h"
 #include "ShooterCharacter.generated.h"
 
-class AGun;
+class ASP_Gun;
 class AVisualStimuli_ShooterCharacter;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
@@ -78,7 +78,7 @@ public:
 	FString GetAmmoReserveRatio() const;
 
 	UFUNCTION(BlueprintCallable)
-	AGun* GetGunReference() const;
+	ASP_Gun* GetGunReference() const;
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -154,10 +154,10 @@ private:
 	int AmmoReserve = 20;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AGun> GunClass;
+	TSubclassOf<ASP_Gun> GunClass;
 
 	UPROPERTY()
-	AGun* Gun;
+	ASP_Gun* Gun;
 	
 	UPROPERTY()
 	bool IsReloading = false;

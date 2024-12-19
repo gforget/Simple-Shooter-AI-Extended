@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Gun.generated.h"
+#include "SP_Gun.generated.h"
 
 class ASoundStimuli_ShootingSound;
 class ASoundStimuli_BulletImpactSound;
 UCLASS()
-class SIMPLESHOOTER_API AGun : public AActor
+class SIMPLESHOOTER_API ASP_Gun : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AGun();
+	ASP_Gun();
 
 	
 protected:

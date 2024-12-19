@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SimpleShooter/Public/Actors/ShooterCharacter.h"
-#include "Actors/Gun.h"
+#include "Actors/SinglePlayer/SP_Gun.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
@@ -26,7 +26,7 @@ void AShooterCharacter::BeginPlay()
 	Super::BeginPlay();
 	Health = MaxHealth;
 	
-	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	Gun = GetWorld()->SpawnActor<ASP_Gun>(GunClass);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), PBO_None);
 	
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
@@ -108,7 +108,7 @@ FString AShooterCharacter::GetAmmoReserveRatio() const
 	return FString::FromInt(AmmoReserve) + "/" + FString::FromInt(MaxAmmoReserve); 
 }
 
-AGun* AShooterCharacter::GetGunReference() const
+ASP_Gun* AShooterCharacter::GetGunReference() const
 {
 	return Gun;
 }

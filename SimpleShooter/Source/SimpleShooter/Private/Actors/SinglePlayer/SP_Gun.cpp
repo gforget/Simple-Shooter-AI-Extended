@@ -1,5 +1,5 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "Actors/Gun.h"
+#include "Actors/SinglePlayer/SP_Gun.h"
 
 #include "Actors/RotationViewPointRef.h"
 #include "Actors/ShooterCharacter.h"
@@ -11,7 +11,7 @@
 #include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
-AGun::AGun()
+ASP_Gun::ASP_Gun()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -21,19 +21,19 @@ AGun::AGun()
 	Mesh->SetupAttachment(Root);
 }
 // Called when the game starts or when spawned
-void AGun::BeginPlay()
+void ASP_Gun::BeginPlay()
 {
 	Super::BeginPlay();
 	Ammo = MaxAmmo;
 }
 
 // Called every frame
-void AGun::Tick(float DeltaTime)
+void ASP_Gun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void AGun::PullTrigger()
+void ASP_Gun::PullTrigger()
 {
 	if (!TriggerPulled)
 	{
@@ -51,7 +51,7 @@ void AGun::PullTrigger()
 
 }
 
-void AGun::ReleaseTrigger()
+void ASP_Gun::ReleaseTrigger()
 {
 	if (TriggerPulled)
 	{
@@ -60,7 +60,7 @@ void AGun::ReleaseTrigger()
 	}
 }
 
-void AGun::Fire()
+void ASP_Gun::Fire()
 {
 	AShooterCharacter* CharacterOwner = Cast<AShooterCharacter>(GetOwner());
 	if (CharacterOwner == nullptr)
@@ -117,7 +117,7 @@ void AGun::Fire()
 	}
 }
 
-bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
+bool ASP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 {
 	const AController* OwnerController = GetOwnerController();
 	AShooterCharacter* CharacterOwner = Cast<AShooterCharacter>(GetOwner());
@@ -148,7 +148,7 @@ bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	return GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 }
 
-bool AGun::UseAmmo()
+bool ASP_Gun::UseAmmo()
 {
 	if (Ammo-1 > 0)
 	{
@@ -162,7 +162,7 @@ bool AGun::UseAmmo()
 	}
 }
 
-int AGun::Reload(int AmmoAmount)
+int ASP_Gun::Reload(int AmmoAmount)
 {
 	int LeftOver = 0;
 	
@@ -179,27 +179,27 @@ int AGun::Reload(int AmmoAmount)
 	return LeftOver;
 }
 
-int AGun::GetMaxAmmo() const
+int ASP_Gun::GetMaxAmmo() const
 {
 	return MaxAmmo;
 }
 
-FString AGun::GetAmmoRatio() const
+FString ASP_Gun::GetAmmoRatio() const
 {
 	return FString::FromInt(Ammo) + "/" + FString::FromInt(MaxAmmo); 
 }
 
-float AGun::GetAmmoPercent() const
+float ASP_Gun::GetAmmoPercent() const
 {
 	return (float)Ammo/(float)MaxAmmo;
 }
 
-int AGun::GetAmmoAmount() const
+int ASP_Gun::GetAmmoAmount() const
 {
 	return Ammo;
 }
 
-AController* AGun::GetOwnerController() const
+AController* ASP_Gun::GetOwnerController() const
 {
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	if (OwnerPawn == nullptr) return nullptr;

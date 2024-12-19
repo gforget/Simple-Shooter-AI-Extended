@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTService_Reload.h"
 
 #include "AIController.h"
-#include "Actors/Gun.h"
+#include "Actors/SinglePlayer/SP_Gun.h"
 #include "Actors/ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -28,7 +28,7 @@ void UBTService_Reload::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		return;
 	}
 
-	const AGun* Gun = Character->GetGunReference();
+	const ASP_Gun* Gun = Character->GetGunReference();
 	if (Character == nullptr)
 	{
 		return;
