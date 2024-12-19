@@ -12,7 +12,7 @@
 
 class AWaypoint;
 class AHealthPack;
-class AAmmoPack;
+class ASP_AmmoPack;
 
 UENUM(BlueprintType)
 enum EAIStateEnum

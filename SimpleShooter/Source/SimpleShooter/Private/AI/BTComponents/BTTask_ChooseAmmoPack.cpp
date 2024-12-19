@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTTask_ChooseAmmoPack.h"
 
 #include "AIController.h"
-#include "Actors/AmmoPack.h"
+#include "Actors/SinglePlayer/SP_AmmoPack.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
@@ -27,14 +27,14 @@ EBTNodeResult::Type UBTTask_ChooseAmmoPack::ExecuteTask(UBehaviorTreeComponent& 
 		return EBTNodeResult::Failed;
 	}
 
-	TArray<AAmmoPack*> ConsideredAmmoPacks = GameMode->GetAllAmmoPacks();
+	TArray<ASP_AmmoPack*> ConsideredAmmoPacks = GameMode->GetAllAmmoPacks();
 	FVector CharLocation = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(); 
 
-	ConsideredAmmoPacks.Sort([CharLocation](const AAmmoPack& A, const AAmmoPack& B) {
+	ConsideredAmmoPacks.Sort([CharLocation](const ASP_AmmoPack& A, const ASP_AmmoPack& B) {
 		return FVector::DistSquared(A.GetActorLocation(), CharLocation) < FVector::DistSquared(B.GetActorLocation(), CharLocation);
 	});
 
-	AAmmoPack* SelectedAmmoPack = nullptr;
+	ASP_AmmoPack* SelectedAmmoPack = nullptr;
 	for (int i=0; i<ConsideredAmmoPacks.Num(); i++)
 	{
 		if (!ConsideredAmmoPacks[i]->IsRecharging())

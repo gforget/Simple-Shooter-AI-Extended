@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemPack.h"
+#include "Actors/ItemPack.h"
 #include "GameFramework/Actor.h"
-#include "AmmoPack.generated.h"
+#include "SP_AmmoPack.generated.h"
 
 class AShooterCharacter;
 UCLASS()
-class SIMPLESHOOTER_API AAmmoPack : public AItemPack
+class SIMPLESHOOTER_API ASP_AmmoPack : public AItemPack
 {
 	GENERATED_BODY()
 

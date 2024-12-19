@@ -15,7 +15,7 @@
 
 class UTeamManager;
 class AShooterCharacter;
-class AAmmoPack;
+class ASP_AmmoPack;
 class ASpawningPoint;
 class AHealthPack;
 
@@ -39,8 +39,8 @@ public:
 	TArray<AWaypoint*> GetAllWayPoints();
 	void AddWayPoint(AWaypoint* WayPoint);
 	
-	TArray<AAmmoPack*> GetAllAmmoPacks();
-	void AddAmmoPack(AAmmoPack* AmmoPack);
+	TArray<ASP_AmmoPack*> GetAllAmmoPacks();
+	void AddAmmoPack(ASP_AmmoPack* AmmoPack);
 
 	TArray<AHealthPack*> GetAllHealthPacks();
 	void AddHealthPack(AHealthPack* HealthPack);
@@ -67,7 +67,7 @@ protected:
 	TArray<AWaypoint*> AllWayPoints;
 	
 	UPROPERTY()
-	TArray<AAmmoPack*> AllAmmoPacks;
+	TArray<ASP_AmmoPack*> AllAmmoPacks;
 	
 	UPROPERTY()
 	TArray<AHealthPack*> AllHealthPacks;

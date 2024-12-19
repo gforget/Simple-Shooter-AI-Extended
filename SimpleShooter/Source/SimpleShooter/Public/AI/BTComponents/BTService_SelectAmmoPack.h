@@ -9,7 +9,7 @@
 /**
  * 
  */
-class AAmmoPack;
+class ASP_AmmoPack;
 UCLASS()
 class SIMPLESHOOTER_API UBTService_SelectAmmoPack : public UBTService
 {
@@ -27,5 +27,5 @@ private:
 	UPROPERTY()
 	UWorld* CurrentWorldPtr;
 	
-	AAmmoPack* GetClosestAmmoPack();
+	ASP_AmmoPack* GetClosestAmmoPack();
 };
