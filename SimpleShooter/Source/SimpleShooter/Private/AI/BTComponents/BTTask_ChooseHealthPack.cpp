@@ -26,14 +26,14 @@ EBTNodeResult::Type UBTTask_ChooseHealthPack::ExecuteTask(UBehaviorTreeComponent
 		return EBTNodeResult::Failed;
 	}
 
-	TArray<AHealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
+	TArray<ASP_HealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
 	FVector CharLocation = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(); 
 
-	ConsideredHealthPacks.Sort([CharLocation](const AHealthPack& A, const AHealthPack& B) {
+	ConsideredHealthPacks.Sort([CharLocation](const ASP_HealthPack& A, const ASP_HealthPack& B) {
 		return FVector::DistSquared(A.GetActorLocation(), CharLocation) < FVector::DistSquared(B.GetActorLocation(), CharLocation);
 	});
 
-	AHealthPack* SelectedHealthPack = nullptr;
+	ASP_HealthPack* SelectedHealthPack = nullptr;
 	for (int i=0; i<ConsideredHealthPacks.Num(); i++)
 	{
 		if (!ConsideredHealthPacks[i]->IsRecharging())

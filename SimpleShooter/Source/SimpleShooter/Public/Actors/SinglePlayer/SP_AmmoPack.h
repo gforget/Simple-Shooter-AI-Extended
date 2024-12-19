@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/ItemPack.h"
+#include "Actors/SinglePlayer/SP_ItemPack.h"
 #include "GameFramework/Actor.h"
 #include "SP_AmmoPack.generated.h"
 
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 UCLASS()
-class SIMPLESHOOTER_API ASP_AmmoPack : public AItemPack
+class SIMPLESHOOTER_API ASP_AmmoPack : public ASP_ItemPack
 {
 	GENERATED_BODY()
 
@@ -24,7 +24,7 @@ public:
 	
 private:
 
-	virtual bool PackValidation(AShooterCharacter* TargetShooterCharacter) override;
-	virtual void GivePackTo(AShooterCharacter* TargetShooterCharacter) override;
+	virtual bool PackValidation(ASP_ShooterCharacter* TargetShooterCharacter) override;
+	virtual void GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter) override;
 	
 };

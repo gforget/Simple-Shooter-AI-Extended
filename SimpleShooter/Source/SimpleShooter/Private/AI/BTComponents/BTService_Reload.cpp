@@ -5,7 +5,7 @@
 
 #include "AIController.h"
 #include "Actors/SinglePlayer/SP_Gun.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTService_Reload::UBTService_Reload()
@@ -22,7 +22,7 @@ void UBTService_Reload::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		return;
 	}
 	
-	AShooterCharacter* Character = Cast<AShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	ASP_ShooterCharacter* Character = Cast<ASP_ShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Character == nullptr)
 	{
 		return;
@@ -34,7 +34,7 @@ void UBTService_Reload::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		return;
 	}
 
-	const AShooterCharacter* EnemyInSight = Cast<AShooterCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+	const ASP_ShooterCharacter* EnemyInSight = Cast<ASP_ShooterCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
 	
 	if (!Character->GetIsReloading()
 		&& (Gun->GetAmmoPercent() == 0.0f || (EnemyInSight == nullptr && Gun->GetAmmoPercent() < 1.0f))

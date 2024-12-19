@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemPack.h"
+#include "Actors/SinglePlayer/SP_ItemPack.h"
 #include "GameFramework/Actor.h"
-#include "HealthPack.generated.h"
+#include "SP_HealthPack.generated.h"
 
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 
 UCLASS()
-class SIMPLESHOOTER_API AHealthPack : public AItemPack
+class SIMPLESHOOTER_API ASP_HealthPack : public ASP_ItemPack
 {
 	GENERATED_BODY()
 
@@ -25,6 +25,6 @@ public:
 
 private:
 	
-	virtual bool PackValidation(AShooterCharacter* TargetShooterCharacter) override;
-	virtual void GivePackTo(AShooterCharacter* TargetShooterCharacter) override;
+	virtual bool PackValidation(ASP_ShooterCharacter* TargetShooterCharacter) override;
+	virtual void GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter) override;
 };

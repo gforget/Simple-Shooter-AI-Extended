@@ -7,7 +7,7 @@
 #include "Engine/GameInstance.h"
 #include "MainGameInstance.generated.h"
 
-class AShooterPlayerState;
+class AMP_ShooterPlayerState;
 /**
  * 
  */
@@ -68,7 +68,7 @@ public:
 	int NbBlueBots = 0;
 	
 	UFUNCTION(BlueprintCallable)
-	void FeedPlayerStateDataAndBotData(TArray<AShooterPlayerState*> PlayerStateArray, TArray<FBotData> BotDataArray);
+	void FeedPlayerStateDataAndBotData(TArray<AMP_ShooterPlayerState*> PlayerStateArray, TArray<FBotData> BotDataArray);
 
 	//TODO: will have to create session implementation in C++ entirely later
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Main Events")

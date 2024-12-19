@@ -7,8 +7,8 @@
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "Actors/SinglePlayer/SP_AmmoPack.h"
-#include "Actors/HealthPack.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_HealthPack.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -39,7 +39,7 @@ void UBTService_UMMaster::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 TEnumAsByte<EAIStateEnum> UBTService_UMMaster::ChooseState()
 {
 
-	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn()))
+	if (ASP_ShooterCharacter* ShooterCharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn()))
 	{
 		if (ShooterCharacter->GetCharacterMovement()->IsFalling())
 		{
@@ -165,7 +165,7 @@ float UBTService_UMMaster::LookForHealthPackC_HealthPackDistance()
 		return 0.0f;
 	}
 
-	const AHealthPack* SelectedHealthPack = Cast<AHealthPack>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("SelectedHealthPack")));
+	const ASP_HealthPack* SelectedHealthPack = Cast<ASP_HealthPack>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("SelectedHealthPack")));
 	if (SelectedHealthPack == nullptr)
 	{
 		return 0.0f;

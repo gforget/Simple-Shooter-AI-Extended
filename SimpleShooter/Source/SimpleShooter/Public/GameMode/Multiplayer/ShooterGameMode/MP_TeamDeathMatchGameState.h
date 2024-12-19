@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
-#include "GameMode/Multiplayer/ShooterGameState.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameState.h"
 #include "MP_TeamDeathMatchGameState.generated.h"
 
 /**
@@ -12,7 +12,7 @@
  */
 class UGameModeHUD;
 UCLASS()
-class SIMPLESHOOTER_API AMP_TeamDeathMatchGameState : public AShooterGameState
+class SIMPLESHOOTER_API AMP_TeamDeathMatchGameState : public AMP_ShooterGameState
 {
 	GENERATED_BODY()
 

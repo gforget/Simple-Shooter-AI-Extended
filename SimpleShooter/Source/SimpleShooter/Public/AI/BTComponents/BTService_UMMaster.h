@@ -10,8 +10,8 @@
  * 
  */
 
-class AWaypoint;
-class AHealthPack;
+class ASP_Waypoint;
+class ASP_HealthPack;
 class ASP_AmmoPack;
 
 UENUM(BlueprintType)

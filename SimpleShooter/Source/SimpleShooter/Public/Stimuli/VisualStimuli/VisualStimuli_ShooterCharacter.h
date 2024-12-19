@@ -7,7 +7,7 @@
 #include "VisualStimuli_ShooterCharacter.generated.h"
 
 class UCapsuleComponent;
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 UCLASS()
 class SIMPLESHOOTER_API AVisualStimuli_ShooterCharacter : public AVisualStimuli
 {
@@ -28,13 +28,13 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UCapsuleComponent* CapsuleComponent;
 
-	AShooterCharacter* GetShooterCharacterRef();
-	void SetShooterCharacterRef(AShooterCharacter* ShooterCharacterRefValue);
+	ASP_ShooterCharacter* GetShooterCharacterRef();
+	void SetShooterCharacterRef(ASP_ShooterCharacter* ShooterCharacterRefValue);
 	
 private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 	
 	UPROPERTY()
-	AShooterCharacter* ShooterCharacterRef;
+	ASP_ShooterCharacter* ShooterCharacterRef;
 };

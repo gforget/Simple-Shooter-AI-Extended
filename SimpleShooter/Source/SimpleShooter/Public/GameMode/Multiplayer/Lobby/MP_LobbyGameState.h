@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ShooterGameState.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameState.h"
 #include "ActorComponents/TeamManager.h"
 #include "MP_LobbyGameState.generated.h"
 
@@ -11,12 +11,12 @@
  * 
  */
 UCLASS()
-class SIMPLESHOOTER_API AMP_LobbyGameState : public AShooterGameState
+class SIMPLESHOOTER_API AMP_LobbyGameState : public AMP_ShooterGameState
 {
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
-	TArray<AShooterPlayerState*> ReplaceTeamInPlayerState(TArray<AShooterPlayerState*> AllPlayerStates, int IndexPlayerState, TEnumAsByte<ETeam> NewTeam);
+	TArray<AMP_ShooterPlayerState*> ReplaceTeamInPlayerState(TArray<AMP_ShooterPlayerState*> AllPlayerStates, int IndexPlayerState, TEnumAsByte<ETeam> NewTeam);
 
 	UFUNCTION(BlueprintCallable, Category="Main Functions")
 	TArray<FBotData> ReplaceTeamInBotDatasArray(TArray<FBotData> BotDatasArray, int IndexBot, TEnumAsByte<ETeam> NewTeam);

@@ -7,7 +7,7 @@
 #include "Actors/Multiplayer/MP_SpawningPoint.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
-#include "GameMode/Multiplayer/ShooterPlayerState.h"
+#include "GameMode/Multiplayer/MP_ShooterPlayerState.h"
 
 AMP_TeamDeathMatchGameMode::AMP_TeamDeathMatchGameMode()
 {
@@ -26,7 +26,7 @@ void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 	UWorld* WorldPtr = GetWorld();
 	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
 	{
-		AShooterPlayerState* PlayerState = NewPlayer->GetPlayerState<AShooterPlayerState>();
+		AMP_ShooterPlayerState* PlayerState = NewPlayer->GetPlayerState<AMP_ShooterPlayerState>();
 		FPlayerStateData PlayerStateData = GameInstance->PlayerStateDataStructs[PlayerState->GetUniqueId().ToString()];
 		PlayerState->Team = PlayerStateData.Team;
 

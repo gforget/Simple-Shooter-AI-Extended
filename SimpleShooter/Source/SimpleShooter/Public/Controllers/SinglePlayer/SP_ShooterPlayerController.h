@@ -4,25 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "ShooterPlayerController.generated.h"
+#include "SP_ShooterPlayerController.generated.h"
 
 /**
  * 
  */
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 class UPlayerHUD;
 class UGameModeHUD;
 
 UCLASS()
-class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
+class SIMPLESHOOTER_API ASP_ShooterPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
 public:
-	AShooterPlayerController();
+	ASP_ShooterPlayerController();
 	
 	void GameOver(TSubclassOf<UUserWidget> EndScreenClass);
-	void AddOHHealthBar(AShooterCharacter* AssignedCharacter);
+	void AddOHHealthBar(ASP_ShooterCharacter* AssignedCharacter);
 
 	void InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass);
 	

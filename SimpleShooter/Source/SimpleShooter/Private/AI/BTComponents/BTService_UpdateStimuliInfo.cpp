@@ -4,14 +4,14 @@
 #include "AI/BTComponents/BTService_UpdateStimuliInfo.h"
 
 #include "AIController.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Stimuli/SoundStimuli.h"
 #include "Stimuli/VisualStimuli.h"
 #include "Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
 #include "Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Controllers/ShooterAIController.h"
+#include "Controllers/SinglePlayer/SP_ShooterAIController.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
@@ -28,7 +28,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	OwnerCompPtr = &OwnerComp;
 
 	//initiate blackboard value
-	if (AShooterAIController* AIController = Cast<AShooterAIController>(OwnerCompPtr->GetAIOwner()))
+	if (ASP_ShooterAIController* AIController = Cast<ASP_ShooterAIController>(OwnerCompPtr->GetAIOwner()))
 	{
 		if (!AIController->bStimuliServiceInitiated)
 		{
@@ -44,8 +44,8 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		OwnerCompPtr->GetBlackboardComponent()->ClearValue(FName("LastKnownEnemyLocation"));
 	}
 	
-	AShooterAIController* ShooterAIController = Cast<AShooterAIController>(OwnerCompPtr->GetAIOwner());
-	AShooterCharacter* ShooterAICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+	ASP_ShooterAIController* ShooterAIController = Cast<ASP_ShooterAIController>(OwnerCompPtr->GetAIOwner());
+	ASP_ShooterCharacter* ShooterAICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 	
 	if (OwnerCompPtr != nullptr && ShooterAICharacter != nullptr && ShooterAIController != nullptr)
 	{
@@ -91,7 +91,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		bool bHaveSeenAnEnemy = false;
 		if (bVSHasHit)
 		{
-			const AShooterCharacter* ShooterInSight = Cast<AShooterCharacter> (OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+			const ASP_ShooterCharacter* ShooterInSight = Cast<ASP_ShooterCharacter> (OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
 			
 			for (int i=0; i<VSFound.Num(); i++)
 			{

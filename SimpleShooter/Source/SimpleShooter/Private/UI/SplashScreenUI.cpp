@@ -5,7 +5,7 @@
 
 #include "Components/VerticalBox.h"
 #include "GameMode/MainGameInstance.h"
-#include "GameMode/Multiplayer/ShooterPlayerState.h"
+#include "GameMode/Multiplayer/MP_ShooterPlayerState.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -92,7 +92,7 @@ EAllianceMode USplashScreenUI::GetAllianceModeEnumFromString(FString StringValue
 	return EAllianceMode::None;
 }
 
-bool USplashScreenUI::ValidateTeamMatchUp(TArray<AShooterPlayerState*> PlayerStateArray, TArray<FBotData> BotDataArray)
+bool USplashScreenUI::ValidateTeamMatchUp(TArray<AMP_ShooterPlayerState*> PlayerStateArray, TArray<FBotData> BotDataArray)
 {
 	bool bFoundBlueMember = false;
 	bool bFoundRedMember = false;

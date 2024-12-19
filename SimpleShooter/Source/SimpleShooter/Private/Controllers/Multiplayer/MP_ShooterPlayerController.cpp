@@ -4,9 +4,9 @@
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
-#include "Actors/ShooterSpectatorPawn.h"
+#include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
-#include "GameMode/Multiplayer/ShooterGameState.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameState.h"
 #include "UI/GameModeHUD.h"
 #include "UI/Multiplayer/MP_OHHealthBar.h"
 #include "UI/PlayerHUD.h"
@@ -63,7 +63,7 @@ void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
 	if (IsLocalController())
 	{
 		AMP_ShooterCharacter* ShooterCharacter = Cast<AMP_ShooterCharacter>(InPawn);
-		AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(InPawn);
+		ASP_ShooterSpectatorPawn* ShooterSpectator = Cast<ASP_ShooterSpectatorPawn>(InPawn);
 
 		if (ShooterCharacter != nullptr || ShooterSpectator != nullptr)
 		{
@@ -90,7 +90,7 @@ void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
 
 			if (GameModeHUD == nullptr)
 			{
-				if (AShooterGameState* ShooterGameState = Cast<AShooterGameState>(GetWorld()->GetGameState()))
+				if (AMP_ShooterGameState* ShooterGameState = Cast<AMP_ShooterGameState>(GetWorld()->GetGameState()))
 				{
 					if (ShooterGameState->GameModeHUDClass != nullptr)
 					{

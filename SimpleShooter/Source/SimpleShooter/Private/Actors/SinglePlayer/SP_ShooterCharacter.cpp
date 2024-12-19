@@ -1,27 +1,27 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "SimpleShooter/Public/Actors/ShooterCharacter.h"
+#include "SimpleShooter/Public/Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Actors/SinglePlayer/SP_Gun.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Components/CapsuleComponent.h"
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/RotationViewPointRef.h"
-#include "Actors/ShooterSpectatorPawn.h"
+#include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
-#include "Controllers/ShooterPlayerController.h"
+#include "Controllers/SinglePlayer/SP_ShooterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
 
 // Sets default values
-AShooterCharacter::AShooterCharacter()
+ASP_ShooterCharacter::ASP_ShooterCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AShooterCharacter::BeginPlay()
+void ASP_ShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	Health = MaxHealth;
@@ -59,9 +59,9 @@ void AShooterCharacter::BeginPlay()
 
 		if (ShooterGameMode->bBasicOHHealthBarAssociation)
 		{
-			if (AShooterPlayerController* PlayerController = Cast<AShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+			if (ASP_ShooterPlayerController* PlayerController = Cast<ASP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
 			{
-				if (Cast<AShooterCharacter>(PlayerController->GetPawn()) != this)
+				if (Cast<ASP_ShooterCharacter>(PlayerController->GetPawn()) != this)
 				{
 					PlayerController->AddOHHealthBar(this);
 				}
@@ -70,32 +70,32 @@ void AShooterCharacter::BeginPlay()
 	}
 }
 
-bool AShooterCharacter::IsDead() const
+bool ASP_ShooterCharacter::IsDead() const
 {
 	return Dead;
 }
 
-ETeam AShooterCharacter::GetTeam() const
+ETeam ASP_ShooterCharacter::GetTeam() const
 {
 	return Team;
 }
 
-bool AShooterCharacter::GetIsReloading() const
+bool ASP_ShooterCharacter::GetIsReloading() const
 {
 	return IsReloading;
 }
 
-float AShooterCharacter::GetHealthPercent() const
+float ASP_ShooterCharacter::GetHealthPercent() const
 {
 	return Health/MaxHealth;
 }
 
-float AShooterCharacter::GetAmmoReservePercent() const
+float ASP_ShooterCharacter::GetAmmoReservePercent() const
 {
 	return (float)AmmoReserve/(float)MaxAmmoReserve;
 }
 
-float AShooterCharacter::GetAmmoTotalPercent() const
+float ASP_ShooterCharacter::GetAmmoTotalPercent() const
 {
 	int AmmoTotal = AmmoReserve + GetGunReference()->GetAmmoAmount();
 	int AmmoMaxTotal = MaxAmmoReserve + GetGunReference()->GetMaxAmmo();
@@ -103,45 +103,45 @@ float AShooterCharacter::GetAmmoTotalPercent() const
 	return (float)AmmoTotal/(float)AmmoMaxTotal;
 }
 
-FString AShooterCharacter::GetAmmoReserveRatio() const
+FString ASP_ShooterCharacter::GetAmmoReserveRatio() const
 {
 	return FString::FromInt(AmmoReserve) + "/" + FString::FromInt(MaxAmmoReserve); 
 }
 
-ASP_Gun* AShooterCharacter::GetGunReference() const
+ASP_Gun* ASP_ShooterCharacter::GetGunReference() const
 {
 	return Gun;
 }
 
 // Called every frame
-void AShooterCharacter::Tick(float DeltaTime)
+void ASP_ShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
-void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASP_ShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AShooterCharacter::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ASP_ShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &AShooterCharacter::LookUpRate);
+	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &ASP_ShooterCharacter::LookUpRate);
 	
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AShooterCharacter::MoveRight);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ASP_ShooterCharacter::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &AShooterCharacter::LookRightRate);
+	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &ASP_ShooterCharacter::LookRightRate);
 	
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump); // already define in character class
-	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AShooterCharacter::PullTrigger);
-	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Released, this, &AShooterCharacter::ReleaseTrigger);
-	PlayerInputComponent->BindAction(TEXT("Reload"), IE_Pressed, this, &AShooterCharacter::Reload);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &ASP_ShooterCharacter::PullTrigger);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Released, this, &ASP_ShooterCharacter::ReleaseTrigger);
+	PlayerInputComponent->BindAction(TEXT("Reload"), IE_Pressed, this, &ASP_ShooterCharacter::Reload);
 
-	PlayerInputComponent->BindAction(TEXT("SelfDamage"), IE_Pressed, this, &AShooterCharacter::SelfDamage);
-	PlayerInputComponent->BindAction(TEXT("ToggleDebugSpectatorMode"), IE_Pressed, this, &AShooterCharacter::ActivateDebugSpectatorMode);
+	PlayerInputComponent->BindAction(TEXT("SelfDamage"), IE_Pressed, this, &ASP_ShooterCharacter::SelfDamage);
+	PlayerInputComponent->BindAction(TEXT("ToggleDebugSpectatorMode"), IE_Pressed, this, &ASP_ShooterCharacter::ActivateDebugSpectatorMode);
 }
 
-float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+float ASP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
 	AActor* DamageCauser)
 {
 	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
@@ -156,7 +156,7 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	return DamageToApply;
 }
 
-void AShooterCharacter::Death()
+void ASP_ShooterCharacter::Death()
 {
 	if (!IsDead())
 	{
@@ -168,14 +168,14 @@ void AShooterCharacter::Death()
 		Dead = true;
 
 		// Become spectator
-		AShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
+		ASP_ShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<ASP_ShooterSpectatorPawn>(
 			ShooterSpectatorPawnClass,
 			GetActorLocation(),
 			GetActorRotation()
 		);
 		SpectatorPawn->SetTeam(GetTeam());
 
-		AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+		ASP_ShooterPlayerController* ShooterPlayerController = Cast<ASP_ShooterPlayerController>(GetController());
 		DetachFromControllerPendingDestroy();
 		if (ShooterPlayerController != nullptr)
 		{
@@ -186,7 +186,7 @@ void AShooterCharacter::Death()
 	}
 }
 
-float AShooterCharacter::Heal(float HealAmount)
+float ASP_ShooterCharacter::Heal(float HealAmount)
 {
 	if (Health+HealAmount <= MaxHealth)
 	{
@@ -202,7 +202,7 @@ float AShooterCharacter::Heal(float HealAmount)
 	}
 }
 
-int AShooterCharacter::AddAmmoReserve(int AmmoAmount)
+int ASP_ShooterCharacter::AddAmmoReserve(int AmmoAmount)
 {
 	if (AmmoReserve+AmmoAmount <= MaxAmmoReserve)
 	{
@@ -216,27 +216,27 @@ int AShooterCharacter::AddAmmoReserve(int AmmoAmount)
 	}
 }
 
-void AShooterCharacter::MoveForward(float AxisValue)
+void ASP_ShooterCharacter::MoveForward(float AxisValue)
 {
 	AddMovementInput(GetActorForwardVector()*AxisValue);
 }
 
-void AShooterCharacter::MoveRight(float AxisValue)
+void ASP_ShooterCharacter::MoveRight(float AxisValue)
 {
 	AddMovementInput(GetActorRightVector()*AxisValue);
 }
 
-void AShooterCharacter::LookUpRate(float AxisValue)
+void ASP_ShooterCharacter::LookUpRate(float AxisValue)
 {
 	AddControllerPitchInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
 }
 
-void AShooterCharacter::LookRightRate(float AxisValue)
+void ASP_ShooterCharacter::LookRightRate(float AxisValue)
 {
 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
 }
 
-void AShooterCharacter::PullTrigger()
+void ASP_ShooterCharacter::PullTrigger()
 {
 	if (Gun != nullptr)
 	{
@@ -244,7 +244,7 @@ void AShooterCharacter::PullTrigger()
 	}
 }
 
-void AShooterCharacter::ReleaseTrigger()
+void ASP_ShooterCharacter::ReleaseTrigger()
 {
 	if (Gun != nullptr)
 	{
@@ -252,7 +252,7 @@ void AShooterCharacter::ReleaseTrigger()
 	}
 }
 
-void AShooterCharacter::Reload()
+void ASP_ShooterCharacter::Reload()
 {	
 	if (!IsReloading && AmmoReserve > 0 && Gun->GetAmmoPercent() < 1.0f )
 	{
@@ -261,7 +261,7 @@ void AShooterCharacter::Reload()
 			ReloadMontage
 		);
 		
-		ProxyReloadPlayMontage->OnCompleted.AddDynamic(this, &AShooterCharacter::OnReloadAnimationCompleted);
+		ProxyReloadPlayMontage->OnCompleted.AddDynamic(this, &ASP_ShooterCharacter::OnReloadAnimationCompleted);
 		IsReloading = true;
 	}
 	else
@@ -271,26 +271,26 @@ void AShooterCharacter::Reload()
 }
 
 #if WITH_EDITOR
-void AShooterCharacter::PostActorCreated()
+void ASP_ShooterCharacter::PostActorCreated()
 {
 	Super::PostActorCreated();
 	GenerateEditorAnchorPositionVisualisation();	
 }
 
-void AShooterCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+void ASP_ShooterCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 	GenerateEditorAnchorPositionVisualisation();
 }
 
-void AShooterCharacter::PostEditMove(bool bFinished)
+void ASP_ShooterCharacter::PostEditMove(bool bFinished)
 {
 	Super::PostEditMove(bFinished);
 	GenerateEditorAnchorPositionVisualisation();
 }
 #endif
 
-void AShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
+void ASP_ShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
 {
 #if WITH_EDITOR
 	if (const UWorld* World = GetWorld())
@@ -309,15 +309,15 @@ void AShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
 #endif
 }
 
-void AShooterCharacter::ActivateDebugSpectatorMode()
+void ASP_ShooterCharacter::ActivateDebugSpectatorMode()
 {
-	AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+	ASP_ShooterPlayerController* ShooterPlayerController = Cast<ASP_ShooterPlayerController>(GetController());
 	if (ShooterPlayerController != nullptr)
 	{
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0"));
 		
-		AShooterSpectatorPawn* ShooterSpectatorPawn = GetWorld()->SpawnActor<AShooterSpectatorPawn>(
+		ASP_ShooterSpectatorPawn* ShooterSpectatorPawn = GetWorld()->SpawnActor<ASP_ShooterSpectatorPawn>(
 			ShooterSpectatorPawnClass,
 			GetActorLocation(),
 			GetActorRotation()
@@ -331,7 +331,7 @@ void AShooterCharacter::ActivateDebugSpectatorMode()
 	}
 }
 
-void AShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
+void ASP_ShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
 {
 	IsReloading = false;
 	int ReloadAmount = Gun->GetMaxAmmo();
@@ -346,17 +346,17 @@ void AShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
 	AmmoReserve += LeftOver;
 }
 
-void AShooterCharacter::SelfDamage()
+void ASP_ShooterCharacter::SelfDamage()
 {
 	Health -= 10.0f;
 }
 
-AVisualStimuli_ShooterCharacter* AShooterCharacter::GetVSShooterCharacter() 
+AVisualStimuli_ShooterCharacter* ASP_ShooterCharacter::GetVSShooterCharacter() 
 {
 	return VSShooterCharacter;
 }
 
-ARotationViewPointRef* AShooterCharacter::GetRotationViewPointRef()
+ARotationViewPointRef* ASP_ShooterCharacter::GetRotationViewPointRef()
 {
 	return RotationViewPointRef;
 }

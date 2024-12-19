@@ -7,7 +7,7 @@
 #include "SP_OHHealthBar.generated.h"
 
 class UProgressBar;
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 class APlayerController;
 class UOverlay;
 /**
@@ -30,10 +30,10 @@ public :
 	UProgressBar* OHHealthBarProgressBar;
 	
 	UPROPERTY(BlueprintReadOnly)
-	AShooterCharacter* AssignedCharacter;
+	ASP_ShooterCharacter* AssignedCharacter;
 
 	UFUNCTION()
-	void OnCharacterDeath(AShooterCharacter* DeadCharacter);
+	void OnCharacterDeath(ASP_ShooterCharacter* DeadCharacter);
 
-	void InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef);
+	void InitializeAssignedCharacterAndPlayerController(ASP_ShooterCharacter* AssignedCharacterRef);
 };

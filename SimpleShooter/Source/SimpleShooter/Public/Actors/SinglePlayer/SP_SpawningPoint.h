@@ -5,18 +5,18 @@
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
 #include "GameFramework/Actor.h"
-#include "SpawningPoint.generated.h"
+#include "SP_SpawningPoint.generated.h"
 
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 
 UCLASS()
-class SIMPLESHOOTER_API ASpawningPoint : public AActor
+class SIMPLESHOOTER_API ASP_SpawningPoint : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASpawningPoint();
+	ASP_SpawningPoint();
 
 	UPROPERTY(EditInstanceOnly)
 	TEnumAsByte<ETeam> Team = ETeam::BlueTeam; 
@@ -25,19 +25,19 @@ public:
 	UTexture2D* BlueTeamIconTexture;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AShooterCharacter> BlueTeamShooterCharacterClass;
+	TSubclassOf<ASP_ShooterCharacter> BlueTeamShooterCharacterClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	UTexture2D* RedTeamIconTexture;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AShooterCharacter> RedTeamShooterCharacterClass;
+	TSubclassOf<ASP_ShooterCharacter> RedTeamShooterCharacterClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	UTexture2D* NoTeamIconTexture;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AShooterCharacter> NoTeamShooterCharacterClass;
+	TSubclassOf<ASP_ShooterCharacter> NoTeamShooterCharacterClass;
 	
 protected:
 	// Called when the game starts or when spawned

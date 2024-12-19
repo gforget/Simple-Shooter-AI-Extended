@@ -5,18 +5,18 @@
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
 #include "GameFramework/PlayerState.h"
-#include "ShooterPlayerState.generated.h"
+#include "MP_ShooterPlayerState.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SIMPLESHOOTER_API AShooterPlayerState : public APlayerState
+class SIMPLESHOOTER_API AMP_ShooterPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 
 public:
-	AShooterPlayerState();
+	AMP_ShooterPlayerState();
 	
 	UPROPERTY(BlueprintReadWrite, Replicated)
 	TEnumAsByte<ETeam> Team = ETeam::BlueTeam;

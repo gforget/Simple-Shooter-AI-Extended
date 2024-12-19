@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Waypoint.generated.h"
+#include "SP_Waypoint.generated.h"
 
 UCLASS()
-class SIMPLESHOOTER_API AWaypoint : public AActor
+class SIMPLESHOOTER_API ASP_Waypoint : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AWaypoint();
+	ASP_Waypoint();
 
 protected:
 	// Called when the game starts or when spawned

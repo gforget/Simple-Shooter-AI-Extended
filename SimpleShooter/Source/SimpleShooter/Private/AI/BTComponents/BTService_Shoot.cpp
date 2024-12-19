@@ -2,7 +2,7 @@
 #include "AI/BTComponents/BTService_Shoot.h"
 
 #include "AIController.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -19,13 +19,13 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		return;
 	}
 	
-	AShooterCharacter* Character = Cast<AShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	ASP_ShooterCharacter* Character = Cast<ASP_ShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Character == nullptr)
 	{
 		return;
 	}
 
-	const AShooterCharacter* EnemyShooterTarget = Cast<AShooterCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+	const ASP_ShooterCharacter* EnemyShooterTarget = Cast<ASP_ShooterCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
 	
 	if (EnemyShooterTarget != nullptr)
 	{

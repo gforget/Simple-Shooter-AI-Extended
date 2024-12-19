@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "Runtime/AIModule/Classes/AIController.h"
-#include "ShooterAIController.generated.h"
+#include "SP_ShooterAIController.generated.h"
 
 class UHurtStimuli;
 
 UCLASS()
-class SIMPLESHOOTER_API AShooterAIController : public AAIController
+class SIMPLESHOOTER_API ASP_ShooterAIController : public AAIController
 {
 	GENERATED_BODY()
 
 public:
 	
 	// Sets default values for this actor's properties
-	AShooterAIController();
+	ASP_ShooterAIController();
 	
 protected:
 	

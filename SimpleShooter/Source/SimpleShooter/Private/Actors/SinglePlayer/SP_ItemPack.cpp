@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "Actors/ItemPack.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ItemPack.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
-AItemPack::AItemPack()
+ASP_ItemPack::ASP_ItemPack()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -19,14 +19,14 @@ AItemPack::AItemPack()
 }
 
 // Called when the game starts or when spawned
-void AItemPack::BeginPlay()
+void ASP_ItemPack::BeginPlay()
 {
 	Super::BeginPlay();
-	OnActorBeginOverlap.AddDynamic(this, &AItemPack::OnOverlapBegin);
+	OnActorBeginOverlap.AddDynamic(this, &ASP_ItemPack::OnOverlapBegin);
 }
 
 // Called every frame
-void AItemPack::Tick(float DeltaTime)
+void ASP_ItemPack::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (RechargeTimer > 0.0f)
@@ -63,7 +63,7 @@ void AItemPack::Tick(float DeltaTime)
 			{
 				for (int i=0; i<OverlapResults.Num(); i++)
 				{
-					if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(OverlapResults[i].GetActor()))
+					if (ASP_ShooterCharacter* ShooterCharacter = Cast<ASP_ShooterCharacter>(OverlapResults[i].GetActor()))
 					{
 						AttemptGivePackTo(ShooterCharacter);
 					}
@@ -73,12 +73,12 @@ void AItemPack::Tick(float DeltaTime)
 	}
 }
 
-bool AItemPack::IsRecharging()
+bool ASP_ItemPack::IsRecharging()
 {
 	return RechargeTimer > 0.0f;
 }
 
-void AItemPack::AttemptGivePackTo(AShooterCharacter* TargetShooterCharacter)
+void ASP_ItemPack::AttemptGivePackTo(ASP_ShooterCharacter* TargetShooterCharacter)
 {
 	if (!IsRecharging() && PackValidation(TargetShooterCharacter))
 	{
@@ -86,20 +86,20 @@ void AItemPack::AttemptGivePackTo(AShooterCharacter* TargetShooterCharacter)
 	}
 }
 
-void AItemPack::GivePackTo(AShooterCharacter* TargetShooterCharacter)
+void ASP_ItemPack::GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter)
 {
 	RechargeTimer = TimeToRecharge;
 	Mesh->SetMaterial(0, InactiveMaterial);
 }
 
-bool AItemPack::PackValidation(AShooterCharacter* TargetShooterCharacter)
+bool ASP_ItemPack::PackValidation(ASP_ShooterCharacter* TargetShooterCharacter)
 {
 	return true;	
 }
 
-void AItemPack::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
+void ASP_ItemPack::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(OtherActor))
+	if (ASP_ShooterCharacter* ShooterCharacter = Cast<ASP_ShooterCharacter>(OtherActor))
 	{
 		AttemptGivePackTo(ShooterCharacter);
 	}

@@ -5,7 +5,7 @@
 
 #include "AIController.h"
 #include "Actors/SinglePlayer/SP_AmmoPack.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
@@ -45,7 +45,7 @@ ASP_AmmoPack* UBTService_SelectAmmoPack::GetClosestAmmoPack()
 	{
 		if (!ConsideredAmmoPacks[i]->IsRecharging())
 		{
-			const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+			const ASP_ShooterCharacter* AICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 			const float CurrentDistance = AICharacter->NavMeshUtility->GetPathLength(CharLocation, ConsideredAmmoPacks[i]->GetActorLocation(), CurrentWorldPtr);
 			if (CurrentDistance < HighestDistance)
 			{

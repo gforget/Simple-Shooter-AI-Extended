@@ -4,7 +4,7 @@
 #include "UI/SinglePlayer/SP_OHHealthBar.h"
 
 #include "Blueprint/WidgetLayoutLibrary.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/Overlay.h"
 #include "Components/ProgressBar.h"
@@ -16,7 +16,7 @@ bool USP_OHHealthBar::Initialize()
 	return Super::Initialize();
 }
 
-void USP_OHHealthBar::InitializeAssignedCharacterAndPlayerController(AShooterCharacter* AssignedCharacterRef)
+void USP_OHHealthBar::InitializeAssignedCharacterAndPlayerController(ASP_ShooterCharacter* AssignedCharacterRef)
 {
 	AssignedCharacter = AssignedCharacterRef;
 	AssignedCharacter->OnDeadEvent.AddDynamic(this, &USP_OHHealthBar::OnCharacterDeath);
@@ -72,7 +72,7 @@ void USP_OHHealthBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 }
 
-void USP_OHHealthBar::OnCharacterDeath(AShooterCharacter* DeadCharacter)
+void USP_OHHealthBar::OnCharacterDeath(ASP_ShooterCharacter* DeadCharacter)
 {
 	RemoveFromParent();
 }

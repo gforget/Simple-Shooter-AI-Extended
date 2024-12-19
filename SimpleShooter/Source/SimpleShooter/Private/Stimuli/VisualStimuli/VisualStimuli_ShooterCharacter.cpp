@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Components/CapsuleComponent.h"
 
 // Sets default values
@@ -28,12 +28,12 @@ void AVisualStimuli_ShooterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-AShooterCharacter* AVisualStimuli_ShooterCharacter::GetShooterCharacterRef()
+ASP_ShooterCharacter* AVisualStimuli_ShooterCharacter::GetShooterCharacterRef()
 {
 	return ShooterCharacterRef;
 }
 
-void AVisualStimuli_ShooterCharacter::SetShooterCharacterRef(AShooterCharacter* ShooterCharacterRefValue)
+void AVisualStimuli_ShooterCharacter::SetShooterCharacterRef(ASP_ShooterCharacter* ShooterCharacterRefValue)
 {
 	ShooterCharacterRef = ShooterCharacterRefValue;
 	

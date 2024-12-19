@@ -3,10 +3,10 @@
 
 #include "GameMode/SinglePlayer/SP_FFADeathMatchGameMode.h"
 
-#include "Actors/ShooterCharacter.h"
-#include "Actors/ShooterSpectatorPawn.h"
-#include "Actors/SpawningPoint.h"
-#include "Controllers/ShooterPlayerController.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
+#include "Actors/SinglePlayer/SP_SpawningPoint.h"
+#include "Controllers/SinglePlayer/SP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -28,7 +28,7 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 	{
 		for (int i=0; i<AllActors.Num(); i++)
 		{
-			if (ASpawningPoint* SpawningPoint = Cast<ASpawningPoint>(AllActors[i]))
+			if (ASP_SpawningPoint* SpawningPoint = Cast<ASP_SpawningPoint>(AllActors[i]))
 			{
 				AllSpawnPoints.Add(SpawningPoint);
 			}
@@ -41,17 +41,17 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 		for (int i=0; i<(1+MainGameInstance->NbRedBots); i++)
 		{
 			const int SpawnIndex = FMath::RandRange(0, AllSpawnPoints.Num()-1);
-			const ASpawningPoint* CurrentSpawningPoint = AllSpawnPoints[SpawnIndex];
+			const ASP_SpawningPoint* CurrentSpawningPoint = AllSpawnPoints[SpawnIndex];
 			
 			if (i==0) // put the spawned player at a spawn position
 			{
-				AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+				ASP_ShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<ASP_ShooterCharacter>(
 					CurrentSpawningPoint->BlueTeamShooterCharacterClass,
 					CurrentSpawningPoint->GetActorLocation(),
 					CurrentSpawningPoint->GetActorRotation()
 				);
 				
-				if (AShooterPlayerController* PlayerController = Cast<AShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+				if (ASP_ShooterPlayerController* PlayerController = Cast<ASP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
 				{
 					PlayerController->Possess(ShooterCharacter);
 					PlayerController->InstantiateGameModeHUD(GameModeHUDClass);
@@ -59,13 +59,13 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 			}
 			else
 			{
-				AShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AShooterCharacter>(
+				ASP_ShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<ASP_ShooterCharacter>(
 					CurrentSpawningPoint->RedTeamShooterCharacterClass,
 					CurrentSpawningPoint->GetActorLocation(),
 					CurrentSpawningPoint->GetActorRotation()
 				);
 				
-				if (AShooterPlayerController* PlayerController = Cast<AShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+				if (ASP_ShooterPlayerController* PlayerController = Cast<ASP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
 				{
 					PlayerController->AddOHHealthBar(ShooterCharacter);
 				}
@@ -76,7 +76,7 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 	}
 }
 
-void ASP_FFADeathMatchGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
+void ASP_FFADeathMatchGameMode::OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
 
@@ -87,7 +87,7 @@ void ASP_FFADeathMatchGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadS
 	}
 }
 
-void ASP_FFADeathMatchGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister)
+void ASP_FFADeathMatchGameMode::AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister)
 {
 	Super::AddShooterCharacterCount(ShooterCharacterToRegister);
 	NbShooterAlive++;
@@ -95,14 +95,14 @@ void ASP_FFADeathMatchGameMode::AddShooterCharacterCount(AShooterCharacter* Shoo
 
 void ASP_FFADeathMatchGameMode::EndGame()
 {
-	if (AShooterPlayerController* PlayerController = Cast<AShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
+	if (ASP_ShooterPlayerController* PlayerController = Cast<ASP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
 	{
-		if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(PlayerController->GetPawn()))
+		if (ASP_ShooterCharacter* ShooterCharacter = Cast<ASP_ShooterCharacter>(PlayerController->GetPawn()))
 		{
 			PlayerController->GameOver(WinScreenClass);
 		}
 
-		if (AShooterSpectatorPawn* ShooterSpectator = Cast<AShooterSpectatorPawn>(PlayerController->GetPawn()))
+		if (ASP_ShooterSpectatorPawn* ShooterSpectator = Cast<ASP_ShooterSpectatorPawn>(PlayerController->GetPawn()))
 		{
 			PlayerController->GameOver(LoseScreenClass);
 		}

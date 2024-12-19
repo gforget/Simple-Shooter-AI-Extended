@@ -1,14 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/Multiplayer/MP_LobbyGameState.h"
+#include "GameMode/Multiplayer/Lobby/MP_LobbyGameState.h"
 #include "GameMode/MainGameInstance.h"
-#include "GameMode/Multiplayer/ShooterPlayerState.h"
+#include "GameMode/Multiplayer/MP_ShooterPlayerState.h"
 
-TArray<AShooterPlayerState*> AMP_LobbyGameState::ReplaceTeamInPlayerState(TArray<AShooterPlayerState*> AllPlayerStates,
-	int IndexPlayerState, TEnumAsByte<ETeam> NewTeam)
+TArray<AMP_ShooterPlayerState*> AMP_LobbyGameState::ReplaceTeamInPlayerState(TArray<AMP_ShooterPlayerState*> AllPlayerStates,
+                                                                             int IndexPlayerState, TEnumAsByte<ETeam> NewTeam)
 {
-	TArray<AShooterPlayerState*> NewPlayerStates = AllPlayerStates;
+	TArray<AMP_ShooterPlayerState*> NewPlayerStates = AllPlayerStates;
 	NewPlayerStates[IndexPlayerState]->Team = NewTeam;
 	
 	return NewPlayerStates;

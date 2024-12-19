@@ -1,18 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/Waypoint.h"
+#include "Actors/SinglePlayer/SP_Waypoint.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 // Sets default values
-AWaypoint::AWaypoint()
+ASP_Waypoint::ASP_Waypoint()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 }
 
 // Called when the game starts or when spawned
-void AWaypoint::BeginPlay()
+void ASP_Waypoint::BeginPlay()
 {
 	Super::BeginPlay();
 	ASP_ShooterGameMode* GameModeBase = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
@@ -23,7 +23,7 @@ void AWaypoint::BeginPlay()
 }
 
 // Called every frame
-void AWaypoint::Tick(float DeltaTime)
+void ASP_Waypoint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }

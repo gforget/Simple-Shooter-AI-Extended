@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
-#include "Actors/HealthPack.h"
-#include "Actors/Waypoint.h"
+#include "Actors/SinglePlayer/SP_HealthPack.h"
+#include "Actors/SinglePlayer/SP_Waypoint.h"
 #include "GameFramework/GameMode.h"
 #include "SP_ShooterGameMode.generated.h"
 
@@ -14,10 +14,10 @@
  */
 
 class UTeamManager;
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 class ASP_AmmoPack;
-class ASpawningPoint;
-class AHealthPack;
+class ASP_SpawningPoint;
+class ASP_HealthPack;
 
 UCLASS()
 class SIMPLESHOOTER_API ASP_ShooterGameMode : public AGameModeBase
@@ -29,23 +29,23 @@ public:
 	ASP_ShooterGameMode();
 
 	UFUNCTION()
-	virtual void OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter);
+	virtual void OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter);
 
-	virtual void AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister);
+	virtual void AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister);
 
 	UPROPERTY(EditDefaultsOnly)
 	bool bBasicOHHealthBarAssociation = false;
 	
-	TArray<AWaypoint*> GetAllWayPoints();
-	void AddWayPoint(AWaypoint* WayPoint);
+	TArray<ASP_Waypoint*> GetAllWayPoints();
+	void AddWayPoint(ASP_Waypoint* WayPoint);
 	
 	TArray<ASP_AmmoPack*> GetAllAmmoPacks();
 	void AddAmmoPack(ASP_AmmoPack* AmmoPack);
 
-	TArray<AHealthPack*> GetAllHealthPacks();
-	void AddHealthPack(AHealthPack* HealthPack);
+	TArray<ASP_HealthPack*> GetAllHealthPacks();
+	void AddHealthPack(ASP_HealthPack* HealthPack);
 
-	void RegisterEvent (AShooterCharacter* ShooterCharacterRef);
+	void RegisterEvent (ASP_ShooterCharacter* ShooterCharacterRef);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
@@ -55,20 +55,20 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY()
-	TArray<ASpawningPoint*> AllSpawnPoints;
+	TArray<ASP_SpawningPoint*> AllSpawnPoints;
 
 	UPROPERTY()
-	TArray<ASpawningPoint*> AllRedSpawnPoints;
+	TArray<ASP_SpawningPoint*> AllRedSpawnPoints;
 
 	UPROPERTY()
-	TArray<ASpawningPoint*> AllBlueSpawnPoints;
+	TArray<ASP_SpawningPoint*> AllBlueSpawnPoints;
 	
 	UPROPERTY()
-	TArray<AWaypoint*> AllWayPoints;
+	TArray<ASP_Waypoint*> AllWayPoints;
 	
 	UPROPERTY()
 	TArray<ASP_AmmoPack*> AllAmmoPacks;
 	
 	UPROPERTY()
-	TArray<AHealthPack*> AllHealthPacks;
+	TArray<ASP_HealthPack*> AllHealthPacks;
 };

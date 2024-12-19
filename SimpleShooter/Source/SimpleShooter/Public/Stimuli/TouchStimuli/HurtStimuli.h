@@ -6,8 +6,8 @@
 #include "Stimuli/TouchStimuli.h"
 #include "HurtStimuli.generated.h"
 
-class AShooterAIController;
-class AShooterCharacter;
+class ASP_ShooterAIController;
+class ASP_ShooterCharacter;
 /**
  * 
  */
@@ -17,26 +17,26 @@ class SIMPLESHOOTER_API UHurtStimuli : public UTouchStimuli
 	GENERATED_BODY()
 
 public :
-	void Initialize(AShooterAIController* OwnerControllerRef, AShooterCharacter* OwnerCharacterRef);
+	void Initialize(ASP_ShooterAIController* OwnerControllerRef, ASP_ShooterCharacter* OwnerCharacterRef);
 	
 	void SetDamageDone(float DamageDoneRef);
 	float GetDamageDone();
 	
-	void SetDamageDealer(AShooterCharacter* DamageDealerRef);
-	AShooterCharacter* GetDamageDealer();
+	void SetDamageDealer(ASP_ShooterCharacter* DamageDealerRef);
+	ASP_ShooterCharacter* GetDamageDealer();
 
 private:
 	UPROPERTY()
-	AShooterAIController* OwnerController;
+	ASP_ShooterAIController* OwnerController;
 
 	UPROPERTY()
-	AShooterCharacter* OwnerCharacter;
+	ASP_ShooterCharacter* OwnerCharacter;
 	
 	UPROPERTY()
 	float DamageDone;
 	
 	UPROPERTY()
-	AShooterCharacter* DamageDealer;
+	ASP_ShooterCharacter* DamageDealer;
 
 	UFUNCTION()
 	void OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);

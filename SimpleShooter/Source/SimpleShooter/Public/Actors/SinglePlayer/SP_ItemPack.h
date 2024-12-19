@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ItemPack.generated.h"
-class AShooterCharacter;
+#include "SP_ItemPack.generated.h"
+class ASP_ShooterCharacter;
 class UBoxComponent;
 
 UCLASS(Abstract)
-class SIMPLESHOOTER_API AItemPack : public AActor
+class SIMPLESHOOTER_API ASP_ItemPack : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AItemPack();
+	ASP_ItemPack();
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,9 +41,9 @@ protected:
 	UPROPERTY()
 	float RechargeTimer = 0.0f;
 
-	void AttemptGivePackTo(AShooterCharacter* TargetShooterCharacter);
-	virtual void GivePackTo(AShooterCharacter* TargetShooterCharacter);
-	virtual bool PackValidation(AShooterCharacter* TargetShooterCharacter);
+	void AttemptGivePackTo(ASP_ShooterCharacter* TargetShooterCharacter);
+	virtual void GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter);
+	virtual bool PackValidation(ASP_ShooterCharacter* TargetShooterCharacter);
 	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;

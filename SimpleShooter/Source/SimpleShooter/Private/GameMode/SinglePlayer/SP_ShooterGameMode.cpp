@@ -2,8 +2,8 @@
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 #include "Actors/SinglePlayer/SP_AmmoPack.h"
-#include "Actors/SpawningPoint.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_SpawningPoint.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 
 ASP_ShooterGameMode::ASP_ShooterGameMode()
 {
@@ -15,21 +15,21 @@ void ASP_ShooterGameMode::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ASP_ShooterGameMode::OnShooterCharacterDeath(AShooterCharacter* DeadShooterCharacter)
+void ASP_ShooterGameMode::OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter)
 {
 	
 }
 
-void ASP_ShooterGameMode::AddShooterCharacterCount(AShooterCharacter* ShooterCharacterToRegister)
+void ASP_ShooterGameMode::AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister)
 {
 }
 
-TArray<AWaypoint*> ASP_ShooterGameMode::GetAllWayPoints()
+TArray<ASP_Waypoint*> ASP_ShooterGameMode::GetAllWayPoints()
 {
 	return AllWayPoints;
 }
 
-void ASP_ShooterGameMode::AddWayPoint(AWaypoint* Waypoint)
+void ASP_ShooterGameMode::AddWayPoint(ASP_Waypoint* Waypoint)
 {
 	AllWayPoints.Add(Waypoint);
 }
@@ -44,17 +44,17 @@ void ASP_ShooterGameMode::AddAmmoPack(ASP_AmmoPack* AmmoPack)
 	AllAmmoPacks.Add(AmmoPack);
 }
 
-TArray<AHealthPack*> ASP_ShooterGameMode::GetAllHealthPacks()
+TArray<ASP_HealthPack*> ASP_ShooterGameMode::GetAllHealthPacks()
 {
 	return AllHealthPacks;
 }
 
-void ASP_ShooterGameMode::AddHealthPack(AHealthPack* HealthPack)
+void ASP_ShooterGameMode::AddHealthPack(ASP_HealthPack* HealthPack)
 {
 	AllHealthPacks.Add(HealthPack);
 }
 
-void ASP_ShooterGameMode::RegisterEvent(AShooterCharacter* ShooterCharacterRef)
+void ASP_ShooterGameMode::RegisterEvent(ASP_ShooterCharacter* ShooterCharacterRef)
 {
 	ShooterCharacterRef->OnDeadEvent.AddDynamic(this, &ASP_ShooterGameMode::OnShooterCharacterDeath);
 }

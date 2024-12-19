@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "Actors/HealthPack.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_HealthPack.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 // Called when the game starts or when spawned
-void AHealthPack::BeginPlay()
+void ASP_HealthPack::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -15,12 +15,12 @@ void AHealthPack::BeginPlay()
 	}
 }
 
-bool AHealthPack::PackValidation(AShooterCharacter* TargetShooterCharacter)
+bool ASP_HealthPack::PackValidation(ASP_ShooterCharacter* TargetShooterCharacter)
 {
 	return TargetShooterCharacter->GetHealthPercent() < 1.0f;
 }
 
-void AHealthPack::GivePackTo(AShooterCharacter* TargetShooterCharacter)
+void ASP_HealthPack::GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter)
 {
 	Super::GivePackTo(TargetShooterCharacter);
 	TargetShooterCharacter->Heal(HealAmount);

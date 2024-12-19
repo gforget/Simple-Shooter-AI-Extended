@@ -4,7 +4,7 @@
 #include "AI/AIShooterNavLink.h"
 
 #include "AIController.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 
@@ -33,7 +33,7 @@ void AAIShooterNavLink::Tick(float DeltaTime)
 
 void AAIShooterNavLink::OnNavLinkReach(AActor* MovingActor, const FVector& DestinationPoint)
 {
-	if (AShooterCharacter* ShooterCharacter = Cast<AShooterCharacter>(MovingActor))
+	if (ASP_ShooterCharacter* ShooterCharacter = Cast<ASP_ShooterCharacter>(MovingActor))
 	{
 		ShooterCharacter->GetMovementComponent()->StopMovementImmediately();
 		// Stop AI pathfinding to prevent interference

@@ -6,26 +6,26 @@
 #include "GameFramework/Character.h"
 #include "PlayMontageCallbackProxy.h"
 #include "ActorComponents/TeamManager.h"
-#include "ShooterCharacter.generated.h"
+#include "SP_ShooterCharacter.generated.h"
 
 class ASP_Gun;
 class AVisualStimuli_ShooterCharacter;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
 class UNavMeshUtility;
-class AShooterSpectatorPawn;
+class ASP_ShooterSpectatorPawn;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealEvent);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, AShooterCharacter*, DeadShooterCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, ASP_ShooterCharacter*, DeadShooterCharacter);
 
 UCLASS()
-class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
+class SIMPLESHOOTER_API ASP_ShooterCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AShooterCharacter();
+	ASP_ShooterCharacter();
 
 protected:
 	// Called when the game starts or when spawned
@@ -174,7 +174,7 @@ private:
 	void GenerateEditorAnchorPositionVisualisation() const;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AShooterSpectatorPawn> ShooterSpectatorPawnClass;
+	TSubclassOf<ASP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
 	
 	void ActivateDebugSpectatorMode();
 	

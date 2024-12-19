@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTService_SelectHealthPack.h"
 
 #include "AIController.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
@@ -26,16 +26,16 @@ void UBTService_SelectHealthPack::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 	}
 }
 
-AHealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
+ASP_HealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
 {
-	AHealthPack* SelectedHealthPack = nullptr;
+	ASP_HealthPack* SelectedHealthPack = nullptr;
 	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return SelectedHealthPack;
 	}
 
-	TArray<AHealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
+	TArray<ASP_HealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
 	const FVector CharLocation = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation(); 
 
 	float HighestDistance = 999999999999.99f;
@@ -44,7 +44,7 @@ AHealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
 	{
 		if (!ConsideredHealthPacks[i]->IsRecharging())
 		{
-			const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+			const ASP_ShooterCharacter* AICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 			const float CurrentDistance = AICharacter->NavMeshUtility->GetPathLength(CharLocation, ConsideredHealthPacks[i]->GetActorLocation(), CurrentWorldPtr);
 			
 			if (CurrentDistance < HighestDistance)

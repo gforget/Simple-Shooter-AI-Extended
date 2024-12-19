@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameState.h"
-#include "ShooterGameState.generated.h"
+#include "MP_ShooterGameState.generated.h"
 
 class UGameModeHUD;
 class AMP_ShooterCharacter;
-class AShooterPlayerState;
+class AMP_ShooterPlayerState;
 /**
  * 
  */
 UCLASS()
-class SIMPLESHOOTER_API AShooterGameState : public AGameState
+class SIMPLESHOOTER_API AMP_ShooterGameState : public AGameState
 {
 	GENERATED_BODY()
 	

@@ -5,18 +5,18 @@
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
 #include "GameFramework/SpectatorPawn.h"
-#include "ShooterSpectatorPawn.generated.h"
+#include "SP_ShooterSpectatorPawn.generated.h"
 
-class AShooterCharacter;
+class ASP_ShooterCharacter;
 
 UCLASS()
-class SIMPLESHOOTER_API AShooterSpectatorPawn : public ASpectatorPawn
+class SIMPLESHOOTER_API ASP_ShooterSpectatorPawn : public ASpectatorPawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AShooterSpectatorPawn();
+	ASP_ShooterSpectatorPawn();
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,7 +31,7 @@ public:
 
 	void ReturnToPlayerMode();
 
-	void SetPlayerShooterCharacter(AShooterCharacter* PlayerShooterCharacterRef);
+	void SetPlayerShooterCharacter(ASP_ShooterCharacter* PlayerShooterCharacterRef);
 
 	ETeam GetTeam();
 
@@ -40,7 +40,7 @@ public:
 private:
 	
 	UPROPERTY()
-	AShooterCharacter* PlayerShooterCharacter;
+	ASP_ShooterCharacter* PlayerShooterCharacter;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TEnumAsByte<ETeam> Team = ETeam::NoTeam;

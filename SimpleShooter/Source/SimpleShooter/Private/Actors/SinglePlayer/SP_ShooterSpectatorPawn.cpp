@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-#include "Actors/ShooterSpectatorPawn.h"
+#include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
 
-#include "Actors/ShooterCharacter.h"
-#include "Controllers/ShooterPlayerController.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Controllers/SinglePlayer/SP_ShooterPlayerController.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-AShooterSpectatorPawn::AShooterSpectatorPawn()
+ASP_ShooterSpectatorPawn::ASP_ShooterSpectatorPawn()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 
@@ -16,7 +16,7 @@ AShooterSpectatorPawn::AShooterSpectatorPawn()
 }
 
 // Called when the game starts or when spawned
-void AShooterSpectatorPawn::BeginPlay()
+void ASP_ShooterSpectatorPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	if (MovementComponent)
@@ -26,19 +26,19 @@ void AShooterSpectatorPawn::BeginPlay()
 }
 
 // Called every frame
-void AShooterSpectatorPawn::Tick(float DeltaTime)
+void ASP_ShooterSpectatorPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
-void AShooterSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASP_ShooterSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction(TEXT("ToggleDebugSpectatorMode"), IE_Pressed, this, &AShooterSpectatorPawn::ReturnToPlayerMode);
+	PlayerInputComponent->BindAction(TEXT("ToggleDebugSpectatorMode"), IE_Pressed, this, &ASP_ShooterSpectatorPawn::ReturnToPlayerMode);
 }
 
-void AShooterSpectatorPawn::ReturnToPlayerMode()
+void ASP_ShooterSpectatorPawn::ReturnToPlayerMode()
 {
 	
 	if (UGameplayStatics::IsGamePaused(GetWorld()))
@@ -46,7 +46,7 @@ void AShooterSpectatorPawn::ReturnToPlayerMode()
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
 	
 		GEngine->Exec(GetWorld(), TEXT("r.MotionBlurQuality 0.5"));
-		AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+		ASP_ShooterPlayerController* ShooterPlayerController = Cast<ASP_ShooterPlayerController>(GetController());
 		if (ShooterPlayerController != nullptr)
 		{
 			if (PlayerShooterCharacter)
@@ -64,7 +64,7 @@ void AShooterSpectatorPawn::ReturnToPlayerMode()
 	}
 	else
 	{
-		AShooterPlayerController* ShooterPlayerController = Cast<AShooterPlayerController>(GetController());
+		ASP_ShooterPlayerController* ShooterPlayerController = Cast<ASP_ShooterPlayerController>(GetController());
 		if (ShooterPlayerController != nullptr)
 		{
 			UGameplayStatics::SetGamePaused(GetWorld(), true);
@@ -75,17 +75,17 @@ void AShooterSpectatorPawn::ReturnToPlayerMode()
 	}
 }
 
-void AShooterSpectatorPawn::SetPlayerShooterCharacter(AShooterCharacter* PlayerShooterCharacterRef)
+void ASP_ShooterSpectatorPawn::SetPlayerShooterCharacter(ASP_ShooterCharacter* PlayerShooterCharacterRef)
 {
 	PlayerShooterCharacter = PlayerShooterCharacterRef;
 }
 
-ETeam AShooterSpectatorPawn::GetTeam()
+ETeam ASP_ShooterSpectatorPawn::GetTeam()
 {
 	return Team;
 }
 
-void AShooterSpectatorPawn::SetTeam(ETeam TeamValue)
+void ASP_ShooterSpectatorPawn::SetTeam(ETeam TeamValue)
 {
 	Team = TeamValue;
 }

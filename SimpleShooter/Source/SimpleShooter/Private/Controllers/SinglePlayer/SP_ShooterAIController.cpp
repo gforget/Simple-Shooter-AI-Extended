@@ -1,31 +1,31 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Controllers/ShooterAIController.h"
-#include "Actors/ShooterCharacter.h"
+#include "Controllers/SinglePlayer/SP_ShooterAIController.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
 
 // Sets default values
-AShooterAIController::AShooterAIController()
+ASP_ShooterAIController::ASP_ShooterAIController()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
-void AShooterAIController::BeginPlay()
+void ASP_ShooterAIController::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AShooterAIController::OnPossess(APawn* InPawn)
+void ASP_ShooterAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	if (AIBehavior != nullptr)
 	{
 		HurtStimuli = NewObject<UHurtStimuli>(GetTransientPackage(), UHurtStimuli::StaticClass());
-		HurtStimuli->Initialize(this, Cast<AShooterCharacter>(InPawn));
+		HurtStimuli->Initialize(this, Cast<ASP_ShooterCharacter>(InPawn));
 		
 		RunBehaviorTree(AIBehavior);
 		GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), InPawn->GetActorLocation());
@@ -33,7 +33,7 @@ void AShooterAIController::OnPossess(APawn* InPawn)
 }
 
 // Called every frame
-void AShooterAIController::Tick(float DeltaTime)
+void ASP_ShooterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -111,9 +111,9 @@ void AShooterAIController::Tick(float DeltaTime)
 	}
 }
 
-bool AShooterAIController::IsDead() const
+bool ASP_ShooterAIController::IsDead() const
 {
-	AShooterCharacter* ControlledCharacter = Cast<AShooterCharacter>(GetPawn());
+	ASP_ShooterCharacter* ControlledCharacter = Cast<ASP_ShooterCharacter>(GetPawn());
 	if (ControlledCharacter != nullptr)
 	{
 		return ControlledCharacter->IsDead(); 
@@ -122,7 +122,7 @@ bool AShooterAIController::IsDead() const
 	return true;
 }
 
-void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePawn)
+void ASP_ShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePawn)
 {
 	//Super::UpdateControlRotation(DeltaTime, bUpdatePawn);
 	
@@ -180,22 +180,22 @@ void AShooterAIController::UpdateControlRotation(float DeltaTime, bool bUpdatePa
 	}
 }
 
-float AShooterAIController::GetFieldOfView()
+float ASP_ShooterAIController::GetFieldOfView()
 {
 	return FieldOfView;
 }
 
-float AShooterAIController::GetSightRange()
+float ASP_ShooterAIController::GetSightRange()
 {
 	return SightRange;
 }
 
-float AShooterAIController::GetHearingRange()
+float ASP_ShooterAIController::GetHearingRange()
 {
 	return HearingRange;
 }
 
-UHurtStimuli* AShooterAIController::GetHurtStimuli()
+UHurtStimuli* ASP_ShooterAIController::GetHurtStimuli()
 {
 	return HurtStimuli;
 }

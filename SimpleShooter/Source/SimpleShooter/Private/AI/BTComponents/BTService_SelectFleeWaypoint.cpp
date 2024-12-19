@@ -5,7 +5,7 @@
 
 #include "AIController.h"
 #include "NavigationPath.h"
-#include "Actors/ShooterCharacter.h"
+#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
@@ -28,9 +28,9 @@ void UBTService_SelectFleeWaypoint::TickNode(UBehaviorTreeComponent& OwnerComp, 
 	}
 }
 
-AWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
+ASP_Waypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 {
-	AWaypoint* SelectedFleePoint = nullptr;
+	ASP_Waypoint* SelectedFleePoint = nullptr;
 	const bool bLastKnownEnemyLocationIsSet = OwnerCompPtr->GetBlackboardComponent()->IsVectorValueSet(FName("LastKnownEnemyLocation"));
 
 	if (!bLastKnownEnemyLocationIsSet)
@@ -45,14 +45,14 @@ AWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 	const FVector2D LastKnownEnemyLocation2D = FVector2D(LastKnownEnemyLocation.X, LastKnownEnemyLocation.Y);
 	
 	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
-	TArray<AWaypoint*> ConsideredWaypoints = GameMode->GetAllWayPoints();
+	TArray<ASP_Waypoint*> ConsideredWaypoints = GameMode->GetAllWayPoints();
 
 	float HighestDistance = 0.0f;
 	int NbValidFleePoint = 0;
 	
 	for (int i=0; i<ConsideredWaypoints.Num(); i++)
 	{
-		const AShooterCharacter* AICharacter = Cast<AShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+		const ASP_ShooterCharacter* AICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 
 		if (AICharacter != nullptr)
 		{

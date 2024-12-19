@@ -8,7 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameMode/Multiplayer/ShooterGameState.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameState.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 
@@ -47,7 +47,7 @@ void AMP_ShooterCharacter::BeginPlay()
 	RotationViewPointRef->SetOwnerController(GetController());
 	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 	
-	if (AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState()))
+	if (AMP_ShooterGameState* GameState = Cast<AMP_ShooterGameState>(GetWorld()->GetGameState()))
 	{
 		GameState->AddShooterCharacterCount(this);
 		GameState->RegisterEvent(this);
