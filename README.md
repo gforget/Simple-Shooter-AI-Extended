@@ -25,6 +25,11 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - The bot recognize who is his ally and who is his enemy, although it is not program to work as a team for now (it will simply be not hostile to member of it own team)
 - The bot can now jump from ledges when it is appropriate using a custom NavLink that use the same jump mechanic as the player
 
+## Multiplayer Support
+- Multiplayer mode is now supported (only in LAN mode for now)
+- FFA and Team death match are supported
+- Bots are not supported in this mode for the moment
+   
 ## New map
 - A new map was created to allow for shooting from high ground and offer more space to fight in. It is also much lighter than the original exercise map.
 
