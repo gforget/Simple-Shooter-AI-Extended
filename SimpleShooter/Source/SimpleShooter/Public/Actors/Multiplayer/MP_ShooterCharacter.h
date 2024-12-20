@@ -10,6 +10,7 @@
 class AMP_Gun;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
+class AMP_ShooterSpectatorPawn;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMP_HealEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMP_DeadEvent, AMP_ShooterCharacter*, DeadShooterCharacter);
@@ -213,6 +214,9 @@ private:
 	bool Dead = false;
 	
 	void GenerateEditorAnchorPositionVisualisation() const;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
 };
 
 

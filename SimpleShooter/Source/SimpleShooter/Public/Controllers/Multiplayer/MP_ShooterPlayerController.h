@@ -26,6 +26,10 @@ public:
 	void AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter);
 	
 	void InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass);
+
+	UFUNCTION(Client, Reliable)
+	void CallOnPossess();
+	
 protected:
 	
 	virtual void OnPossess(APawn* InPawn) override;
@@ -47,5 +51,8 @@ private:
 	UPROPERTY()
 	UGameModeHUD* GameModeHUD;
 
+	UPROPERTY()
+	FTimerHandle TimerHandle;
 
+	void DelayedPossessCheck();
 };

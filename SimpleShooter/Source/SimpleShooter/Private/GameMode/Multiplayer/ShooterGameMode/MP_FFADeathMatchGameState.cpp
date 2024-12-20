@@ -4,6 +4,7 @@
 #include "GameMode/Multiplayer/ShooterGameMode/MP_FFADeathMatchGameState.h"
 
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
+#include "Actors/Multiplayer/MP_ShooterSpectatorPawn.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 
@@ -27,15 +28,20 @@ void AMP_FFADeathMatchGameState::EndGame()
 {
 	if (AMP_ShooterPlayerController* LocalShooterController = Cast<AMP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
 	{
-		//For now, controller unpossesed the character when it dies
-		//TODO: Detect if the controller is in spectator mode later
-		
-		AMP_ShooterCharacter* LocalShooterCharacter = Cast<AMP_ShooterCharacter>(LocalShooterController->GetPawn());
-		if (LocalShooterCharacter != nullptr)
+		if (AMP_ShooterCharacter* ShooterCharacter = Cast<AMP_ShooterCharacter>(LocalShooterController->GetPawn()))
 		{
-			LocalShooterController->GameOver(PlayerWinScreenClass);
+			//The last shooter who dies doesn't have the time unpossessed before receiving the signal
+			if (!ShooterCharacter->IsDead())
+			{
+				LocalShooterController->GameOver(PlayerWinScreenClass);
+			}
+			else
+			{
+				LocalShooterController->GameOver(PlayerLoseScreenClass);
+			}
 		}
-		else
+
+		if (AMP_ShooterSpectatorPawn* ShooterSpectator = Cast<AMP_ShooterSpectatorPawn>(LocalShooterController->GetPawn()))
 		{
 			LocalShooterController->GameOver(PlayerLoseScreenClass);
 		}

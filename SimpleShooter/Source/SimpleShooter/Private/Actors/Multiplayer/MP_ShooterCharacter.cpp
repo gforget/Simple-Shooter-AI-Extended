@@ -5,6 +5,7 @@
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/Multiplayer/MP_Gun.h"
 #include "Actors/RotationViewPointRef.h"
+#include "Actors/Multiplayer/MP_ShooterSpectatorPawn.h"
 #include "Components/CapsuleComponent.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -326,9 +327,26 @@ void AMP_ShooterCharacter::MulticastDeath_Implementation()
 		RotationViewPointRef->Destroy();
 
 		Dead = true;
-		DetachFromControllerPendingDestroy();
+		
+		if (HasAuthority())
+		{
+			//Become spectator - Only Server has authority to spawn actor and assign control
+			AMP_ShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<AMP_ShooterSpectatorPawn>(
+				ShooterSpectatorPawnClass,
+				GetActorLocation(),
+				GetActorRotation()
+			);
+			SpectatorPawn->SetTeam(GetTeam());
 
-		//TODO: Implement spectator mode
+			AMP_ShooterPlayerController* ShooterPlayerController = Cast<AMP_ShooterPlayerController>(GetController());
+			DetachFromControllerPendingDestroy();
+			if (ShooterPlayerController != nullptr)
+			{
+				SpectatorPawn->SetOwner(ShooterPlayerController);
+				ShooterPlayerController->Possess(SpectatorPawn);
+			}
+		}
+		
 		OnDeadEvent.Broadcast(this);
 	}
 }

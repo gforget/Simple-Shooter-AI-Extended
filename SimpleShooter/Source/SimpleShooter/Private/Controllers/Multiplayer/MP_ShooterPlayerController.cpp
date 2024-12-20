@@ -4,7 +4,7 @@
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
-#include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
+#include "Actors/Multiplayer/MP_ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
 #include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameState.h"
 #include "UI/GameModeHUD.h"
@@ -13,9 +13,7 @@
 
 AMP_ShooterPlayerController::AMP_ShooterPlayerController()
 {
-	bShouldPerformFullTickWhenPaused = true;
 	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.bTickEvenWhenPaused = true;
 	bReplicates = true;
 }
 
@@ -46,6 +44,11 @@ void AMP_ShooterPlayerController::InstantiateGameModeHUD(TSubclassOf<UGameModeHU
 	GameModeHUD->AddToViewport();
 }
 
+void AMP_ShooterPlayerController::CallOnPossess_Implementation()
+{
+	DelayedPossessCheck();
+}
+
 void AMP_ShooterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -55,7 +58,23 @@ void AMP_ShooterPlayerController::BeginPlay()
 void AMP_ShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	InstantiateHUD(GetPawn());
+	InstantiateHUD(InPawn);
+	if (HasAuthority())
+	{
+		CallOnPossess();
+	}
+}
+
+void AMP_ShooterPlayerController::DelayedPossessCheck()
+{
+	if (GetPawn())
+	{
+		InstantiateHUD(GetPawn());
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMP_ShooterPlayerController::DelayedPossessCheck, 0.1f, false);
+	}
 }
 
 void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
@@ -63,7 +82,7 @@ void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
 	if (IsLocalController())
 	{
 		AMP_ShooterCharacter* ShooterCharacter = Cast<AMP_ShooterCharacter>(InPawn);
-		ASP_ShooterSpectatorPawn* ShooterSpectator = Cast<ASP_ShooterSpectatorPawn>(InPawn);
+		AMP_ShooterSpectatorPawn* ShooterSpectator = Cast<AMP_ShooterSpectatorPawn>(InPawn);
 
 		if (ShooterCharacter != nullptr || ShooterSpectator != nullptr)
 		{
