@@ -29,14 +29,17 @@ public:
 
 	UFUNCTION(Client, Reliable)
 	void CallOnPossess();
-	
+
+	UPROPERTY()
+	AMP_ShooterCharacter* AssignedShooterCharacter;
+		
 protected:
 	
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void BeginPlay() override;
 	
 private:
-
+	
 	void InstantiateHUD(APawn* InPawn);
 	
 	UPROPERTY(EditAnywhere)

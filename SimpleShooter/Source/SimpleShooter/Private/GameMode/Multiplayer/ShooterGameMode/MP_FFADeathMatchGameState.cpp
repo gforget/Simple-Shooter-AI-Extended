@@ -28,20 +28,11 @@ void AMP_FFADeathMatchGameState::EndGame()
 {
 	if (AMP_ShooterPlayerController* LocalShooterController = Cast<AMP_ShooterPlayerController>(GetWorld()->GetFirstPlayerController()))
 	{
-		if (AMP_ShooterCharacter* ShooterCharacter = Cast<AMP_ShooterCharacter>(LocalShooterController->GetPawn()))
+		if (!LocalShooterController->AssignedShooterCharacter->IsDead())
 		{
-			//The last shooter who dies doesn't have the time unpossessed before receiving the signal
-			if (!ShooterCharacter->IsDead())
-			{
-				LocalShooterController->GameOver(PlayerWinScreenClass);
-			}
-			else
-			{
-				LocalShooterController->GameOver(PlayerLoseScreenClass);
-			}
+			LocalShooterController->GameOver(PlayerWinScreenClass);
 		}
-
-		if (AMP_ShooterSpectatorPawn* ShooterSpectator = Cast<AMP_ShooterSpectatorPawn>(LocalShooterController->GetPawn()))
+		else
 		{
 			LocalShooterController->GameOver(PlayerLoseScreenClass);
 		}

@@ -99,6 +99,7 @@ void AMP_ShooterPlayerController::InstantiateHUD(APawn* InPawn)
 			{
 				if (ShooterCharacter != nullptr)
 				{
+					AssignedShooterCharacter = ShooterCharacter;
 					PlayerHUD->OnPlayerModeEvent();
 				}
 				else if (ShooterSpectator != nullptr)
