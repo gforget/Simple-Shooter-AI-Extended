@@ -7,8 +7,10 @@
 #include "PlayMontageCallbackProxy.h"
 #include "Actors/RotationViewPointRef.h"
 #include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
+#include "Components/SphereComponent.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "Controllers/SinglePlayer/SP_ShooterPlayerController.h"
+#include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Utility/NavMeshUtility.h"
@@ -18,6 +20,12 @@ ASP_ShooterCharacter::ASP_ShooterCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	// Create and setup head collision sphere
+	HeadCollision = CreateDefaultSubobject<USphereComponent>(TEXT("HeadCollision"));
+	HeadCollision->SetupAttachment(GetMesh());
+	HeadCollision->SetCollisionProfileName(TEXT("OverlapAll")); // Adjust profile as needed
+	HeadCollision->SetGenerateOverlapEvents(true);
 }
 
 // Called when the game starts or when spawned
@@ -68,6 +76,10 @@ void ASP_ShooterCharacter::BeginPlay()
 			}
 		}
 	}
+	
+	// Set initial collision sphere size
+	HeadCollision->SetSphereRadius(HeadshotRadius);
+	UpdateHeadCollision();
 }
 
 bool ASP_ShooterCharacter::IsDead() const
@@ -78,6 +90,17 @@ bool ASP_ShooterCharacter::IsDead() const
 ETeam ASP_ShooterCharacter::GetTeam() const
 {
 	return Team;
+}
+
+FVector ASP_ShooterCharacter::GetHeadAnchorLocation() const
+{
+	if (USkeletalMeshComponent* LocalMesh = GetMesh())
+	{
+		FTransform BoneTransform = LocalMesh->GetSocketTransform(HeadBoneName);
+		return BoneTransform.TransformPosition(HeadAnchorOffset);
+	}
+	
+	return GetActorLocation();
 }
 
 bool ASP_ShooterCharacter::GetIsReloading() const
@@ -117,6 +140,31 @@ ASP_Gun* ASP_ShooterCharacter::GetGunReference() const
 void ASP_ShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	// Update collision sphere position every frame
+	UpdateHeadCollision();
+	
+	if (bShowHeadshotDebug)
+	{
+		DrawDebugSphere(
+			GetWorld(),
+			GetHeadAnchorLocation(),
+			HeadshotRadius,
+			24,
+			FColor::Green,
+			false,
+			-1.0f,
+			0,
+			1.0f
+		);
+	}
+}
+
+void ASP_ShooterCharacter::UpdateHeadCollision()
+{
+	// Update collision sphere location to match anchor point
+	FVector NewLocation = GetHeadAnchorLocation();
+	HeadCollision->SetWorldLocation(NewLocation);
 }
 
 // Called to bind functionality to input
@@ -144,7 +192,35 @@ void ASP_ShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 float ASP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
 	AActor* DamageCauser)
 {
+	if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
+	{
+		const FPointDamageEvent* PointDamageEvent = static_cast<const FPointDamageEvent*>(&DamageEvent);
+		FVector ImpactPoint = PointDamageEvent->HitInfo.ImpactPoint;
+        
+		// Get current head location and check distance
+		float DistanceToHead = FVector::Distance(GetHeadAnchorLocation(), ImpactPoint);
+        
+		if (DistanceToHead <= HeadshotRadius)
+		{
+			DamageAmount *= HeadshotMultiplier;
+
+			if (bShowHeadshotDebug && GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+					FString::Printf(TEXT("Headshot! Distance: %f, Damage: %f"), 
+					DistanceToHead, DamageAmount));
+                
+				DrawDebugSphere(GetWorld(), ImpactPoint, 5.0f, 12, FColor::Red, 
+					false, 2.0f, 0, 1.0f);
+                
+				DrawDebugLine(GetWorld(), GetHeadAnchorLocation(), ImpactPoint, 
+					FColor::Yellow, false, 2.0f, 0, 1.0f);
+			}
+		}
+	}
+	
 	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
 

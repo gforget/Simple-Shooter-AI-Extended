@@ -9,6 +9,7 @@
 #include "SP_ShooterCharacter.generated.h"
 
 class ASP_Gun;
+class USphereComponent;
 class AVisualStimuli_ShooterCharacter;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
@@ -31,11 +32,35 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Update collision sphere location
+	void UpdateHeadCollision();
+	
 #if WITH_EDITOR
 	virtual void PostActorCreated() override;
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	virtual void PostEditMove(bool bFinished) override;
 #endif
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	float HeadshotMultiplier = 2.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	FName HeadBoneName = TEXT("head");
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	FVector HeadAnchorOffset = FVector::ZeroVector;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float HeadshotRadius = 15.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	bool bShowHeadshotDebug = false;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat")
+	USphereComponent* HeadCollision;
 	
 public:
 	UPROPERTY()
@@ -55,6 +80,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	FVector GetHeadAnchorLocation() const;
 	
 	UFUNCTION(BlueprintPure)
 	bool GetIsReloading() const;
@@ -80,9 +108,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	ASP_Gun* GetGunReference() const;
 	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -104,16 +129,16 @@ public:
 	
 private:
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Alliances")
 	TEnumAsByte<ETeam> Team = ETeam::NoTeam;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Stimuli")
 	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
 	
 	UPROPERTY()
 	AVisualStimuli_ShooterCharacter* VSShooterCharacter;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Other")
 	TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
 
 	UPROPERTY()
@@ -141,19 +166,19 @@ private:
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10.0f;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	float MaxHealth = 100.0f;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category="Combat")
 	float Health = 10.0f;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	int MaxAmmoReserve = 100;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	int AmmoReserve = 20;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Gun")
 	TSubclassOf<ASP_Gun> GunClass;
 
 	UPROPERTY()
@@ -173,10 +198,9 @@ private:
 	
 	void GenerateEditorAnchorPositionVisualisation() const;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Spectator")
 	TSubclassOf<ASP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
 	
 	void ActivateDebugSpectatorMode();
 	
 };
-
