@@ -89,7 +89,7 @@ private:
 	float TimeBetweenRound = 0.15f;
 	
 	UPROPERTY(EditAnywhere)
-	float BulletSpreadRadius = 10000.0;
+	float BulletSpreadRadius = 200.0f;
 
 	UPROPERTY()
 	bool TriggerPulled = false;

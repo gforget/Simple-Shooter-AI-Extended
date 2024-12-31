@@ -78,7 +78,7 @@ void ASP_ShooterCharacter::BeginPlay()
 	}
 	
 	// Set initial collision sphere size
-	HeadCollision->SetSphereRadius(HeadshotRadius);
+	HeadCollision->SetSphereRadius(HeadshotRadius-5.0f);
 	UpdateHeadCollision();
 }
 
@@ -209,7 +209,9 @@ float ASP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
 					FString::Printf(TEXT("Headshot! Distance: %f, Damage: %f"), 
 					DistanceToHead, DamageAmount));
-                
+
+				UE_LOG(LogTemp, Warning, TEXT("Headshot! Distance: %f, Damage: %f"), DistanceToHead, DamageAmount);
+				
 				DrawDebugSphere(GetWorld(), ImpactPoint, 5.0f, 12, FColor::Red, 
 					false, 2.0f, 0, 1.0f);
                 
@@ -222,8 +224,25 @@ float ASP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	
 	DamageToApply = FMath::Min(Health, DamageToApply);
+	if (bShowHeadshotDebug && GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+		FString::Printf(TEXT("Health before damage applied:  %f"), 
+		Health));
+		UE_LOG(LogTemp, Warning, TEXT("Health before damage applied: %f"), Health);
+	}
+	
 	Health -= DamageToApply;
-
+	
+	if (bShowHeadshotDebug && GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+		FString::Printf(TEXT("Final Health :  %f"), 
+		Health));
+		
+		UE_LOG(LogTemp, Warning, TEXT("Final Health: %f"), Health);
+	}
+	
 	if (Health <= 0.0f)
 	{
 		Death();
@@ -344,6 +363,16 @@ void ASP_ShooterCharacter::Reload()
 	{
 		//TODO: clip sound
 	}
+}
+
+float ASP_ShooterCharacter::GetHealth() const
+{
+	return Health;
+}
+
+float ASP_ShooterCharacter::GetMaxHealth() const
+{
+	return MaxHealth;
 }
 
 #if WITH_EDITOR

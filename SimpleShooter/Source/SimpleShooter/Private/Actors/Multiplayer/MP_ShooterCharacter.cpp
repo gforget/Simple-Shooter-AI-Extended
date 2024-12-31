@@ -7,7 +7,9 @@
 #include "Actors/RotationViewPointRef.h"
 #include "Actors/Multiplayer/MP_ShooterSpectatorPawn.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
+#include "Engine/DamageEvents.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameState.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -19,6 +21,12 @@ AMP_ShooterCharacter::AMP_ShooterCharacter()
 {
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = true;
+
+	// Create and setup head collision sphere
+	HeadCollision = CreateDefaultSubobject<USphereComponent>(TEXT("HeadCollision"));
+	HeadCollision->SetupAttachment(GetMesh());
+	HeadCollision->SetCollisionProfileName(TEXT("OverlapAll")); // Adjust profile as needed
+	HeadCollision->SetGenerateOverlapEvents(true);
 }
 
 // Called when the game starts or when spawned
@@ -53,6 +61,10 @@ void AMP_ShooterCharacter::BeginPlay()
 		GameState->AddShooterCharacterCount(this);
 		GameState->RegisterEvent(this);
 	}
+	
+	// Set initial collision sphere size
+	HeadCollision->SetSphereRadius(HeadshotRadius-5.0f);
+	UpdateHeadCollision();
 }
 
 void AMP_ShooterCharacter::PostActorCreated()
@@ -92,6 +104,17 @@ void AMP_ShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
 #endif
 }
 
+FVector AMP_ShooterCharacter::GetHeadAnchorLocation() const
+{
+	if (USkeletalMeshComponent* LocalMesh = GetMesh())
+	{
+		FTransform BoneTransform = LocalMesh->GetSocketTransform(HeadBoneName);
+		return BoneTransform.TransformPosition(HeadAnchorOffset);
+	}
+	
+	return GetActorLocation();
+}
+
 bool AMP_ShooterCharacter::GetIsReloading() const
 {
 	return IsReloading;
@@ -116,6 +139,31 @@ void AMP_ShooterCharacter::Tick(float DeltaTime)
 			}
 		}
 	}
+
+	// Update collision sphere position every frame
+	UpdateHeadCollision();
+	
+	if (bShowHeadshotDebug)
+	{
+		DrawDebugSphere(
+			GetWorld(),
+			GetHeadAnchorLocation(),
+			HeadshotRadius,
+			24,
+			FColor::Green,
+			false,
+			-1.0f,
+			0,
+			1.0f
+		);
+	}
+}
+
+void AMP_ShooterCharacter::UpdateHeadCollision()
+{
+	// Update collision sphere location to match anchor point
+	FVector NewLocation = GetHeadAnchorLocation();
+	HeadCollision->SetWorldLocation(NewLocation);	
 }
 
 // Called to bind functionality to input
@@ -140,6 +188,16 @@ void AMP_ShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 ARotationViewPointRef* AMP_ShooterCharacter::GetRotationViewPointRef()
 {
 	return RotationViewPointRef;
+}
+
+float AMP_ShooterCharacter::GetHealth() const
+{
+	return Health;
+}
+
+float AMP_ShooterCharacter::GetMaxHealth() const
+{
+	return MaxHealth;
 }
 
 float AMP_ShooterCharacter::GetHealthPercent() const
@@ -272,10 +330,55 @@ void AMP_ShooterCharacter::MulticastPullTrigger_Implementation()
 float AMP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
 	AController* EventInstigator, AActor* DamageCauser)
 {
+	if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
+	{
+		const FPointDamageEvent* PointDamageEvent = static_cast<const FPointDamageEvent*>(&DamageEvent);
+		FVector ImpactPoint = PointDamageEvent->HitInfo.ImpactPoint;
+        
+		// Get current head location and check distance
+		float DistanceToHead = FVector::Distance(GetHeadAnchorLocation(), ImpactPoint);
+        
+		if (DistanceToHead <= HeadshotRadius)
+		{
+			DamageAmount *= HeadshotMultiplier;
+
+			if (bShowHeadshotDebug && GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+					FString::Printf(TEXT("Headshot! Distance: %f, Damage: %f"), 
+					DistanceToHead, DamageAmount));
+				UE_LOG(LogTemp, Warning, TEXT("Headshot! Distance: %f, Damage: %f"), DistanceToHead, DamageAmount);
+				
+				DrawDebugSphere(GetWorld(), ImpactPoint, 5.0f, 12, FColor::Red, 
+					false, 2.0f, 0, 1.0f);
+                
+				DrawDebugLine(GetWorld(), GetHeadAnchorLocation(), ImpactPoint, 
+					FColor::Yellow, false, 2.0f, 0, 1.0f);
+			}
+		}
+	}
+	
 	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply = FMath::Min(Health, DamageToApply);
+	if (bShowHeadshotDebug && GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+		FString::Printf(TEXT("Health before damage applied:  %f"), 
+		Health));
+		UE_LOG(LogTemp, Warning, TEXT("Health before damage applied: %f"), Health);
+	}
+	
 	Health -= DamageToApply;
 
+	if (bShowHeadshotDebug && GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+		FString::Printf(TEXT("Final Health :  %f"), 
+		Health));
+		
+		UE_LOG(LogTemp, Warning, TEXT("Final Health: %f"), Health);
+	}
+	
 	if (Health <= 0.0f)
 	{
 		MulticastDeath();

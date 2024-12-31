@@ -121,6 +121,12 @@ public:
 	void ReleaseTrigger();
 	void Reload();
 
+	UFUNCTION(BlueprintCallable)
+	float GetHealth() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetMaxHealth() const;
+	
 	void SelfDamage();
 	
 	AVisualStimuli_ShooterCharacter* GetVSShooterCharacter();

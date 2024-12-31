@@ -11,6 +11,7 @@ class AMP_Gun;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
 class AMP_ShooterSpectatorPawn;
+class USphereComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMP_HealEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMP_DeadEvent, AMP_ShooterCharacter*, DeadShooterCharacter);
@@ -28,11 +29,35 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Update collision sphere location
+	void UpdateHeadCollision();
+	
 #if WITH_EDITOR
 	virtual void PostActorCreated() override;
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	virtual void PostEditMove(bool bFinished) override;
 #endif
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	float HeadshotMultiplier = 2.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	FName HeadBoneName = TEXT("head");
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	FVector HeadAnchorOffset = FVector::ZeroVector;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float HeadshotRadius = 15.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	bool bShowHeadshotDebug = false;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat")
+	USphereComponent* HeadCollision;
 	
 public:
 	
@@ -50,12 +75,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	FVector GetHeadAnchorLocation() const;
 	
 	UFUNCTION(BlueprintPure)
 	bool GetIsReloading() const;
-	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 100.0f;
@@ -77,6 +102,12 @@ public:
 
 	ARotationViewPointRef* GetRotationViewPointRef();
 
+	UFUNCTION(BlueprintCallable)
+	float GetHealth() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetMaxHealth() const;
+	
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() const;
 
@@ -112,6 +143,7 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	ETeam GetTeam() const;
+	
 protected:
 	
 	//Pull Trigger RPC
@@ -218,5 +250,3 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
 };
-
-
