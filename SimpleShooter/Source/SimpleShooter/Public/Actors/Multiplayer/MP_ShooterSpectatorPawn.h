@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/ABaseShooterSpectatorPawn.h"
+#include "Actors/BaseShooterSpectatorPawn.h"
 #include "MP_ShooterSpectatorPawn.generated.h"
 
 class AMP_ShooterCharacter;
 
 UCLASS()
-class SIMPLESHOOTER_API AMP_ShooterSpectatorPawn : public AABaseShooterSpectatorPawn
+class SIMPLESHOOTER_API AMP_ShooterSpectatorPawn : public ABaseShooterSpectatorPawn
 {
 	GENERATED_BODY()
 

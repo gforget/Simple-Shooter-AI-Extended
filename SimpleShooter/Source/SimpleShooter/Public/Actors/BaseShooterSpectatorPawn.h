@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
 #include "GameFramework/SpectatorPawn.h"
-#include "ABaseShooterSpectatorPawn.generated.h"
+#include "BaseShooterSpectatorPawn.generated.h"
 
 UCLASS()
-class SIMPLESHOOTER_API AABaseShooterSpectatorPawn : public ASpectatorPawn
+class SIMPLESHOOTER_API ABaseShooterSpectatorPawn : public ASpectatorPawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AABaseShooterSpectatorPawn();
+	ABaseShooterSpectatorPawn();
 	
 	ETeam GetTeam();
 	void SetTeam(ETeam TeamValue);

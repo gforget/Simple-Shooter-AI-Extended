@@ -3,14 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ActorComponents/TeamManager.h"
-#include "Actors/ABaseShooterSpectatorPawn.h"
+#include "Actors/BaseShooterSpectatorPawn.h"
 #include "SP_ShooterSpectatorPawn.generated.h"
 
 class ASP_ShooterCharacter;
 
 UCLASS()
-class SIMPLESHOOTER_API ASP_ShooterSpectatorPawn : public AABaseShooterSpectatorPawn
+class SIMPLESHOOTER_API ASP_ShooterSpectatorPawn : public ABaseShooterSpectatorPawn
 {
 	GENERATED_BODY()
 

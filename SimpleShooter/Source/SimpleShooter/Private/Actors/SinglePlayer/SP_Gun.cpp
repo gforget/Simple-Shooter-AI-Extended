@@ -13,51 +13,13 @@
 // Sets default values
 ASP_Gun::ASP_Gun()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	SetRootComponent(Root);
-
-	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(Root);
+	
 }
+
 // Called when the game starts or when spawned
 void ASP_Gun::BeginPlay()
 {
 	Super::BeginPlay();
-	Ammo = MaxAmmo;
-}
-
-// Called every frame
-void ASP_Gun::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-void ASP_Gun::PullTrigger()
-{
-	if (!TriggerPulled)
-	{
-		FireTimerTimerDel.BindUFunction(this, FName("Fire"));
-		GetWorld()->GetTimerManager().SetTimer(
-			FireTimerHandle,
-			FireTimerTimerDel,
-			TimeBetweenRound,
-			true,
-			0.0f
-		);
-		
-		TriggerPulled = true;
-	}
-
-}
-
-void ASP_Gun::ReleaseTrigger()
-{
-	if (TriggerPulled)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
-		TriggerPulled = false;
-	}
 }
 
 void ASP_Gun::Fire()
@@ -146,64 +108,5 @@ bool ASP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	Params.AddIgnoredActor(GetOwner());
 	
 	return GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
-}
-
-bool ASP_Gun::UseAmmo()
-{
-	if (Ammo-1 > 0)
-	{
-		Ammo--;
-		return true;
-	}
-	else
-	{
-		Ammo = 0;
-		return false;
-	}
-}
-
-int ASP_Gun::Reload(int AmmoAmount)
-{
-	int LeftOver = 0;
-	
-	if (Ammo + AmmoAmount > MaxAmmo)
-	{
-		LeftOver = (Ammo + AmmoAmount) - MaxAmmo;
-		Ammo += AmmoAmount-LeftOver;
-	}
-	else
-	{
-		Ammo += AmmoAmount;
-	}
-
-	return LeftOver;
-}
-
-int ASP_Gun::GetMaxAmmo() const
-{
-	return MaxAmmo;
-}
-
-FString ASP_Gun::GetAmmoRatio() const
-{
-	return FString::FromInt(Ammo) + "/" + FString::FromInt(MaxAmmo); 
-}
-
-float ASP_Gun::GetAmmoPercent() const
-{
-	return (float)Ammo/(float)MaxAmmo;
-}
-
-int ASP_Gun::GetAmmoAmount() const
-{
-	return Ammo;
-}
-
-AController* ASP_Gun::GetOwnerController() const
-{
-	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	if (OwnerPawn == nullptr) return nullptr;
-	
-	return OwnerPawn->GetController();
 }
 
