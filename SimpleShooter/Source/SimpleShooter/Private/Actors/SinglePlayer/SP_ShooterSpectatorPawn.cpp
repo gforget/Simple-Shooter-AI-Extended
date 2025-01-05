@@ -10,7 +10,6 @@
 ASP_ShooterSpectatorPawn::ASP_ShooterSpectatorPawn()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bTickEvenWhenPaused = true;
 }
@@ -25,12 +24,6 @@ void ASP_ShooterSpectatorPawn::BeginPlay()
 	}
 }
 
-// Called every frame
-void ASP_ShooterSpectatorPawn::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 // Called to bind functionality to input
 void ASP_ShooterSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -40,7 +33,6 @@ void ASP_ShooterSpectatorPawn::SetupPlayerInputComponent(UInputComponent* Player
 
 void ASP_ShooterSpectatorPawn::ReturnToPlayerMode()
 {
-	
 	if (UGameplayStatics::IsGamePaused(GetWorld()))
 	{
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
@@ -78,15 +70,5 @@ void ASP_ShooterSpectatorPawn::ReturnToPlayerMode()
 void ASP_ShooterSpectatorPawn::SetPlayerShooterCharacter(ASP_ShooterCharacter* PlayerShooterCharacterRef)
 {
 	PlayerShooterCharacter = PlayerShooterCharacterRef;
-}
-
-ETeam ASP_ShooterSpectatorPawn::GetTeam()
-{
-	return Team;
-}
-
-void ASP_ShooterSpectatorPawn::SetTeam(ETeam TeamValue)
-{
-	Team = TeamValue;
 }
 

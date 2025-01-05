@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
-#include "GameFramework/SpectatorPawn.h"
+#include "Actors/ABaseShooterSpectatorPawn.h"
 #include "SP_ShooterSpectatorPawn.generated.h"
 
 class ASP_ShooterCharacter;
 
 UCLASS()
-class SIMPLESHOOTER_API ASP_ShooterSpectatorPawn : public ASpectatorPawn
+class SIMPLESHOOTER_API ASP_ShooterSpectatorPawn : public AABaseShooterSpectatorPawn
 {
 	GENERATED_BODY()
 
@@ -23,8 +23,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -32,16 +30,9 @@ public:
 	void ReturnToPlayerMode();
 
 	void SetPlayerShooterCharacter(ASP_ShooterCharacter* PlayerShooterCharacterRef);
-
-	ETeam GetTeam();
-
-	void SetTeam(ETeam TeamValue);
 	
 private:
 	
 	UPROPERTY()
 	ASP_ShooterCharacter* PlayerShooterCharacter;
-	
-	UPROPERTY(EditDefaultsOnly)
-	TEnumAsByte<ETeam> Team = ETeam::NoTeam;
 };
