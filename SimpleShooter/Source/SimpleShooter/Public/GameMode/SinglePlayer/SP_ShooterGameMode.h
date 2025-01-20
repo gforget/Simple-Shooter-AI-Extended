@@ -29,7 +29,7 @@ public:
 	ASP_ShooterGameMode();
 
 	UFUNCTION()
-	virtual void OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter);
+	virtual void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter);
 
 	virtual void AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister);
 

@@ -24,7 +24,7 @@ public:
 	TSubclassOf<UUserWidget> RedWinScreenClass;
 	
 	void AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister) override;
-	void OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter) override;
+	void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter) override;
 	
 	UPROPERTY(BlueprintReadOnly)
 	TMap<TEnumAsByte<ETeam>, int> TeamCount;

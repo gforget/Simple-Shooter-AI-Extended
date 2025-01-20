@@ -69,7 +69,7 @@ void AMP_ShooterGameMode::LeaveSession()
 	}
 }
 
-void AMP_ShooterGameMode::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)
+void AMP_ShooterGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter)
 {
 	
 }

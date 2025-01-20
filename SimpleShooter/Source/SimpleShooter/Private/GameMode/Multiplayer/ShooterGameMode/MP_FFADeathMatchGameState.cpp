@@ -4,7 +4,6 @@
 #include "GameMode/Multiplayer/ShooterGameMode/MP_FFADeathMatchGameState.h"
 
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
-#include "Actors/Multiplayer/MP_ShooterSpectatorPawn.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 
@@ -14,7 +13,7 @@ void AMP_FFADeathMatchGameState::AddShooterCharacterCount(AMP_ShooterCharacter* 
 	ShooterCount++;
 }
 
-void AMP_FFADeathMatchGameState::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)
+void AMP_FFADeathMatchGameState::OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
 	ShooterCount--;

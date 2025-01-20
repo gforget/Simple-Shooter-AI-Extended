@@ -26,7 +26,7 @@ public:
 	AMP_ShooterGameMode();
 
 	UFUNCTION()
-	virtual void OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter);
+	virtual void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter);
 	
 	TArray<AMP_Waypoint*> GetAllWayPoints();
 	void AddWayPoint(AMP_Waypoint* WayPoint);

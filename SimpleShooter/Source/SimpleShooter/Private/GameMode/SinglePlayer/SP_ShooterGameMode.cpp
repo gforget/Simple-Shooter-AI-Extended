@@ -15,7 +15,7 @@ void ASP_ShooterGameMode::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ASP_ShooterGameMode::OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter)
+void ASP_ShooterGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter)
 {
 	
 }

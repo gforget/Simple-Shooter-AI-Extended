@@ -17,31 +17,11 @@ AMP_ShooterPlayerController::AMP_ShooterPlayerController()
 	bReplicates = true;
 }
 
-void AMP_ShooterPlayerController::GameOver(TSubclassOf<UUserWidget> EndScreenClass)
-{
-	GameHasEnded(GetPawn());
-	
-	PlayerHUD->RemoveFromParent();
-	GameModeHUD->RemoveFromParent();
-	
-	UUserWidget* EndScreenWidget = CreateWidget(this, EndScreenClass);
-	if (EndScreenWidget != nullptr)
-	{
-		EndScreenWidget->AddToViewport();
-	}
-}
-
 void AMP_ShooterPlayerController::AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter)
 {
 	UMP_OHHealthBar* OHHealthBar = Cast<UMP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
 	OHHealthBar->AddToViewport();
 	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
-}
-
-void AMP_ShooterPlayerController::InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass)
-{
-	GameModeHUD = Cast<UGameModeHUD>(CreateWidget(this, GameModeHUDClass));
-	GameModeHUD->AddToViewport();
 }
 
 void AMP_ShooterPlayerController::CallOnPossess_Implementation()

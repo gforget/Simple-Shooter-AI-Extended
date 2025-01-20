@@ -22,7 +22,7 @@ public:
 	TSubclassOf<UUserWidget> PlayerLoseScreenClass;
 	
 	void AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister) override;
-	void OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter) override;
+	void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter) override;
 	
 	UPROPERTY(BlueprintReadOnly)
 	int ShooterCount;

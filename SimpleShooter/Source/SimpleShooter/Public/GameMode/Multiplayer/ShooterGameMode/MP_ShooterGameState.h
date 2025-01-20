@@ -22,7 +22,7 @@ public:
 	TSubclassOf<UGameModeHUD> GameModeHUDClass;
 	
 	UFUNCTION()
-	virtual void OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter);
+	virtual void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter);
 	
 	virtual void AddShooterCharacterCount(AMP_ShooterCharacter* ShooterCharacterToRegister);
 

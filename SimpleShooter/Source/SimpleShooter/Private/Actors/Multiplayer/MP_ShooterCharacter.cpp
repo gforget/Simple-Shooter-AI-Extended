@@ -200,10 +200,10 @@ float AMP_ShooterCharacter::GetMaxHealth() const
 	return MaxHealth;
 }
 
-float AMP_ShooterCharacter::GetHealthPercent() const
-{
-	return Health/MaxHealth;
-}
+// float AMP_ShooterCharacter::GetHealthPercent() const
+// {
+// 	return Health/MaxHealth;
+// }
 
 float AMP_ShooterCharacter::GetAmmoReservePercent() const
 {
@@ -457,11 +457,6 @@ void AMP_ShooterCharacter::MulticastDeath_Implementation()
 bool AMP_ShooterCharacter::IsDead() const
 {
 	return Dead;
-}
-
-ETeam AMP_ShooterCharacter::GetTeam() const
-{
-	return Team;
 }
 
 void AMP_ShooterCharacter::PerformPullTrigger()

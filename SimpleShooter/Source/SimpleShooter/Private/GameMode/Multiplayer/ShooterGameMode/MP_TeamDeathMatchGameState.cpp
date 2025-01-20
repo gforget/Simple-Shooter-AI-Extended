@@ -16,7 +16,7 @@ void AMP_TeamDeathMatchGameState::AddShooterCharacterCount(AMP_ShooterCharacter*
 	TeamCount[ShooterCharacterToRegister->GetTeam()]++;
 }
 
-void AMP_TeamDeathMatchGameState::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)
+void AMP_TeamDeathMatchGameState::OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
 	

@@ -5,7 +5,7 @@
 
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
 
-void AMP_ShooterGameState::OnShooterCharacterDeath(AMP_ShooterCharacter* DeadShooterCharacter)
+void AMP_ShooterGameState::OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter)
 {
 }
 

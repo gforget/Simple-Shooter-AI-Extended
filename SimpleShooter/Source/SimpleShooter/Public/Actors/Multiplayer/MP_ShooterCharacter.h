@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "GameFramework/Character.h"
 #include "MP_ShooterCharacter.generated.h"
 
@@ -14,10 +15,10 @@ class AMP_ShooterSpectatorPawn;
 class USphereComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMP_HealEvent);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMP_DeadEvent, AMP_ShooterCharacter*, DeadShooterCharacter);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMP_DeadEvent, AMP_ShooterCharacter*, DeadShooterCharacter);
 
 UCLASS()
-class SIMPLESHOOTER_API AMP_ShooterCharacter : public ACharacter
+class SIMPLESHOOTER_API AMP_ShooterCharacter : public ABaseShooterCharacter
 {
 	GENERATED_BODY()
 
@@ -64,11 +65,11 @@ public:
 	UPROPERTY()
 	FMP_HealEvent OnHealEvent;
 
-	UPROPERTY()
-	FMP_DeadEvent OnDeadEvent;
+	// UPROPERTY()
+	// FMP_DeadEvent OnDeadEvent;
 
-	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
-	FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
+	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	// FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
 
 	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
@@ -108,8 +109,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetMaxHealth() const;
 	
-	UFUNCTION(BlueprintCallable)
-	float GetHealthPercent() const;
+	// UFUNCTION(BlueprintCallable)
+	// float GetHealthPercent() const;
 
 	UFUNCTION(BlueprintCallable)
 	float GetAmmoReservePercent() const;
@@ -140,9 +141,6 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
-	
-	UFUNCTION(BlueprintPure)
-	ETeam GetTeam() const;
 	
 protected:
 	
@@ -203,8 +201,6 @@ protected:
 	void UpdateControlRotation(const FRotator& NewRotation);
 
 private:
-	UPROPERTY(EditDefaultsOnly)
-	TEnumAsByte<ETeam> Team = ETeam::NoTeam;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
@@ -218,11 +214,11 @@ private:
 	UPROPERTY()
 	AMP_Gun* Gun;
 
-	UPROPERTY(EditDefaultsOnly)
-	float MaxHealth = 100.0f;
-
-	UPROPERTY(Replicated, VisibleAnywhere)
-	float Health = 10.0f;
+	// UPROPERTY(EditDefaultsOnly)
+	// float MaxHealth = 100.0f;
+	//
+	// UPROPERTY(Replicated, VisibleAnywhere)
+	// float Health = 10.0f;
 	
 	UPROPERTY()
 	bool IsReloading = false;

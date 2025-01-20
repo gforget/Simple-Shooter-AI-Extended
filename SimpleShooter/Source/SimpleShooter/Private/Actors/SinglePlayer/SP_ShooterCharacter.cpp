@@ -13,6 +13,7 @@
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Net/UnrealNetwork.h"
 #include "Utility/NavMeshUtility.h"
 
 // Sets default values
@@ -87,11 +88,6 @@ bool ASP_ShooterCharacter::IsDead() const
 	return Dead;
 }
 
-ETeam ASP_ShooterCharacter::GetTeam() const
-{
-	return Team;
-}
-
 FVector ASP_ShooterCharacter::GetHeadAnchorLocation() const
 {
 	if (USkeletalMeshComponent* LocalMesh = GetMesh())
@@ -106,11 +102,6 @@ FVector ASP_ShooterCharacter::GetHeadAnchorLocation() const
 bool ASP_ShooterCharacter::GetIsReloading() const
 {
 	return IsReloading;
-}
-
-float ASP_ShooterCharacter::GetHealthPercent() const
-{
-	return Health/MaxHealth;
 }
 
 float ASP_ShooterCharacter::GetAmmoReservePercent() const

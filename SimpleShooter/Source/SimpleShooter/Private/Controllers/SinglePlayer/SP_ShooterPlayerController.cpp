@@ -6,7 +6,6 @@
 #include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
 #include "Blueprint/UserWidget.h"
-#include "UI/GameModeHUD.h"
 #include "UI/PlayerHUD.h"
 #include "UI/SinglePlayer/SP_OHHealthBar.h"
 
@@ -45,17 +44,7 @@ void ASP_ShooterPlayerController::OnPossess(APawn* InPawn)
 
 void ASP_ShooterPlayerController::GameOver(TSubclassOf<UUserWidget> EndScreenClass)
 {
-	GameHasEnded(GetPawn());
-	
-	PlayerHUD->RemoveFromParent();
-	GameModeHUD->RemoveFromParent();
-	
-	UUserWidget* EndScreenWidget = CreateWidget(this, EndScreenClass);
-	if (EndScreenWidget != nullptr)
-	{
-		EndScreenWidget->AddToViewport();
-	}
-
+	Super::GameOver(EndScreenClass);
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
 }
 
@@ -64,10 +53,4 @@ void ASP_ShooterPlayerController::AddOHHealthBar(ASP_ShooterCharacter* AssignedC
 	USP_OHHealthBar* OHHealthBar = Cast<USP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
 	OHHealthBar->AddToViewport();
 	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
-}
-
-void ASP_ShooterPlayerController::InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass)
-{
-	GameModeHUD = Cast<UGameModeHUD>(CreateWidget(this, GameModeHUDClass));
-	GameModeHUD->AddToViewport();
 }

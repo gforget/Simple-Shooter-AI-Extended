@@ -14,7 +14,7 @@ ASP_TeamDeathMatchGameMode::ASP_TeamDeathMatchGameMode()
 	FactionManagerComponent->AllianceMode = EAllianceMode::Team;
 }
 
-void ASP_TeamDeathMatchGameMode::OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter)
+void ASP_TeamDeathMatchGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
 	

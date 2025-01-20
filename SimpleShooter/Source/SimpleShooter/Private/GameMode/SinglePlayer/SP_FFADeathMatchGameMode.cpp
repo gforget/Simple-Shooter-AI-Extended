@@ -76,7 +76,7 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 	}
 }
 
-void ASP_FFADeathMatchGameMode::OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter)
+void ASP_FFADeathMatchGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter)
 {
 	Super::OnShooterCharacterDeath(DeadShooterCharacter);
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Controllers/BaseShooterPlayerController.h"
 #include "GameFramework/PlayerController.h"
 #include "MP_ShooterPlayerController.generated.h"
 
@@ -15,17 +16,14 @@ class UPlayerHUD;
 class AMP_ShooterCharacter;
 
 UCLASS()
-class SIMPLESHOOTER_API AMP_ShooterPlayerController : public APlayerController
+class SIMPLESHOOTER_API AMP_ShooterPlayerController : public ABaseShooterPlayerController
 {
 	GENERATED_BODY()
 
 public:
 	AMP_ShooterPlayerController();
-	
-	void GameOver(TSubclassOf<UUserWidget> EndScreenClass);
+
 	void AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter);
-	
-	void InstantiateGameModeHUD(TSubclassOf<UGameModeHUD> GameModeHUDClass);
 
 	UFUNCTION(Client, Reliable)
 	void CallOnPossess();
@@ -41,18 +39,6 @@ protected:
 private:
 	
 	void InstantiateHUD(APawn* InPawn);
-	
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UPlayerHUD> HUDScreenClass;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> OHHealthBarClass;
-
-	UPROPERTY()
-	UPlayerHUD* PlayerHUD;
-	
-	UPROPERTY()
-	UGameModeHUD* GameModeHUD;
 
 	UPROPERTY()
 	FTimerHandle TimerHandle;

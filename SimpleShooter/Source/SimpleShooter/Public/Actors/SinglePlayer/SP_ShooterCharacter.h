@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
 #include "PlayMontageCallbackProxy.h"
-#include "ActorComponents/TeamManager.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "SP_ShooterCharacter.generated.h"
 
 class ASP_Gun;
@@ -17,10 +16,10 @@ class UNavMeshUtility;
 class ASP_ShooterSpectatorPawn;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealEvent);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, ASP_ShooterCharacter*, DeadShooterCharacter);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, ASP_ShooterCharacter*, DeadShooterCharacter);
 
 UCLASS()
-class SIMPLESHOOTER_API ASP_ShooterCharacter : public ACharacter
+class SIMPLESHOOTER_API ASP_ShooterCharacter : public ABaseShooterCharacter
 {
 	GENERATED_BODY()
 
@@ -66,14 +65,14 @@ public:
 	UPROPERTY()
 	FHealEvent OnHealEvent;
 
-	UPROPERTY()
-	FDeadEvent OnDeadEvent;
+	// UPROPERTY()
+	// FDeadEvent OnDeadEvent;
 	
 	UPROPERTY()
 	UNavMeshUtility* NavMeshUtility;
 	
-	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
-	FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
+	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	// FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
 
 	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
@@ -89,12 +88,9 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
-
-	UFUNCTION(BlueprintPure)
-	ETeam GetTeam() const;
 	
-	UFUNCTION(BlueprintCallable)
-	float GetHealthPercent() const;
+	// UFUNCTION(BlueprintCallable)
+	// float GetHealthPercent() const;
 
 	UFUNCTION(BlueprintCallable)
 	float GetAmmoReservePercent() const;
@@ -134,9 +130,6 @@ public:
 	ARotationViewPointRef* GetRotationViewPointRef();
 	
 private:
-
-	UPROPERTY(EditDefaultsOnly, Category = "Alliances")
-	TEnumAsByte<ETeam> Team = ETeam::NoTeam;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Stimuli")
 	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
@@ -156,8 +149,6 @@ private:
 	float ForwardAxisValue;
 	
 	void MoveForward(float AxisValue);
-
-	
 	void MoveRight(float AxisValue);
 	
 	void LookUpRate(float AxisValue);
@@ -172,11 +163,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category="Combat")
-	float MaxHealth = 100.0f;
-
-	UPROPERTY(VisibleAnywhere, Category="Combat")
-	float Health = 10.0f;
+	// UPROPERTY(EditDefaultsOnly, Category="Combat")
+	// float MaxHealth = 100.0f;
+	//
+	// UPROPERTY(VisibleAnywhere, Category="Combat")
+	// float Health = 10.0f;
 
 	UPROPERTY(EditDefaultsOnly, Category="Combat")
 	int MaxAmmoReserve = 100;

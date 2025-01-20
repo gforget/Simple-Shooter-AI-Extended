@@ -18,7 +18,7 @@ class SIMPLESHOOTER_API ASP_FFADeathMatchGameMode : public ASP_ShooterGameMode
 public:
 	ASP_FFADeathMatchGameMode();
 	
-	void OnShooterCharacterDeath(ASP_ShooterCharacter* DeadShooterCharacter) override;
+	void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter) override;
 	void AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister) override;
 
 	UPROPERTY(BlueprintReadOnly)
