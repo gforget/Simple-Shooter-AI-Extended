@@ -26,7 +26,6 @@ void ABaseShooterPlayerController::GameOver(TSubclassOf<UUserWidget> EndScreenCl
 	{
 		EndScreenWidget->AddToViewport();
 	}
-
 }
 
 void ABaseShooterPlayerController::AddOHHealthBar(ABaseShooterCharacter* AssignedCharacter)

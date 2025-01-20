@@ -23,8 +23,6 @@ class SIMPLESHOOTER_API AMP_ShooterPlayerController : public ABaseShooterPlayerC
 public:
 	AMP_ShooterPlayerController();
 
-	void AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter);
-
 	UFUNCTION(Client, Reliable)
 	void CallOnPossess();
 
@@ -41,7 +39,7 @@ private:
 	void InstantiateHUD(APawn* InPawn);
 
 	UPROPERTY()
-	FTimerHandle TimerHandle;
+	FTimerHandle DelayedPossessTimerHandle;
 
 	void DelayedPossessCheck();
 };

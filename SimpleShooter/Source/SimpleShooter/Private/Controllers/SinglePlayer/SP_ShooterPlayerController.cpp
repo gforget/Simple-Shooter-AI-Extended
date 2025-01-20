@@ -47,10 +47,3 @@ void ASP_ShooterPlayerController::GameOver(TSubclassOf<UUserWidget> EndScreenCla
 	Super::GameOver(EndScreenClass);
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
 }
-
-void ASP_ShooterPlayerController::AddOHHealthBar(ASP_ShooterCharacter* AssignedCharacter)
-{
-	USP_OHHealthBar* OHHealthBar = Cast<USP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
-	OHHealthBar->AddToViewport();
-	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
-}

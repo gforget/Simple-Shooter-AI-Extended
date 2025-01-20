@@ -17,13 +17,6 @@ AMP_ShooterPlayerController::AMP_ShooterPlayerController()
 	bReplicates = true;
 }
 
-void AMP_ShooterPlayerController::AddOHHealthBar(AMP_ShooterCharacter* AssignedCharacter)
-{
-	UMP_OHHealthBar* OHHealthBar = Cast<UMP_OHHealthBar>(CreateWidget(this, OHHealthBarClass));
-	OHHealthBar->AddToViewport();
-	OHHealthBar->InitializeAssignedCharacterAndPlayerController(AssignedCharacter);
-}
-
 void AMP_ShooterPlayerController::CallOnPossess_Implementation()
 {
 	DelayedPossessCheck();
@@ -53,7 +46,7 @@ void AMP_ShooterPlayerController::DelayedPossessCheck()
 	}
 	else
 	{
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMP_ShooterPlayerController::DelayedPossessCheck, 0.1f, false);
+		GetWorld()->GetTimerManager().SetTimer(DelayedPossessTimerHandle, this, &AMP_ShooterPlayerController::DelayedPossessCheck, 0.1f, false);
 	}
 }
 

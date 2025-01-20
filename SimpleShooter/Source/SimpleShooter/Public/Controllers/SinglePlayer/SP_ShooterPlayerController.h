@@ -23,7 +23,6 @@ public:
 	ASP_ShooterPlayerController();
 	
 	virtual void GameOver(TSubclassOf<UUserWidget> EndScreenClass) override;
-	void AddOHHealthBar(ASP_ShooterCharacter* AssignedCharacter);
 
 protected:
 	
