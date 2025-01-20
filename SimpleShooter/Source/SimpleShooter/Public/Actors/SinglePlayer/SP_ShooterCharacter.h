@@ -15,7 +15,7 @@ class UPlayMontageCallbackProxy;
 class UNavMeshUtility;
 class ASP_ShooterSpectatorPawn;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealEvent);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealEvent);
 //DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, ASP_ShooterCharacter*, DeadShooterCharacter);
 
 UCLASS()
@@ -62,8 +62,8 @@ protected:
 	USphereComponent* HeadCollision;
 	
 public:
-	UPROPERTY()
-	FHealEvent OnHealEvent;
+	// UPROPERTY()
+	// FHealEvent OnHealEvent;
 
 	// UPROPERTY()
 	// FDeadEvent OnDeadEvent;
@@ -92,8 +92,8 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// float GetHealthPercent() const;
 
-	UFUNCTION(BlueprintCallable)
-	float GetAmmoReservePercent() const;
+	// UFUNCTION(BlueprintCallable)
+	// float GetAmmoReservePercent() const;
 
 	UFUNCTION(BlueprintCallable)
 	float GetAmmoTotalPercent() const;
@@ -109,7 +109,7 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	float Heal(float HealAmount);
+	//float Heal(float HealAmount);
 
 	int AddAmmoReserve(int AmmoAmount);
 
@@ -169,11 +169,11 @@ private:
 	// UPROPERTY(VisibleAnywhere, Category="Combat")
 	// float Health = 10.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category="Combat")
-	int MaxAmmoReserve = 100;
-
-	UPROPERTY(EditDefaultsOnly, Category="Combat")
-	int AmmoReserve = 20;
+	// UPROPERTY(EditDefaultsOnly, Category="Combat")
+	// int MaxAmmoReserve = 100;
+	//
+	// UPROPERTY(EditDefaultsOnly, Category="Combat")
+	// int AmmoReserve = 20;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Gun")
 	TSubclassOf<ASP_Gun> GunClass;

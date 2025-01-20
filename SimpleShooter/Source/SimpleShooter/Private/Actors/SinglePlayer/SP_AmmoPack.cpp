@@ -14,12 +14,12 @@ void ASP_AmmoPack::BeginPlay()
 	}
 }
 
-bool ASP_AmmoPack::PackValidation(ASP_ShooterCharacter* TargetShooterCharacter)
+bool ASP_AmmoPack::PackValidation(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	return TargetShooterCharacter->GetAmmoReservePercent() < 1.0f;
 }
 
-void ASP_AmmoPack::GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter)
+void ASP_AmmoPack::GivePackTo(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	Super::GivePackTo(TargetShooterCharacter);
 	TargetShooterCharacter->AddAmmoReserve(AmmoAmount);

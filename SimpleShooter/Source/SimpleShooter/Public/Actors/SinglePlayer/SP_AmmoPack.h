@@ -24,7 +24,7 @@ public:
 	
 private:
 
-	virtual bool PackValidation(ASP_ShooterCharacter* TargetShooterCharacter) override;
-	virtual void GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter) override;
+	virtual bool PackValidation(ABaseShooterCharacter* TargetShooterCharacter) override;
+	virtual void GivePackTo(ABaseShooterCharacter* TargetShooterCharacter) override;
 	
 };

@@ -205,10 +205,10 @@ float AMP_ShooterCharacter::GetMaxHealth() const
 // 	return Health/MaxHealth;
 // }
 
-float AMP_ShooterCharacter::GetAmmoReservePercent() const
-{
-	return (float)AmmoReserve/(float)MaxAmmoReserve;
-}
+// float AMP_ShooterCharacter::GetAmmoReservePercent() const
+// {
+// 	return (float)AmmoReserve/(float)MaxAmmoReserve;
+// }
 
 float AMP_ShooterCharacter::GetAmmoTotalPercent() const
 {
@@ -387,21 +387,21 @@ float AMP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 	return DamageToApply;
 }
 
-float AMP_ShooterCharacter::Heal(float HealAmount)
-{
-	if (Health+HealAmount <= MaxHealth)
-	{
-		Health += HealAmount;
-		OnHealEvent.Broadcast();
-		return HealAmount;
-	}
-	else
-	{
-		Health = MaxHealth;
-		OnHealEvent.Broadcast();
-		return (Health+HealAmount) - MaxHealth;
-	}	
-}
+// float AMP_ShooterCharacter::Heal(float HealAmount)
+// {
+// 	if (Health+HealAmount <= MaxHealth)
+// 	{
+// 		Health += HealAmount;
+// 		OnHealEvent.Broadcast();
+// 		return HealAmount;
+// 	}
+// 	else
+// 	{
+// 		Health = MaxHealth;
+// 		OnHealEvent.Broadcast();
+// 		return (Health+HealAmount) - MaxHealth;
+// 	}	
+// }
 
 int AMP_ShooterCharacter::AddAmmoReserve(int AmmoAmount)
 {

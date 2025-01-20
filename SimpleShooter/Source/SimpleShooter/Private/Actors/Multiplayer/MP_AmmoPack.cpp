@@ -8,12 +8,12 @@ void AMP_AmmoPack::BeginPlay()
 	Super::BeginPlay();
 }
 
-bool AMP_AmmoPack::PackValidation(AMP_ShooterCharacter* TargetShooterCharacter)
+bool AMP_AmmoPack::PackValidation(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	return TargetShooterCharacter->GetAmmoReservePercent() < 1.0f;
 }
 
-void AMP_AmmoPack::GivePackTo(AMP_ShooterCharacter* TargetShooterCharacter)
+void AMP_AmmoPack::GivePackTo(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	Super::GivePackTo(TargetShooterCharacter);
 	TargetShooterCharacter->AddAmmoReserve(AmmoAmount);

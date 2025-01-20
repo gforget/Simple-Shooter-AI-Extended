@@ -20,6 +20,6 @@ public:
 	int AmmoAmount = 20;
 
 private:
-	virtual bool PackValidation(AMP_ShooterCharacter* TargetShooterCharacter) override;
-	virtual void GivePackTo(AMP_ShooterCharacter* TargetShooterCharacter) override;
+	virtual bool PackValidation(ABaseShooterCharacter* TargetShooterCharacter) override;
+	virtual void GivePackTo(ABaseShooterCharacter* TargetShooterCharacter) override;
 };

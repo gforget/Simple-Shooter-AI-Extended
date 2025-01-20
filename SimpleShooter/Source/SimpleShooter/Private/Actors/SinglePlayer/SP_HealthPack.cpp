@@ -15,12 +15,12 @@ void ASP_HealthPack::BeginPlay()
 	}
 }
 
-bool ASP_HealthPack::PackValidation(ASP_ShooterCharacter* TargetShooterCharacter)
+bool ASP_HealthPack::PackValidation(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	return TargetShooterCharacter->GetHealthPercent() < 1.0f;
 }
 
-void ASP_HealthPack::GivePackTo(ASP_ShooterCharacter* TargetShooterCharacter)
+void ASP_HealthPack::GivePackTo(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	Super::GivePackTo(TargetShooterCharacter);
 	TargetShooterCharacter->Heal(HealAmount);

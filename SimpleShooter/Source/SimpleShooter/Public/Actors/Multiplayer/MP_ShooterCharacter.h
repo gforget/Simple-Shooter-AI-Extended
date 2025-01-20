@@ -14,9 +14,6 @@ class UPlayMontageCallbackProxy;
 class AMP_ShooterSpectatorPawn;
 class USphereComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMP_HealEvent);
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMP_DeadEvent, AMP_ShooterCharacter*, DeadShooterCharacter);
-
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterCharacter : public ABaseShooterCharacter
 {
@@ -61,15 +58,6 @@ protected:
 	USphereComponent* HeadCollision;
 	
 public:
-	
-	UPROPERTY()
-	FMP_HealEvent OnHealEvent;
-
-	// UPROPERTY()
-	// FMP_DeadEvent OnDeadEvent;
-
-	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
-	// FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
 
 	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
@@ -108,12 +96,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetMaxHealth() const;
-	
-	// UFUNCTION(BlueprintCallable)
-	// float GetHealthPercent() const;
 
-	UFUNCTION(BlueprintCallable)
-	float GetAmmoReservePercent() const;
+	// UFUNCTION(BlueprintCallable)
+	// float GetAmmoReservePercent() const;
 
 	UFUNCTION(BlueprintCallable)
 	float GetAmmoTotalPercent() const;
@@ -135,7 +120,7 @@ public:
 	
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	float Heal(float HealAmount);
+	//float Heal(float HealAmount);
 
 	int AddAmmoReserve(int AmmoAmount);
 	
@@ -213,21 +198,15 @@ private:
 	
 	UPROPERTY()
 	AMP_Gun* Gun;
-
-	// UPROPERTY(EditDefaultsOnly)
-	// float MaxHealth = 100.0f;
-	//
-	// UPROPERTY(Replicated, VisibleAnywhere)
-	// float Health = 10.0f;
 	
 	UPROPERTY()
 	bool IsReloading = false;
 
-	UPROPERTY(EditDefaultsOnly)
-	int MaxAmmoReserve = 100;
-	
-	UPROPERTY(EditDefaultsOnly)
-	int AmmoReserve = 20;
+	// UPROPERTY(EditDefaultsOnly)
+	// int MaxAmmoReserve = 100;
+	//
+	// UPROPERTY(EditDefaultsOnly)
+	// int AmmoReserve = 20;
 
 	UPROPERTY()
 	UPlayMontageCallbackProxy* ProxyReloadPlayMontage;

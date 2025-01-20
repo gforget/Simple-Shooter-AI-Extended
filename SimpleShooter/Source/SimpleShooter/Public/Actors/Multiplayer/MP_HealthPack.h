@@ -19,6 +19,6 @@ public:
 	float HealAmount = 10.0f;
 
 private:
-	virtual bool PackValidation(AMP_ShooterCharacter* TargetShooterCharacter) override;
-	virtual void GivePackTo(AMP_ShooterCharacter* TargetShooterCharacter) override;
+	virtual bool PackValidation(ABaseShooterCharacter* TargetShooterCharacter) override;
+	virtual void GivePackTo(ABaseShooterCharacter* TargetShooterCharacter) override;
 };

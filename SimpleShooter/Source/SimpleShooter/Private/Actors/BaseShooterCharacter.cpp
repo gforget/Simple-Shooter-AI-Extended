@@ -11,6 +11,25 @@ ABaseShooterCharacter::ABaseShooterCharacter()
 	
 }
 
+float ABaseShooterCharacter::GetAmmoReservePercent() const
+{
+	return static_cast<float>(AmmoReserve)/static_cast<float>(MaxAmmoReserve);
+}
+
+int ABaseShooterCharacter::AddAmmoReserve(int AmmoAmount)
+{
+	if (AmmoReserve+AmmoAmount <= MaxAmmoReserve)
+	{
+		AmmoReserve += AmmoAmount;
+		return AmmoAmount;
+	}
+	else
+	{
+		AmmoReserve = MaxAmmoReserve;
+		return (AmmoReserve+AmmoAmount) - MaxAmmoReserve;
+	}
+}
+
 ETeam ABaseShooterCharacter::GetTeam() const
 {
 	return Team;
@@ -19,6 +38,22 @@ ETeam ABaseShooterCharacter::GetTeam() const
 float ABaseShooterCharacter::GetHealthPercent() const
 {
 	return Health/MaxHealth;
+}
+
+float ABaseShooterCharacter::Heal(float HealAmount)
+{
+	if (Health+HealAmount <= MaxHealth)
+	{
+		Health += HealAmount;
+		OnHealEvent.Broadcast();
+		return HealAmount;
+	}
+	else
+	{
+		Health = MaxHealth;
+		OnHealEvent.Broadcast();
+		return (Health+HealAmount) - MaxHealth;
+	}	
 }
 
 void ABaseShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

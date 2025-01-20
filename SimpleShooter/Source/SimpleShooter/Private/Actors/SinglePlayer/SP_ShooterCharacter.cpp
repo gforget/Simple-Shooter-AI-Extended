@@ -104,10 +104,10 @@ bool ASP_ShooterCharacter::GetIsReloading() const
 	return IsReloading;
 }
 
-float ASP_ShooterCharacter::GetAmmoReservePercent() const
-{
-	return (float)AmmoReserve/(float)MaxAmmoReserve;
-}
+// float ASP_ShooterCharacter::GetAmmoReservePercent() const
+// {
+// 	return (float)AmmoReserve/(float)MaxAmmoReserve;
+// }
 
 float ASP_ShooterCharacter::GetAmmoTotalPercent() const
 {
@@ -272,35 +272,35 @@ void ASP_ShooterCharacter::Death()
 	}
 }
 
-float ASP_ShooterCharacter::Heal(float HealAmount)
-{
-	if (Health+HealAmount <= MaxHealth)
-	{
-		Health += HealAmount;
-		OnHealEvent.Broadcast();
-		return HealAmount;
-	}
-	else
-	{
-		Health = MaxHealth;
-		OnHealEvent.Broadcast();
-		return (Health+HealAmount) - MaxHealth;
-	}
-}
+// float ASP_ShooterCharacter::Heal(float HealAmount)
+// {
+// 	if (Health+HealAmount <= MaxHealth)
+// 	{
+// 		Health += HealAmount;
+// 		OnHealEvent.Broadcast();
+// 		return HealAmount;
+// 	}
+// 	else
+// 	{
+// 		Health = MaxHealth;
+// 		OnHealEvent.Broadcast();
+// 		return (Health+HealAmount) - MaxHealth;
+// 	}
+// }
 
-int ASP_ShooterCharacter::AddAmmoReserve(int AmmoAmount)
-{
-	if (AmmoReserve+AmmoAmount <= MaxAmmoReserve)
-	{
-		AmmoReserve += AmmoAmount;
-		return AmmoAmount;
-	}
-	else
-	{
-		AmmoReserve = MaxAmmoReserve;
-		return (AmmoReserve+AmmoAmount) - MaxAmmoReserve;
-	}
-}
+// int ASP_ShooterCharacter::AddAmmoReserve(int AmmoAmount)
+// {
+// 	if (AmmoReserve+AmmoAmount <= MaxAmmoReserve)
+// 	{
+// 		AmmoReserve += AmmoAmount;
+// 		return AmmoAmount;
+// 	}
+// 	else
+// 	{
+// 		AmmoReserve = MaxAmmoReserve;
+// 		return (AmmoReserve+AmmoAmount) - MaxAmmoReserve;
+// 	}
+// }
 
 void ASP_ShooterCharacter::MoveForward(float AxisValue)
 {

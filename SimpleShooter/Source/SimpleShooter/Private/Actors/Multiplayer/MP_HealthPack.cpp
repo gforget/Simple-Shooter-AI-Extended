@@ -10,12 +10,12 @@ void AMP_HealthPack::BeginPlay()
 	Super::BeginPlay();
 }
 
-bool AMP_HealthPack::PackValidation(AMP_ShooterCharacter* TargetShooterCharacter)
+bool AMP_HealthPack::PackValidation(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	return TargetShooterCharacter->GetHealthPercent() < 1.0f;
 }
 
-void AMP_HealthPack::GivePackTo(AMP_ShooterCharacter* TargetShooterCharacter)
+void AMP_HealthPack::GivePackTo(ABaseShooterCharacter* TargetShooterCharacter)
 {
 	Super::GivePackTo(TargetShooterCharacter);
 	TargetShooterCharacter->Heal(HealAmount);
