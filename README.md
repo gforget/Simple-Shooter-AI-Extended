@@ -13,6 +13,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - Added the notion of team and adapted the victory condition
 - Spectator mode when you die and also to watch AI fight each other by default
 - Intro menu with the ability to setup a number of bots, and if you want a team fight or a free for all.
+- Headshot confirm and damage multiplier.
 
 ## AI improvement
 - The bot can explore the entire map rather than being limited to a spawn point.
