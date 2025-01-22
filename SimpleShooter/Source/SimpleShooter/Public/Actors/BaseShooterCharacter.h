@@ -13,6 +13,7 @@ class USphereComponent;
 class UNavMeshUtility;
 class ARotationViewPointRef;
 class AVisualStimuli_ShooterCharacter;
+class UPlayMontageCallbackProxy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMP_HealEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDeadEvent, ABaseShooterCharacter*, DeadShooterCharacter);
@@ -76,9 +77,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FString GetAmmoReserveRatio() const;
 
+	UFUNCTION(BlueprintCallable)
+	float GetHealth() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetMaxHealth() const;
+
+	AVisualStimuli_ShooterCharacter* GetVSShooterCharacter();
+	
+	ARotationViewPointRef* GetRotationViewPointRef();
+	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	UFUNCTION()
+	void OnReloadAnimationCompleted(FName NotifyName);
+	
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Stimuli")
@@ -167,8 +181,16 @@ protected:
 	virtual void ReleaseTrigger();
 	virtual void Reload();
 
+	UPROPERTY()
+	UPlayMontageCallbackProxy* ProxyReloadPlayMontage;
+	
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* ReloadMontage;
+	
 	void Death();
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ABaseShooterSpectatorPawn> ShooterSpectatorPawnClass;
+
+
 };

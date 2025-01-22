@@ -62,6 +62,16 @@ FString ABaseShooterCharacter::GetAmmoReserveRatio() const
 	return FString::FromInt(AmmoReserve) + "/" + FString::FromInt(MaxAmmoReserve); 
 }
 
+float ABaseShooterCharacter::GetHealth() const
+{
+	return Health;
+}
+
+float ABaseShooterCharacter::GetMaxHealth() const
+{
+	return MaxHealth;
+}
+
 void ABaseShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -227,6 +237,21 @@ void ABaseShooterCharacter::Reload()
 {
 }
 
+void ABaseShooterCharacter::OnReloadAnimationCompleted(FName NotifyName)
+{
+	IsReloading = false;
+	int ReloadAmount = Gun->GetMaxAmmo();
+	int CurrentReloadAmount = ReloadAmount;
+	if (AmmoReserve - ReloadAmount < 0)
+	{
+		CurrentReloadAmount = ReloadAmount - FMath::Abs(AmmoReserve-ReloadAmount);
+	}
+	
+	AmmoReserve -= CurrentReloadAmount;
+	const int LeftOver = Gun->Reload(CurrentReloadAmount);
+	AmmoReserve += LeftOver;
+}
+
 void ABaseShooterCharacter::Death()
 {
 	if (!IsDead())
@@ -262,6 +287,16 @@ void ABaseShooterCharacter::Death()
 		
 		OnDeadEvent.Broadcast(this);
 	}
+}
+
+AVisualStimuli_ShooterCharacter* ABaseShooterCharacter::GetVSShooterCharacter()
+{
+	return VSShooterCharacter;
+}
+
+ARotationViewPointRef* ABaseShooterCharacter::GetRotationViewPointRef()
+{
+	return RotationViewPointRef;
 }
 
 #if WITH_EDITOR
