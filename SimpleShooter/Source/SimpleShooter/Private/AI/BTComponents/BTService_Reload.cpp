@@ -28,7 +28,7 @@ void UBTService_Reload::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		return;
 	}
 
-	const ASP_Gun* Gun = Character->GetGunReference();
+	const ABaseGun* Gun = Character->GetGunReference();
 	if (Character == nullptr)
 	{
 		return;

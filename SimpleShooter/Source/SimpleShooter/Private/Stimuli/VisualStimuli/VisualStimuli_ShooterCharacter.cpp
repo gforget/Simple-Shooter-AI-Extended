@@ -28,12 +28,12 @@ void AVisualStimuli_ShooterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-ASP_ShooterCharacter* AVisualStimuli_ShooterCharacter::GetShooterCharacterRef()
+ABaseShooterCharacter* AVisualStimuli_ShooterCharacter::GetShooterCharacterRef()
 {
 	return ShooterCharacterRef;
 }
 
-void AVisualStimuli_ShooterCharacter::SetShooterCharacterRef(ASP_ShooterCharacter* ShooterCharacterRefValue)
+void AVisualStimuli_ShooterCharacter::SetShooterCharacterRef(ABaseShooterCharacter* ShooterCharacterRefValue)
 {
 	ShooterCharacterRef = ShooterCharacterRefValue;
 	

@@ -8,7 +8,7 @@
 #include "GameFramework/Character.h"
 #include "MP_ShooterCharacter.generated.h"
 
-class AMP_Gun;
+//class AMP_Gun;
 class ARotationViewPointRef;
 class UPlayMontageCallbackProxy;
 class AMP_ShooterSpectatorPawn;
@@ -31,60 +31,60 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	// Update collision sphere location
-	void UpdateHeadCollision();
+	//void UpdateHeadCollision();
 	
-#if WITH_EDITOR
-	virtual void PostActorCreated() override;
-	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-	virtual void PostEditMove(bool bFinished) override;
-#endif
+// #if WITH_EDITOR
+// 	virtual void PostActorCreated() override;
+// 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+// 	virtual void PostEditMove(bool bFinished) override;
+// #endif
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
-	float HeadshotMultiplier = 2.0f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	FName HeadBoneName = TEXT("head");
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	FVector HeadAnchorOffset = FVector::ZeroVector;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	float HeadshotRadius = 15.0f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	bool bShowHeadshotDebug = false;
-
-	UPROPERTY(VisibleAnywhere, Category = "Combat")
-	USphereComponent* HeadCollision;
+	// UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	// float HeadshotMultiplier = 2.0f;
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// FName HeadBoneName = TEXT("head");
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// FVector HeadAnchorOffset = FVector::ZeroVector;
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// float HeadshotRadius = 15.0f;
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// bool bShowHeadshotDebug = false;
+	//
+	// UPROPERTY(VisibleAnywhere, Category = "Combat")
+	// USphereComponent* HeadCollision;
 	
 public:
 
-	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
-	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
+	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	// FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
+	//
+	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	// FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
 
-	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
-	FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
-
-	UFUNCTION(BlueprintCallable, Category = "Combat")
-	FVector GetHeadAnchorLocation() const;
+	// UFUNCTION(BlueprintCallable, Category = "Combat")
+	// FVector GetHeadAnchorLocation() const;
 	
-	UFUNCTION(BlueprintPure)
-	bool GetIsReloading() const;
+	// UFUNCTION(BlueprintPure)
+	// bool GetIsReloading() const;
 
-	UPROPERTY(EditAnywhere)
-	float RotationRate = 100.0f;
+	// UPROPERTY(EditAnywhere)
+	// float RotationRate = 100.0f;
 	
-	void MoveForward(float AxisValue);
-	void MoveRight(float AxisValue);
+	// void MoveForward(float AxisValue);
+	// void MoveRight(float AxisValue);
 
 	// Look Up functionality
 	void LookUp(float AxisValue);
-	void LookUpRate(float AxisValue);
-	void LookRightRate(float AxisValue);
+	// void LookUpRate(float AxisValue);
+	// void LookRightRate(float AxisValue);
 
-	void PullTrigger();
-	void ReleaseTrigger();
-	void Reload();
+	virtual void PullTrigger() override;
+	virtual void ReleaseTrigger() override;
+	virtual void Reload() override;
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -100,14 +100,14 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// float GetAmmoReservePercent() const;
 
-	UFUNCTION(BlueprintCallable)
-	float GetAmmoTotalPercent() const;
+	// UFUNCTION(BlueprintCallable)
+	// float GetAmmoTotalPercent() const;
 	
-	UFUNCTION(BlueprintCallable)
-	FString GetAmmoReserveRatio() const;
+	// UFUNCTION(BlueprintCallable)
+	// FString GetAmmoReserveRatio() const;
 
-	UFUNCTION(BlueprintCallable)
-	AMP_Gun* GetGunReference() const;
+	// UFUNCTION(BlueprintCallable)
+	// AMP_Gun* GetGunReference() const;
 
 	UFUNCTION(BlueprintPure)
 	FRotator GetReplicatedControlRotation() const { return ReplicatedControlRotation; }
@@ -122,10 +122,10 @@ public:
 
 	//float Heal(float HealAmount);
 
-	int AddAmmoReserve(int AmmoAmount);
+	//int AddAmmoReserve(int AmmoAmount);
 	
-	UFUNCTION(BlueprintPure)
-	bool IsDead() const;
+	// UFUNCTION(BlueprintPure)
+	// bool IsDead() const;
 	
 protected:
 	
@@ -187,20 +187,20 @@ protected:
 
 private:
 	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
+	// UPROPERTY(EditDefaultsOnly)
+	// TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
 
-	UPROPERTY()
-	ARotationViewPointRef* RotationViewPointRef;
+	// UPROPERTY()
+	// ARotationViewPointRef* RotationViewPointRef;
 	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMP_Gun> GunClass;
+	// UPROPERTY(EditDefaultsOnly)
+	// TSubclassOf<AMP_Gun> GunClass;
+	//
+	// UPROPERTY()
+	// AMP_Gun* Gun;
 	
-	UPROPERTY()
-	AMP_Gun* Gun;
-	
-	UPROPERTY()
-	bool IsReloading = false;
+	// UPROPERTY()
+	// bool IsReloading = false;
 
 	// UPROPERTY(EditDefaultsOnly)
 	// int MaxAmmoReserve = 100;
@@ -217,11 +217,11 @@ private:
 	UFUNCTION()
 	void OnReloadAnimationCompleted(FName NotifyName);
 
-	UPROPERTY()
-	bool Dead = false;
+	// UPROPERTY()
+	// bool Dead = false;
 	
-	void GenerateEditorAnchorPositionVisualisation() const;
+	//void GenerateEditorAnchorPositionVisualisation() const;
 	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
+	// UPROPERTY(EditDefaultsOnly)
+	// TSubclassOf<AMP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
 };

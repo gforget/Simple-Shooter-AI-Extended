@@ -14,32 +14,26 @@
 #include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameState.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 
 
 // Sets default values
 AMP_ShooterCharacter::AMP_ShooterCharacter()
 {
 	bReplicates = true;
-	PrimaryActorTick.bCanEverTick = true;
-
-	// Create and setup head collision sphere
-	HeadCollision = CreateDefaultSubobject<USphereComponent>(TEXT("HeadCollision"));
-	HeadCollision->SetupAttachment(GetMesh());
-	HeadCollision->SetCollisionProfileName(TEXT("OverlapAll")); // Adjust profile as needed
-	HeadCollision->SetGenerateOverlapEvents(true);
 }
 
 // Called when the game starts or when spawned
 void AMP_ShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Health = MaxHealth;
-	
-	Gun = GetWorld()->SpawnActor<AMP_Gun>(GunClass);
-	GetMesh()->HideBoneByName(TEXT("weapon_r"), PBO_None);
-
-	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-	Gun->SetOwner(this);
+	// Health = MaxHealth;
+	//
+	// Gun = GetWorld()->SpawnActor<AMP_Gun>(GunClass);
+	// GetMesh()->HideBoneByName(TEXT("weapon_r"), PBO_None);
+	//
+	// Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	// Gun->SetOwner(this);
 
 	if (!IsLocallyControlled())
 	{
@@ -47,14 +41,14 @@ void AMP_ShooterCharacter::BeginPlay()
 		Cast<AMP_ShooterPlayerController>(PlayerController)->AddOHHealthBar(this);
 	}
 	
-	RotationViewPointRef = GetWorld()->SpawnActor<ARotationViewPointRef>(
-		RotationViewPointRefClass,
-		FVector(0.0f, 0.0f, 0.0f),
-		FRotator(0.0f, 0.0f, 0.0f)
-	);
-
-	RotationViewPointRef->SetOwnerController(GetController());
-	RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
+	// RotationViewPointRef = GetWorld()->SpawnActor<ARotationViewPointRef>(
+	// 	RotationViewPointRefClass,
+	// 	FVector(0.0f, 0.0f, 0.0f),
+	// 	FRotator(0.0f, 0.0f, 0.0f)
+	// );
+	//
+	// RotationViewPointRef->SetOwnerController(GetController());
+	// RotationViewPointRef->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 	
 	if (AMP_ShooterGameState* GameState = Cast<AMP_ShooterGameState>(GetWorld()->GetGameState()))
 	{
@@ -67,58 +61,59 @@ void AMP_ShooterCharacter::BeginPlay()
 	UpdateHeadCollision();
 }
 
-void AMP_ShooterCharacter::PostActorCreated()
-{
-	Super::PostActorCreated();
-	GenerateEditorAnchorPositionVisualisation();
-}
+//
+// void AMP_ShooterCharacter::PostActorCreated()
+// {
+// 	Super::PostActorCreated();
+// 	GenerateEditorAnchorPositionVisualisation();
+// }
+//
+// void AMP_ShooterCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+// {
+// 	Super::PostEditChangeProperty(PropertyChangedEvent);
+// 	GenerateEditorAnchorPositionVisualisation();
+// }
+//
+// void AMP_ShooterCharacter::PostEditMove(bool bFinished)
+// {
+// 	Super::PostEditMove(bFinished);
+// 	GenerateEditorAnchorPositionVisualisation();
+// }
+//
+// void AMP_ShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
+// {
+// #if WITH_EDITOR
+// 	if (const UWorld* World = GetWorld())
+// 	{
+// 		if (World->WorldType == EWorldType::EditorPreview)
+// 		{
+// 			UKismetSystemLibrary::FlushPersistentDebugLines(this);
+// 			const FVector ActorLocation = GetActorLocation();
+// 			
+// 			// HealtBar Anchor
+// 			DrawDebugSphere(GetWorld(), ActorLocation + HealthBarAnchor, 5.0f, 12, FColor::Cyan, true, 0.0f, 0, 0.0f);
+// 			DrawDebugSphere(GetWorld(), ActorLocation + FootPositionAnchor, 5.0f, 12, FColor::Purple, true, 0.0f, 0, 0.0f);
+// 			DrawDebugSphere(GetWorld(), ActorLocation + BodyPositionAnchor, 5.0f, 12, FColor::Blue, true, 0.0f, 0, 0.0f);
+// 		}
+// 	}
+// #endif
+// }
 
-void AMP_ShooterCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-{
-	Super::PostEditChangeProperty(PropertyChangedEvent);
-	GenerateEditorAnchorPositionVisualisation();
-}
+// FVector AMP_ShooterCharacter::GetHeadAnchorLocation() const
+// {
+// 	if (USkeletalMeshComponent* LocalMesh = GetMesh())
+// 	{
+// 		FTransform BoneTransform = LocalMesh->GetSocketTransform(HeadBoneName);
+// 		return BoneTransform.TransformPosition(HeadAnchorOffset);
+// 	}
+// 	
+// 	return GetActorLocation();
+// }
 
-void AMP_ShooterCharacter::PostEditMove(bool bFinished)
-{
-	Super::PostEditMove(bFinished);
-	GenerateEditorAnchorPositionVisualisation();
-}
-
-void AMP_ShooterCharacter::GenerateEditorAnchorPositionVisualisation() const
-{
-#if WITH_EDITOR
-	if (const UWorld* World = GetWorld())
-	{
-		if (World->WorldType == EWorldType::EditorPreview)
-		{
-			UKismetSystemLibrary::FlushPersistentDebugLines(this);
-			const FVector ActorLocation = GetActorLocation();
-			
-			// HealtBar Anchor
-			DrawDebugSphere(GetWorld(), ActorLocation + HealthBarAnchor, 5.0f, 12, FColor::Cyan, true, 0.0f, 0, 0.0f);
-			DrawDebugSphere(GetWorld(), ActorLocation + FootPositionAnchor, 5.0f, 12, FColor::Purple, true, 0.0f, 0, 0.0f);
-			DrawDebugSphere(GetWorld(), ActorLocation + BodyPositionAnchor, 5.0f, 12, FColor::Blue, true, 0.0f, 0, 0.0f);
-		}
-	}
-#endif
-}
-
-FVector AMP_ShooterCharacter::GetHeadAnchorLocation() const
-{
-	if (USkeletalMeshComponent* LocalMesh = GetMesh())
-	{
-		FTransform BoneTransform = LocalMesh->GetSocketTransform(HeadBoneName);
-		return BoneTransform.TransformPosition(HeadAnchorOffset);
-	}
-	
-	return GetActorLocation();
-}
-
-bool AMP_ShooterCharacter::GetIsReloading() const
-{
-	return IsReloading;
-}
+// bool AMP_ShooterCharacter::GetIsReloading() const
+// {
+// 	return IsReloading;
+// }
 
 // Called every frame
 void AMP_ShooterCharacter::Tick(float DeltaTime)
@@ -139,50 +134,20 @@ void AMP_ShooterCharacter::Tick(float DeltaTime)
 			}
 		}
 	}
-
-	// Update collision sphere position every frame
-	UpdateHeadCollision();
-	
-	if (bShowHeadshotDebug)
-	{
-		DrawDebugSphere(
-			GetWorld(),
-			GetHeadAnchorLocation(),
-			HeadshotRadius,
-			24,
-			FColor::Green,
-			false,
-			-1.0f,
-			0,
-			1.0f
-		);
-	}
 }
 
-void AMP_ShooterCharacter::UpdateHeadCollision()
-{
-	// Update collision sphere location to match anchor point
-	FVector NewLocation = GetHeadAnchorLocation();
-	HeadCollision->SetWorldLocation(NewLocation);	
-}
+// void AMP_ShooterCharacter::UpdateHeadCollision()
+// {
+// 	// Update collision sphere location to match anchor point
+// 	FVector NewLocation = GetHeadAnchorLocation();
+// 	HeadCollision->SetWorldLocation(NewLocation);	
+// }
 
 // Called to bind functionality to input
 void AMP_ShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMP_ShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AMP_ShooterCharacter::LookUp);
-	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &AMP_ShooterCharacter::LookUpRate);
-	
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMP_ShooterCharacter::MoveRight);
-	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &AMP_ShooterCharacter::LookRightRate);
-	
-	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump); // already define in character class
-	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AMP_ShooterCharacter::PullTrigger);
-	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Released, this, &AMP_ShooterCharacter::ReleaseTrigger);
-	PlayerInputComponent->BindAction(TEXT("Reload"), IE_Pressed, this, &AMP_ShooterCharacter::Reload);
 }
 
 ARotationViewPointRef* AMP_ShooterCharacter::GetRotationViewPointRef()
@@ -210,33 +175,33 @@ float AMP_ShooterCharacter::GetMaxHealth() const
 // 	return (float)AmmoReserve/(float)MaxAmmoReserve;
 // }
 
-float AMP_ShooterCharacter::GetAmmoTotalPercent() const
-{
-	int AmmoTotal = AmmoReserve + GetGunReference()->GetAmmoAmount();
-	int AmmoMaxTotal = MaxAmmoReserve + GetGunReference()->GetMaxAmmo();
-	
-	return (float)AmmoTotal/(float)AmmoMaxTotal;
-}
+// float AMP_ShooterCharacter::GetAmmoTotalPercent() const
+// {
+// 	int AmmoTotal = AmmoReserve + GetGunReference()->GetAmmoAmount();
+// 	int AmmoMaxTotal = MaxAmmoReserve + GetGunReference()->GetMaxAmmo();
+// 	
+// 	return (float)AmmoTotal/(float)AmmoMaxTotal;
+// }
 
-FString AMP_ShooterCharacter::GetAmmoReserveRatio() const
-{
-	return FString::FromInt(AmmoReserve) + "/" + FString::FromInt(MaxAmmoReserve);
-}
+// FString AMP_ShooterCharacter::GetAmmoReserveRatio() const
+// {
+// 	return FString::FromInt(AmmoReserve) + "/" + FString::FromInt(MaxAmmoReserve);
+// }
 
-AMP_Gun* AMP_ShooterCharacter::GetGunReference() const
-{
-	return Gun;
-}
+// AMP_Gun* AMP_ShooterCharacter::GetGunReference() const
+// {
+// 	return Gun;
+// }
 
-void AMP_ShooterCharacter::MoveForward(float AxisValue)
-{
-	AddMovementInput(GetActorForwardVector()*AxisValue);
-}
-
-void AMP_ShooterCharacter::MoveRight(float AxisValue)
-{
-	AddMovementInput(GetActorRightVector()*AxisValue);
-}
+// void AMP_ShooterCharacter::MoveForward(float AxisValue)
+// {
+// 	AddMovementInput(GetActorForwardVector()*AxisValue);
+// }
+//
+// void AMP_ShooterCharacter::MoveRight(float AxisValue)
+// {
+// 	AddMovementInput(GetActorRightVector()*AxisValue);
+// }
 
 //---- Look UP RPC ----/
 void AMP_ShooterCharacter::LookUp(float AxisValue)
@@ -287,15 +252,151 @@ void AMP_ShooterCharacter::OnRep_ControlRotation()
 
 //---- [END] Look UP RPC ----/
 
-void AMP_ShooterCharacter::LookUpRate(float AxisValue)
+// void AMP_ShooterCharacter::LookUpRate(float AxisValue)
+// {
+// 	AddControllerPitchInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
+// }
+//
+// void AMP_ShooterCharacter::LookRightRate(float AxisValue)
+// {
+// 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
+// }
+
+float AMP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+	AController* EventInstigator, AActor* DamageCauser)
 {
-	AddControllerPitchInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
+	// if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
+	// {
+	// 	const FPointDamageEvent* PointDamageEvent = static_cast<const FPointDamageEvent*>(&DamageEvent);
+	// 	FVector ImpactPoint = PointDamageEvent->HitInfo.ImpactPoint;
+ //        
+	// 	// Get current head location and check distance
+	// 	float DistanceToHead = FVector::Distance(GetHeadAnchorLocation(), ImpactPoint);
+ //        
+	// 	if (DistanceToHead <= HeadshotRadius)
+	// 	{
+	// 		DamageAmount *= HeadshotMultiplier;
+	//
+	// 		if (bShowHeadshotDebug && GEngine)
+	// 		{
+	// 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+	// 				FString::Printf(TEXT("Headshot! Distance: %f, Damage: %f"), 
+	// 				DistanceToHead, DamageAmount));
+	// 			UE_LOG(LogTemp, Warning, TEXT("Headshot! Distance: %f, Damage: %f"), DistanceToHead, DamageAmount);
+	// 			
+	// 			DrawDebugSphere(GetWorld(), ImpactPoint, 5.0f, 12, FColor::Red, 
+	// 				false, 2.0f, 0, 1.0f);
+ //                
+	// 			DrawDebugLine(GetWorld(), GetHeadAnchorLocation(), ImpactPoint, 
+	// 				FColor::Yellow, false, 2.0f, 0, 1.0f);
+	// 		}
+	// 	}
+	// }
+	//
+	// float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	// DamageToApply = FMath::Min(Health, DamageToApply);
+	// if (bShowHeadshotDebug && GEngine)
+	// {
+	// 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+	// 	FString::Printf(TEXT("Health before damage applied:  %f"), 
+	// 	Health));
+	// 	UE_LOG(LogTemp, Warning, TEXT("Health before damage applied: %f"), Health);
+	// }
+	//
+	// Health -= DamageToApply;
+	//
+	// if (bShowHeadshotDebug && GEngine)
+	// {
+	// 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
+	// 	FString::Printf(TEXT("Final Health :  %f"), 
+	// 	Health));
+	// 	
+	// 	UE_LOG(LogTemp, Warning, TEXT("Final Health: %f"), Health);
+	// }
+	
+	//Health is modified in BaseShooterCharacter::TakeDamage
+	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	if (Health <= 0.0f)
+	{
+		MulticastDeath();
+	}
+	
+	return DamageToApply;
 }
 
-void AMP_ShooterCharacter::LookRightRate(float AxisValue)
+// float AMP_ShooterCharacter::Heal(float HealAmount)
+// {
+// 	if (Health+HealAmount <= MaxHealth)
+// 	{
+// 		Health += HealAmount;
+// 		OnHealEvent.Broadcast();
+// 		return HealAmount;
+// 	}
+// 	else
+// 	{
+// 		Health = MaxHealth;
+// 		OnHealEvent.Broadcast();
+// 		return (Health+HealAmount) - MaxHealth;
+// 	}	
+// }
+
+// int AMP_ShooterCharacter::AddAmmoReserve(int AmmoAmount)
+// {
+// 	if (AmmoReserve+AmmoAmount <= MaxAmmoReserve)
+// 	{
+// 		AmmoReserve += AmmoAmount;
+// 		return AmmoAmount;
+// 	}
+// 	else
+// 	{
+// 		AmmoReserve = MaxAmmoReserve;
+// 		return (AmmoReserve+AmmoAmount) - MaxAmmoReserve;
+// 	}
+// }
+
+void AMP_ShooterCharacter::MulticastDeath_Implementation()
 {
-	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
+	Death();
+	// if (!IsDead())
+	// {
+	// 	ReleaseTrigger();
+	// 	
+	// 	GetCharacterMovement()->GravityScale = 0.0f; //client for some reason pass through floor when no collision
+	// 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// 	
+	// 	VSShooterCharacter->Destroy();
+	// 	RotationViewPointRef->Destroy();
+	//
+	// 	Dead = true;
+	// 	
+	// 	if (HasAuthority())
+	// 	{
+	// 		//Become spectator - Only Server has authority to spawn actor and assign control
+	// 		AMP_ShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<AMP_ShooterSpectatorPawn>(
+	// 			ShooterSpectatorPawnClass,
+	// 			GetActorLocation(),
+	// 			GetActorRotation()
+	// 		);
+	// 		SpectatorPawn->SetTeam(GetTeam());
+	//
+	// 		AMP_ShooterPlayerController* ShooterPlayerController = Cast<AMP_ShooterPlayerController>(GetController());
+	// 		DetachFromControllerPendingDestroy();
+	// 		if (ShooterPlayerController != nullptr)
+	// 		{
+	// 			SpectatorPawn->SetOwner(ShooterPlayerController);
+	// 			ShooterPlayerController->Possess(SpectatorPawn);
+	// 		}
+	// 	}
+	// 	
+	// 	OnDeadEvent.Broadcast(this);
+	// }
 }
+
+// bool AMP_ShooterCharacter::IsDead() const
+// {
+// 	return Dead;
+// }
 
 //---- Pull Trigger ----/
 void AMP_ShooterCharacter::PullTrigger()
@@ -325,138 +426,6 @@ void AMP_ShooterCharacter::MulticastPullTrigger_Implementation()
 {
 	// Perform the shooting logic on all clients
 	PerformPullTrigger();
-}
-
-float AMP_ShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
-	AController* EventInstigator, AActor* DamageCauser)
-{
-	if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
-	{
-		const FPointDamageEvent* PointDamageEvent = static_cast<const FPointDamageEvent*>(&DamageEvent);
-		FVector ImpactPoint = PointDamageEvent->HitInfo.ImpactPoint;
-        
-		// Get current head location and check distance
-		float DistanceToHead = FVector::Distance(GetHeadAnchorLocation(), ImpactPoint);
-        
-		if (DistanceToHead <= HeadshotRadius)
-		{
-			DamageAmount *= HeadshotMultiplier;
-
-			if (bShowHeadshotDebug && GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
-					FString::Printf(TEXT("Headshot! Distance: %f, Damage: %f"), 
-					DistanceToHead, DamageAmount));
-				UE_LOG(LogTemp, Warning, TEXT("Headshot! Distance: %f, Damage: %f"), DistanceToHead, DamageAmount);
-				
-				DrawDebugSphere(GetWorld(), ImpactPoint, 5.0f, 12, FColor::Red, 
-					false, 2.0f, 0, 1.0f);
-                
-				DrawDebugLine(GetWorld(), GetHeadAnchorLocation(), ImpactPoint, 
-					FColor::Yellow, false, 2.0f, 0, 1.0f);
-			}
-		}
-	}
-	
-	float DamageToApply =  Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	DamageToApply = FMath::Min(Health, DamageToApply);
-	if (bShowHeadshotDebug && GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
-		FString::Printf(TEXT("Health before damage applied:  %f"), 
-		Health));
-		UE_LOG(LogTemp, Warning, TEXT("Health before damage applied: %f"), Health);
-	}
-	
-	Health -= DamageToApply;
-
-	if (bShowHeadshotDebug && GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
-		FString::Printf(TEXT("Final Health :  %f"), 
-		Health));
-		
-		UE_LOG(LogTemp, Warning, TEXT("Final Health: %f"), Health);
-	}
-	
-	if (Health <= 0.0f)
-	{
-		MulticastDeath();
-	}
-	
-	return DamageToApply;
-}
-
-// float AMP_ShooterCharacter::Heal(float HealAmount)
-// {
-// 	if (Health+HealAmount <= MaxHealth)
-// 	{
-// 		Health += HealAmount;
-// 		OnHealEvent.Broadcast();
-// 		return HealAmount;
-// 	}
-// 	else
-// 	{
-// 		Health = MaxHealth;
-// 		OnHealEvent.Broadcast();
-// 		return (Health+HealAmount) - MaxHealth;
-// 	}	
-// }
-
-int AMP_ShooterCharacter::AddAmmoReserve(int AmmoAmount)
-{
-	if (AmmoReserve+AmmoAmount <= MaxAmmoReserve)
-	{
-		AmmoReserve += AmmoAmount;
-		return AmmoAmount;
-	}
-	else
-	{
-		AmmoReserve = MaxAmmoReserve;
-		return (AmmoReserve+AmmoAmount) - MaxAmmoReserve;
-	}
-}
-
-void AMP_ShooterCharacter::MulticastDeath_Implementation()
-{
-	if (!IsDead())
-	{
-		ReleaseTrigger();
-		
-		GetCharacterMovement()->GravityScale = 0.0f; //client for some reason pass through floor when no collision
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		
-		//VSShooterCharacter->Destroy();
-		RotationViewPointRef->Destroy();
-
-		Dead = true;
-		
-		if (HasAuthority())
-		{
-			//Become spectator - Only Server has authority to spawn actor and assign control
-			AMP_ShooterSpectatorPawn* SpectatorPawn = GetWorld()->SpawnActor<AMP_ShooterSpectatorPawn>(
-				ShooterSpectatorPawnClass,
-				GetActorLocation(),
-				GetActorRotation()
-			);
-			SpectatorPawn->SetTeam(GetTeam());
-
-			AMP_ShooterPlayerController* ShooterPlayerController = Cast<AMP_ShooterPlayerController>(GetController());
-			DetachFromControllerPendingDestroy();
-			if (ShooterPlayerController != nullptr)
-			{
-				SpectatorPawn->SetOwner(ShooterPlayerController);
-				ShooterPlayerController->Possess(SpectatorPawn);
-			}
-		}
-		
-		OnDeadEvent.Broadcast(this);
-	}
-}
-
-bool AMP_ShooterCharacter::IsDead() const
-{
-	return Dead;
 }
 
 void AMP_ShooterCharacter::PerformPullTrigger()

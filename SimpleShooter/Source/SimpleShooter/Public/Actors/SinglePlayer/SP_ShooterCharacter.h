@@ -7,7 +7,7 @@
 #include "Actors/BaseShooterCharacter.h"
 #include "SP_ShooterCharacter.generated.h"
 
-class ASP_Gun;
+//class ASP_Gun;
 class USphereComponent;
 class AVisualStimuli_ShooterCharacter;
 class ARotationViewPointRef;
@@ -35,31 +35,31 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	// Update collision sphere location
-	void UpdateHeadCollision();
+	//void UpdateHeadCollision();
 	
-#if WITH_EDITOR
-	virtual void PostActorCreated() override;
-	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-	virtual void PostEditMove(bool bFinished) override;
-#endif
+// #if WITH_EDITOR
+// 	virtual void PostActorCreated() override;
+// 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+// 	virtual void PostEditMove(bool bFinished) override;
+// #endif
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
-	float HeadshotMultiplier = 2.0f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	FName HeadBoneName = TEXT("head");
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	FVector HeadAnchorOffset = FVector::ZeroVector;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	float HeadshotRadius = 15.0f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	bool bShowHeadshotDebug = false;
+	// UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	// float HeadshotMultiplier = 2.0f;
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// FName HeadBoneName = TEXT("head");
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// FVector HeadAnchorOffset = FVector::ZeroVector;
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// float HeadshotRadius = 15.0f;
+	//
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	// bool bShowHeadshotDebug = false;
 
-	UPROPERTY(VisibleAnywhere, Category = "Combat")
-	USphereComponent* HeadCollision;
+	// UPROPERTY(VisibleAnywhere, Category = "Combat")
+	// USphereComponent* HeadCollision;
 	
 public:
 	// UPROPERTY()
@@ -68,26 +68,26 @@ public:
 	// UPROPERTY()
 	// FDeadEvent OnDeadEvent;
 	
-	UPROPERTY()
-	UNavMeshUtility* NavMeshUtility;
+	// UPROPERTY()
+	// UNavMeshUtility* NavMeshUtility;
 	
 	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
 	// FVector HealthBarAnchor = FVector(0.0f, 0.0f, 88.0f);
 
-	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
-	FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
+	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	// FVector FootPositionAnchor = FVector(0.0f, 0.0f, 25.0f);
+	//
+	// UPROPERTY(EditDefaultsOnly, Category="Position Reference")
+	// FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
 
-	UPROPERTY(EditDefaultsOnly, Category="Position Reference")
-	FVector BodyPositionAnchor = FVector(0.0f, 0.0f, 50.0f);
-
-	UFUNCTION(BlueprintCallable, Category = "Combat")
-	FVector GetHeadAnchorLocation() const;
+	// UFUNCTION(BlueprintCallable, Category = "Combat")
+	// FVector GetHeadAnchorLocation() const;
 	
-	UFUNCTION(BlueprintPure)
-	bool GetIsReloading() const;
+	// UFUNCTION(BlueprintPure)
+	// bool GetIsReloading() const;
 	
-	UFUNCTION(BlueprintPure)
-	bool IsDead() const;
+	// UFUNCTION(BlueprintPure)
+	// bool IsDead() const;
 	
 	// UFUNCTION(BlueprintCallable)
 	// float GetHealthPercent() const;
@@ -95,14 +95,14 @@ public:
 	// UFUNCTION(BlueprintCallable)
 	// float GetAmmoReservePercent() const;
 
-	UFUNCTION(BlueprintCallable)
-	float GetAmmoTotalPercent() const;
+	// UFUNCTION(BlueprintCallable)
+	// float GetAmmoTotalPercent() const;
 	
-	UFUNCTION(BlueprintCallable)
-	FString GetAmmoReserveRatio() const;
+	// UFUNCTION(BlueprintCallable)
+	// FString GetAmmoReserveRatio() const;
 
-	UFUNCTION(BlueprintCallable)
-	ASP_Gun* GetGunReference() const;
+	// UFUNCTION(BlueprintCallable)
+	// ASP_Gun* GetGunReference() const;
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -111,11 +111,11 @@ public:
 
 	//float Heal(float HealAmount);
 
-	int AddAmmoReserve(int AmmoAmount);
+	//int AddAmmoReserve(int AmmoAmount);
 
-	void PullTrigger();
-	void ReleaseTrigger();
-	void Reload();
+	virtual void PullTrigger() override;
+	virtual void ReleaseTrigger() override;
+	virtual void Reload() override;
 
 	UFUNCTION(BlueprintCallable)
 	float GetHealth() const;
@@ -131,28 +131,28 @@ public:
 	
 private:
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Stimuli")
-	TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
+	// UPROPERTY(EditDefaultsOnly, Category = "Stimuli")
+	// TSubclassOf<AVisualStimuli_ShooterCharacter> VisualStimuli_ShooterCharacterClass;
+	//
+	// UPROPERTY()
+	// AVisualStimuli_ShooterCharacter* VSShooterCharacter;
 	
-	UPROPERTY()
-	AVisualStimuli_ShooterCharacter* VSShooterCharacter;
-	
-	UPROPERTY(EditDefaultsOnly, Category="Other")
-	TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
+	// UPROPERTY(EditDefaultsOnly, Category="Other")
+	// TSubclassOf<ARotationViewPointRef> RotationViewPointRefClass;
 
-	UPROPERTY()
-	ARotationViewPointRef* RotationViewPointRef;
+	// UPROPERTY()
+	// ARotationViewPointRef* RotationViewPointRef;
 
-	void Death();
+	//void Death();
 
 	UPROPERTY()
 	float ForwardAxisValue;
 	
-	void MoveForward(float AxisValue);
-	void MoveRight(float AxisValue);
-	
-	void LookUpRate(float AxisValue);
-	void LookRightRate(float AxisValue);
+	// void MoveForward(float AxisValue);
+	// void MoveRight(float AxisValue);
+	//
+	// void LookUpRate(float AxisValue);
+	// void LookRightRate(float AxisValue);
 
 	UPROPERTY()
 	UPlayMontageCallbackProxy* ProxyReloadPlayMontage;
@@ -160,8 +160,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* ReloadMontage;
 	
-	UPROPERTY(EditAnywhere)
-	float RotationRate = 10.0f;
+	// UPROPERTY(EditAnywhere)
+	// float RotationRate = 10.0f;
 
 	// UPROPERTY(EditDefaultsOnly, Category="Combat")
 	// float MaxHealth = 100.0f;
@@ -175,17 +175,17 @@ private:
 	// UPROPERTY(EditDefaultsOnly, Category="Combat")
 	// int AmmoReserve = 20;
 	
-	UPROPERTY(EditDefaultsOnly, Category="Gun")
-	TSubclassOf<ASP_Gun> GunClass;
-
-	UPROPERTY()
-	ASP_Gun* Gun;
+	// UPROPERTY(EditDefaultsOnly, Category="Gun")
+	// TSubclassOf<ASP_Gun> GunClass;
+	//
+	// UPROPERTY()
+	// ASP_Gun* Gun;
 	
-	UPROPERTY()
-	bool IsReloading = false;
+	// UPROPERTY()
+	// bool IsReloading = false;
 
-	UPROPERTY()
-	bool Dead = false;
+	// UPROPERTY()
+	// bool Dead = false;
 	
 	UPROPERTY()
 	UPlayMontageCallbackProxy* PlayMontageCallbackProxy;
@@ -193,10 +193,10 @@ private:
 	UFUNCTION()
 	void OnReloadAnimationCompleted(FName NotifyName);
 	
-	void GenerateEditorAnchorPositionVisualisation() const;
+	//void GenerateEditorAnchorPositionVisualisation() const;
 
-	UPROPERTY(EditDefaultsOnly, Category="Spectator")
-	TSubclassOf<ASP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
+	// UPROPERTY(EditDefaultsOnly, Category="Spectator")
+	// TSubclassOf<ASP_ShooterSpectatorPawn> ShooterSpectatorPawnClass;
 	
 	void ActivateDebugSpectatorMode();
 	
