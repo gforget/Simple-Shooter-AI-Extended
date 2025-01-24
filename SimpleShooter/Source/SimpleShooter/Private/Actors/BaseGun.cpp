@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Actors/BaseGun.h"
+#include "Actors/BaseShooterCharacter.h"
 
 // Sets default values
 ABaseGun::ABaseGun()
@@ -19,6 +20,7 @@ void ABaseGun::BeginPlay()
 {
 	Super::BeginPlay();
 	Ammo = MaxAmmo;
+	CurrentBulletSpreadRadius = BaseBulletSpreadRadius;
 }
 
 void ABaseGun::PullTrigger()
@@ -34,6 +36,15 @@ void ABaseGun::PullTrigger()
 			0.0f
 		);
 		
+		// Start updating spread
+		GetWorld()->GetTimerManager().SetTimer(
+			SpreadUpdateHandle,
+			this,
+			&ABaseGun::UpdateSpread,
+			0.016f, // ~60fps
+			true
+		);
+		
 		TriggerPulled = true;
 	}
 }
@@ -43,7 +54,43 @@ void ABaseGun::ReleaseTrigger()
 	if (TriggerPulled)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
+		CurrentBulletSpreadRadius = BaseBulletSpreadRadius;
 		TriggerPulled = false;
+	}
+}
+
+void ABaseGun::UpdateSpread()
+{
+	if (ABaseShooterCharacter* ShooterCharacter = Cast<ABaseShooterCharacter>(GetOwner())) 
+	{
+		bool bIsReloading = ShooterCharacter->GetIsReloading();
+	
+		if (TriggerPulled && Ammo > 0 && !bIsReloading)  // Only increase spread if we have ammo and not reloading
+		{
+			CurrentBulletSpreadRadius = FMath::Min(
+				CurrentBulletSpreadRadius + (SpreadIncreaseRate * 0.016f),
+				MaxBulletSpreadRadius
+			);
+		}
+		else
+		{
+			CurrentBulletSpreadRadius = FMath::Max(
+				CurrentBulletSpreadRadius - (SpreadRecoveryRate * 0.016f),
+				BaseBulletSpreadRadius
+			);
+			
+			// Stop updating if we've recovered
+			if (CurrentBulletSpreadRadius <= BaseBulletSpreadRadius)
+			{
+				GetWorld()->GetTimerManager().ClearTimer(SpreadUpdateHandle);
+			}
+		}
+
+		if (bDebugBulletSpread)
+		{
+			// Log the current bullet spread radius
+			UE_LOG(LogTemp, Warning, TEXT("Current Bullet Spread Radius: %f"), CurrentBulletSpreadRadius);
+		}
 	}
 }
 

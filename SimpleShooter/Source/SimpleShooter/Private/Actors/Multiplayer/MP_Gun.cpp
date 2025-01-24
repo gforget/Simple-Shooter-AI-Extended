@@ -82,7 +82,6 @@ void AMP_Gun::Fire()
 
 bool AMP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 {
-
 	AMP_ShooterCharacter* CharacterOwner = Cast<AMP_ShooterCharacter>(GetOwner());
 	
 	if (CharacterOwner == nullptr) return false;
@@ -94,11 +93,17 @@ bool AMP_Gun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	//Random offset //TODO: the random has to be replicated, or some bullet might miss on the client
 	FVector2D result = FVector2D(FMath::VRand()); 
 	result.Normalize();
-	result *= FMath::RandRange(0.0f,BulletSpreadRadius);
+	result *= FMath::RandRange(0.0f,CurrentBulletSpreadRadius);
 	
 	End += CharacterOwner->GetRotationViewPointRef()->GetActorRightVector()*result.X; //Offset Right
 	End += CharacterOwner->GetRotationViewPointRef()->GetActorUpVector()*result.Y; //Offset Up
 	//End Random offset
+	
+	// Debug line trace
+	if (bDebugBulletSpread)
+	{
+		DrawDebugLine(GetWorld(), CharacterOwner->ShooterViewPointLocation, End, FColor::Red, false, 1.0f, 0, 1.0f);
+	}
 	
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);

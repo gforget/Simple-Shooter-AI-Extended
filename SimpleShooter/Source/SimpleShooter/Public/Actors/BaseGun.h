@@ -84,11 +84,26 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	int Ammo = 10;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float TimeBetweenRound = 0.15f;
 	
-	UPROPERTY(EditAnywhere)
-	float BulletSpreadRadius = 200.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float BaseBulletSpreadRadius = 200.0f;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float MaxBulletSpreadRadius = 800.0f;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float SpreadIncreaseRate = 200.0f;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float SpreadRecoveryRate = 600.0f;
+
+	UPROPERTY(EditDefaultsOnly)
+	bool bDebugBulletSpread;
+	
+	UPROPERTY()
+	float CurrentBulletSpreadRadius;
 
 	UPROPERTY()
 	bool TriggerPulled = false;
@@ -98,4 +113,8 @@ protected:
 	bool UseAmmo();
 
 	AController* GetOwnerController() const;
+
+	FTimerHandle SpreadUpdateHandle;
+	
+	void UpdateSpread();
 };
