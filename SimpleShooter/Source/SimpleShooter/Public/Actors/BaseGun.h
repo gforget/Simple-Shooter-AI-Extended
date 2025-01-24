@@ -94,7 +94,7 @@ protected:
 	float MaxBulletSpreadRadius = 800.0f;
 	
 	UPROPERTY(EditDefaultsOnly)
-	float SpreadIncreaseRate = 200.0f;
+	float SpreadIncreaseRate = 400.0f;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float SpreadRecoveryRate = 600.0f;
