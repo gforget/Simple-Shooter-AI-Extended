@@ -20,6 +20,7 @@ void AMP_Gun::BeginPlay()
 
 void AMP_Gun::Fire()
 {
+	Super::Fire();
 	AMP_ShooterCharacter* CharacterOwner = Cast<AMP_ShooterCharacter>(GetOwner());
 	if (CharacterOwner == nullptr)
 	{

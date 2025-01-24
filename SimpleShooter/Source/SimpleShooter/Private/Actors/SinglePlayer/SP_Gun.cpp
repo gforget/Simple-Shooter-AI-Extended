@@ -24,6 +24,7 @@ void ASP_Gun::BeginPlay()
 
 void ASP_Gun::Fire()
 {
+	Super::Fire();
 	ASP_ShooterCharacter* CharacterOwner = Cast<ASP_ShooterCharacter>(GetOwner());
 	if (CharacterOwner == nullptr)
 	{

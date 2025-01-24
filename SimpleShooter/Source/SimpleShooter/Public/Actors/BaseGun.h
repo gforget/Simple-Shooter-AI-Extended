@@ -26,7 +26,7 @@ protected:
 public:
 	
 	UFUNCTION()
-	virtual void Fire()PURE_VIRTUAL(ABaseGun::Fire, ;);
+	virtual void Fire();
 	FTimerDelegate FireTimerTimerDel;
 	FTimerHandle FireTimerHandle;
 
@@ -46,7 +46,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	int GetMaxAmmo() const;
-
+	
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASoundStimuli_ShootingSound> SoundStimuli_ShootingSoundClass;
@@ -114,7 +114,8 @@ protected:
 
 	AController* GetOwnerController() const;
 
-	FTimerHandle SpreadUpdateHandle;
-	
+	UFUNCTION()
 	void UpdateSpread();
+	FTimerHandle SpreadUpdateHandle;
+	FTimerDelegate SpreadUpdateTimerDel;
 };

@@ -13,6 +13,10 @@ ABaseGun::ABaseGun()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
+
+	// Bind the spread update delegate once
+	FireTimerTimerDel.BindUFunction(this, FName("Fire"));
+	SpreadUpdateTimerDel.BindUFunction(this, FName("UpdateSpread"));
 }
 
 // Called when the game starts or when spawned
@@ -23,27 +27,50 @@ void ABaseGun::BeginPlay()
 	CurrentBulletSpreadRadius = BaseBulletSpreadRadius;
 }
 
+void ABaseGun::Fire()
+{
+	if (ABaseShooterCharacter* ShooterCharacter = Cast<ABaseShooterCharacter>(GetOwner())) 
+	{
+		bool bIsReloading = ShooterCharacter->GetIsReloading();
+		// Check if spread update timer is not active and restart it
+		if (!GetWorld()->GetTimerManager().IsTimerActive(SpreadUpdateHandle) && !bIsReloading && Ammo > 0)
+		{
+			
+			GetWorld()->GetTimerManager().SetTimer(
+				SpreadUpdateHandle,
+				SpreadUpdateTimerDel,
+				0.016f, // ~60fps
+				true
+			);
+		}
+	}
+}
+
 void ABaseGun::PullTrigger()
 {
 	if (!TriggerPulled)
 	{
-		FireTimerTimerDel.BindUFunction(this, FName("Fire"));
-		GetWorld()->GetTimerManager().SetTimer(
-			FireTimerHandle,
-			FireTimerTimerDel,
-			TimeBetweenRound,
-			true,
-			0.0f
-		);
-		
-		// Start updating spread
-		GetWorld()->GetTimerManager().SetTimer(
-			SpreadUpdateHandle,
-			this,
-			&ABaseGun::UpdateSpread,
-			0.016f, // ~60fps
-			true
-		);
+		if (!GetWorld()->GetTimerManager().IsTimerActive(FireTimerHandle))
+		{
+			GetWorld()->GetTimerManager().SetTimer(
+				FireTimerHandle,
+				FireTimerTimerDel,
+				TimeBetweenRound,
+				true,
+				0.0f
+			);
+		}
+
+		if (!GetWorld()->GetTimerManager().IsTimerActive(SpreadUpdateHandle))
+		{
+			// Start updating spread
+			GetWorld()->GetTimerManager().SetTimer(
+				SpreadUpdateHandle,
+				SpreadUpdateTimerDel,
+				0.016f, // ~60fps
+				true
+			);
+		}
 		
 		TriggerPulled = true;
 	}
@@ -54,7 +81,6 @@ void ABaseGun::ReleaseTrigger()
 	if (TriggerPulled)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
-		CurrentBulletSpreadRadius = BaseBulletSpreadRadius;
 		TriggerPulled = false;
 	}
 }
