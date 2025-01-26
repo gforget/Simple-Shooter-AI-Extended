@@ -156,7 +156,7 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 					DistanceToEnemy = 1.0f-(DistancePointXYToEnemy/MaxDistanceFromTarget); // Favor point that are closer to the target
 				}
 				
-				float AggregatedDistanceToEnemyScore = DesiredXYScore*0.5f + DistanceToEnemy*0.5f;
+				float AggregatedDistanceToEnemyScore = DesiredXYScore*(1.0f-WeightFactorCurrentMaxDistanceToEnemy) + DistanceToEnemy*(WeightFactorCurrentMaxDistanceToEnemy);
 				AggregatedDistanceToEnemyScore = AggregatedDistanceToEnemyCurve.GetRichCurveConst()->Eval(AggregatedDistanceToEnemyScore);
 
 				//Higher Ground Score

@@ -52,6 +52,9 @@ public:
 	float ThresholdDistance = 750.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Desired Distance Considerations Properties")
+	float WeightFactorCurrentMaxDistanceToEnemy = 0.5f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Desired Distance Considerations Properties")
 	FRuntimeFloatCurve AggregatedDistanceToEnemyCurve;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Higher Ground Distance Considerations Properties")
