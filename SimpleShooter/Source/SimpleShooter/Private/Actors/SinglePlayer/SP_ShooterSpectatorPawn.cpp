@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
-
 #include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Controllers/SinglePlayer/SP_ShooterPlayerController.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 // Sets default values
 ASP_ShooterSpectatorPawn::ASP_ShooterSpectatorPawn()
@@ -29,6 +29,7 @@ void ASP_ShooterSpectatorPawn::SetupPlayerInputComponent(UInputComponent* Player
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction(TEXT("ToggleDebugSpectatorMode"), IE_Pressed, this, &ASP_ShooterSpectatorPawn::ReturnToPlayerMode);
+	PlayerInputComponent->BindAction(TEXT("SkipFrame"), IE_Pressed, this, &ASP_ShooterSpectatorPawn::SkipFrame);
 }
 
 void ASP_ShooterSpectatorPawn::ReturnToPlayerMode()
@@ -65,6 +66,26 @@ void ASP_ShooterSpectatorPawn::ReturnToPlayerMode()
 			SetTickableWhenPaused(true);
 		}
 	}
+}
+
+void ASP_ShooterSpectatorPawn::SkipFrame()
+{
+	StartFrameTimer();
+}
+
+void ASP_ShooterSpectatorPawn::StartFrameTimer()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ASP_ShooterSpectatorPawn::PauseGame);
+}
+
+void ASP_ShooterSpectatorPawn::PauseGame()
+{
+	if (UGameplayStatics::IsGamePaused(GetWorld()))
+	{
+		return;
+	}
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
 
 void ASP_ShooterSpectatorPawn::SetPlayerShooterCharacter(ASP_ShooterCharacter* PlayerShooterCharacterRef)

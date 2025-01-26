@@ -26,8 +26,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void PauseGame();
 	void ReturnToPlayerMode();
-
+	void SkipFrame();
+	void StartFrameTimer();
+	
 	void SetPlayerShooterCharacter(ASP_ShooterCharacter* PlayerShooterCharacterRef);
 	
 private:

@@ -145,9 +145,16 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 				//Desired Distance Score
 				float DesiredXYScore = 1.0f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
 				
-				//TODO: Might have a better way to deal with high distance uncertainty
 				//all the point return 0 because the enemy is too far, take the closest point known so far so you get closer to the enemy
-				float DistanceToEnemy = 1.0f-(DistancePointXYToEnemy/MaxDistanceFromTarget); // Max distance to target is the highest distance among the valid point
+				float DistanceToEnemy = 0.0f;
+				if (DesiredXYDistance - MaxDistanceFromTarget > 0) // Max distance to target is the highest distance among the valid point
+				{
+					DistanceToEnemy = DistancePointXYToEnemy/MaxDistanceFromTarget; // Favor point that are far away from the target
+				}
+				else
+				{
+					DistanceToEnemy = 1.0f-(DistancePointXYToEnemy/MaxDistanceFromTarget); // Favor point that are closer to the target
+				}
 				
 				float AggregatedDistanceToEnemyScore = DesiredXYScore*0.5f + DistanceToEnemy*0.5f;
 				AggregatedDistanceToEnemyScore = AggregatedDistanceToEnemyCurve.GetRichCurveConst()->Eval(AggregatedDistanceToEnemyScore);

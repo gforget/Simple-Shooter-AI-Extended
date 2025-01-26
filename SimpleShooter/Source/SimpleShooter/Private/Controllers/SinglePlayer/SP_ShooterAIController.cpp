@@ -3,6 +3,7 @@
 #include "Controllers/SinglePlayer/SP_ShooterAIController.h"
 #include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
 
@@ -11,6 +12,7 @@ ASP_ShooterAIController::ASP_ShooterAIController()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bTickEvenWhenPaused = true;
 }
 
 // Called when the game starts or when spawned
@@ -40,15 +42,19 @@ void ASP_ShooterAIController::Tick(float DeltaTime)
 	if (bDebug)
 	{
 		if (!GetWorld() || !GetPawn()) return;
+
+		FVector EyesLocation;
+		FRotator EyesRotation;
+		GetActorEyesViewPoint(EyesLocation, EyesRotation);
 		
 		DrawDebugSphere(
 			GetWorld(),
-			GetPawn()->GetActorLocation(),
+			EyesLocation,
 			SightRange,
 			12,
 			FColor::Green,
 			false,
-			0.0f,
+			 0.0f,
 			0,
 			1.0f);
 		
@@ -59,14 +65,11 @@ void ASP_ShooterAIController::Tick(float DeltaTime)
 			12,
 			FColor::Magenta,
 			false,
-			0.0f,
+			 0.0f,
 			0,
 			1.0f);
 		
-		FVector EyesLocation;
-		FRotator EyesRotation;
-		GetActorEyesViewPoint(EyesLocation, EyesRotation);
-
+		
 		const FVector EyesForward = EyesRotation.Vector();
 		const FVector EyesRightFieldOfView = EyesForward.RotateAngleAxis(FieldOfView/2, EyesForward.UpVector);
 		DrawDebugLine(
@@ -74,7 +77,7 @@ void ASP_ShooterAIController::Tick(float DeltaTime)
 			EyesLocation,
 			EyesLocation + EyesRightFieldOfView*SightRange,
 			FColor::Yellow,
-			false, -1, 0,
+			false, 0.0f, 0,
 			1.0f
 		);
 		
@@ -84,7 +87,7 @@ void ASP_ShooterAIController::Tick(float DeltaTime)
 			EyesLocation,
 			EyesLocation + EyesLeftFieldOfView*SightRange,
 			FColor::Yellow,
-			false, -1, 0,
+			false, 0.0f, 0,
 			1.0f
 		);
 		
@@ -95,7 +98,7 @@ void ASP_ShooterAIController::Tick(float DeltaTime)
 			EyesLocation,
 			EyesLocation + EyesTopFieldOfView*SightRange,
 			FColor::Yellow,
-			false, -1, 0,
+			false, 0.0f, 0,
 			1.0f
 		);
 		
@@ -105,7 +108,7 @@ void ASP_ShooterAIController::Tick(float DeltaTime)
 			EyesLocation,
 			EyesLocation + EyesBottomFieldOfView*SightRange,
 			FColor::Yellow,
-			false, -1, 0,
+			false,  0.0f, 0,
 			1.0f
 		);
 	}
