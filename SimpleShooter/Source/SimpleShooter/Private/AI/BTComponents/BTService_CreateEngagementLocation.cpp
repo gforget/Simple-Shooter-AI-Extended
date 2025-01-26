@@ -145,9 +145,9 @@ void UBTService_CreateEngagementLocation::TickNode(UBehaviorTreeComponent& Owner
 				//Desired Distance Score
 				float DesiredXYScore = 1.0f - (FMath::Min(FMath::Abs(DistancePointXYToEnemy - DesiredXYDistance)/ThresholdDistance, 1));
 				
-				//all the point return 0 because the enemy is too far, take the closest point known so far so you get closer to the enemy
+				//all the point return 0 because the enemy is too far or to close, take the closest point or farthest point known so far so you get closer to the enemy
 				float DistanceToEnemy = 0.0f;
-				if (DesiredXYDistance - MaxDistanceFromTarget > 0) // Max distance to target is the highest distance among the valid point
+				if (DesiredXYDistance - MaxDistanceFromTarget > 0) // MaxDistanceFromTarget is the highest distance among the valid point
 				{
 					DistanceToEnemy = DistancePointXYToEnemy/MaxDistanceFromTarget; // Favor point that are far away from the target
 				}
