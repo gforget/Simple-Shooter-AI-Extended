@@ -17,6 +17,48 @@ AMP_TeamDeathMatchGameMode::AMP_TeamDeathMatchGameMode()
 void AMP_TeamDeathMatchGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	//Instantiate the bots
+	UWorld* WorldPtr = GetWorld();
+	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
+	{
+		const AMP_ShooterCharacter* ShooterCharacter = nullptr;
+		
+		for (FBotData BotData : GameInstance->BotDataStructs)
+		{
+			if (BotData.Team == ETeam::BlueTeam)
+			{
+				const int SpawnIndex = FMath::RandRange(0, AllBlueSpawnPoints.Num()-1);
+				const AMP_SpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
+		
+				ShooterCharacter = WorldPtr->SpawnActor<AMP_ShooterCharacter>(
+					CurrentSpawningPoint->BlueTeamShooterCharacterClass,
+					CurrentSpawningPoint->GetActorLocation(),
+					CurrentSpawningPoint->GetActorRotation()
+				);
+			
+				AllBlueSpawnPoints.RemoveAt(SpawnIndex);
+			}
+			else if (BotData.Team == ETeam::RedTeam)
+			{
+				const int SpawnIndex = FMath::RandRange(0, AllRedSpawnPoints.Num()-1);
+				const AMP_SpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
+		
+				ShooterCharacter = WorldPtr->SpawnActor<AMP_ShooterCharacter>(
+					CurrentSpawningPoint->RedTeamShooterCharacterClass,
+					CurrentSpawningPoint->GetActorLocation(),
+					CurrentSpawningPoint->GetActorRotation()
+				);
+			
+				AllRedSpawnPoints.RemoveAt(SpawnIndex);
+			}
+		}
+		
+		if (ShooterCharacter != nullptr)
+		{
+			//create AIController and make it possessed 
+		}
+	}
 }
 
 void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
