@@ -16,6 +16,7 @@ class AMP_AmmoPack;
 class AMP_SpawningPoint;
 class AMP_HealthPack;
 class AMP_Waypoint;
+class ASP_ShooterAIController;
 
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterGameMode : public AMP_GeneralGameMode
@@ -69,6 +70,9 @@ protected:
 
 	bool SpawningPointsHaveBeenFilled = false;
 	void FillSpawningPoints();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ASP_ShooterAIController> ShooterAIController;
 	
 private:
 	FTimerHandle RestartTimer;
@@ -77,4 +81,6 @@ private:
 	float RestartDelay = 5.0f;
 	
 	void LeaveSession();
+
+
 };

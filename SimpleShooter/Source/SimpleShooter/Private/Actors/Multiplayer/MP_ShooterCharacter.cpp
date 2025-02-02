@@ -20,6 +20,7 @@ void AMP_ShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//TODO: add overhead healtbar for bot, they are locally controlled by the server so that condition is flawed
 	if (!IsLocallyControlled())
 	{
 		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();

@@ -6,6 +6,7 @@
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
 #include "Actors/Multiplayer/MP_SpawningPoint.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
+#include "Controllers/SinglePlayer/SP_ShooterAIController.h"
 #include "GameMode/MainGameInstance.h"
 #include "GameMode/Multiplayer/MP_ShooterPlayerState.h"
 
@@ -22,7 +23,7 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 	UWorld* WorldPtr = GetWorld();
 	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
 	{
-		const AMP_ShooterCharacter* ShooterCharacter = nullptr;
+		AMP_ShooterCharacter* ShooterCharacter = nullptr;
 		
 		for (FBotData BotData : GameInstance->BotDataStructs)
 		{
@@ -56,7 +57,17 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 		
 		if (ShooterCharacter != nullptr)
 		{
-			//create AIController and make it possessed 
+			//Need to create an MP version of AIController
+			// ASP_ShooterAIController* BotController = WorldPtr->SpawnActor<ASP_ShooterAIController>(
+			// 	ShooterAIController,
+			// 	FVector::Zero(),
+			// 	FRotator::ZeroRotator
+			// 	);
+			//
+			// if (BotController)
+			// {
+			// 	BotController->Possess(ShooterCharacter);
+			// }
 		}
 	}
 }
