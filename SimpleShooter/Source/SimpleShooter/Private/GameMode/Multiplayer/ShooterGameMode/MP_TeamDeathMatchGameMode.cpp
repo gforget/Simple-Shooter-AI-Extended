@@ -1,12 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "GameMode/Multiplayer/ShooterGameMode/MP_TeamDeathMatchGameMode.h"
 
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
 #include "Actors/Multiplayer/MP_SpawningPoint.h"
+#include "Controllers/Multiplayer/MP_ShooterAIController.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
-#include "Controllers/SinglePlayer/SP_ShooterAIController.h"
 #include "GameMode/MainGameInstance.h"
 #include "GameMode/Multiplayer/MP_ShooterPlayerState.h"
 
@@ -58,16 +57,16 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 		if (ShooterCharacter != nullptr)
 		{
 			//Need to create an MP version of AIController
-			// ASP_ShooterAIController* BotController = WorldPtr->SpawnActor<ASP_ShooterAIController>(
-			// 	ShooterAIController,
-			// 	FVector::Zero(),
-			// 	FRotator::ZeroRotator
-			// 	);
-			//
-			// if (BotController)
-			// {
-			// 	BotController->Possess(ShooterCharacter);
-			// }
+			AMP_ShooterAIController* BotController = WorldPtr->SpawnActor<AMP_ShooterAIController>(
+				ShooterAIController,
+				FVector::Zero(),
+				FRotator::ZeroRotator
+				);
+			
+			if (BotController)
+			{
+				BotController->Possess(ShooterCharacter);
+			}
 		}
 	}
 }

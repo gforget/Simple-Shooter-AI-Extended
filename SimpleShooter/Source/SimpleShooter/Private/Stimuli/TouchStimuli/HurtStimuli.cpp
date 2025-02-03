@@ -6,7 +6,7 @@
 #include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Controllers/SinglePlayer/SP_ShooterAIController.h"
 
-void UHurtStimuli::Initialize(ASP_ShooterAIController* OwnerControllerRef, ASP_ShooterCharacter* OwnerCharacterRef)
+void UHurtStimuli::Initialize(ABaseShooterAIController* OwnerControllerRef, ABaseShooterCharacter* OwnerCharacterRef)
 {
 	OwnerController = OwnerControllerRef;
 	
@@ -24,12 +24,12 @@ float UHurtStimuli::GetDamageDone()
 	return DamageDone;
 }
 
-void UHurtStimuli::SetDamageDealer(ASP_ShooterCharacter* DamageDealerRef)
+void UHurtStimuli::SetDamageDealer(ABaseShooterCharacter* DamageDealerRef)
 {
 	DamageDealer = DamageDealerRef;
 }
 
-ASP_ShooterCharacter* UHurtStimuli::GetDamageDealer()
+ABaseShooterCharacter* UHurtStimuli::GetDamageDealer()
 {
 	return DamageDealer;
 }
@@ -37,6 +37,6 @@ ASP_ShooterCharacter* UHurtStimuli::GetDamageDealer()
 void UHurtStimuli::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 	AController* InstigatedBy, AActor* DamageCauser)
 {
-	DamageDealer = Cast<ASP_ShooterCharacter>(DamageCauser);
+	DamageDealer = Cast<ABaseShooterCharacter>(DamageCauser);
 	DamageDone = Damage;
 }

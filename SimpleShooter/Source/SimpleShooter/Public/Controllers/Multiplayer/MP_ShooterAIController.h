@@ -4,19 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Controllers/BaseShooterAIController.h"
-#include "SP_ShooterAIController.generated.h"
-
-class UHurtStimuli;
+#include "MP_ShooterAIController.generated.h"
 
 UCLASS()
-class SIMPLESHOOTER_API ASP_ShooterAIController : public ABaseShooterAIController
+class SIMPLESHOOTER_API AMP_ShooterAIController : public ABaseShooterAIController
 {
 	GENERATED_BODY()
 
 public:
-	
 	// Sets default values for this actor's properties
-	ASP_ShooterAIController();
+	AMP_ShooterAIController();
 	
 protected:
 	virtual void OnPossess(APawn* InPawn) override;

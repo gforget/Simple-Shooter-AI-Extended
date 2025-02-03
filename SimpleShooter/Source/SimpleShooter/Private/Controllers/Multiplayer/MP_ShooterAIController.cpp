@@ -1,19 +1,20 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
+#include "Controllers/Multiplayer/MP_ShooterAIController.h"
 
-#include "Controllers/SinglePlayer/SP_ShooterAIController.h"
-#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
 
 // Sets default values
-ASP_ShooterAIController::ASP_ShooterAIController()
+AMP_ShooterAIController::AMP_ShooterAIController()
 {
+
 }
 
-void ASP_ShooterAIController::OnPossess(APawn* InPawn)
+void AMP_ShooterAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	if (AIBehavior != nullptr)
+	if (AIBehavior != nullptr && HasAuthority())
 	{
 		HurtStimuli = NewObject<UHurtStimuli>(GetTransientPackage(), UHurtStimuli::StaticClass());
 		HurtStimuli->Initialize(this, Cast<ABaseShooterCharacter>(InPawn));
@@ -22,3 +23,4 @@ void ASP_ShooterAIController::OnPossess(APawn* InPawn)
 		GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), InPawn->GetActorLocation());
 	}
 }
+

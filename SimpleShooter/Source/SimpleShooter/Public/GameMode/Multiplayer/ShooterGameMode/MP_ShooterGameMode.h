@@ -16,7 +16,7 @@ class AMP_AmmoPack;
 class AMP_SpawningPoint;
 class AMP_HealthPack;
 class AMP_Waypoint;
-class ASP_ShooterAIController;
+class AMP_ShooterAIController;
 
 UCLASS()
 class SIMPLESHOOTER_API AMP_ShooterGameMode : public AMP_GeneralGameMode
@@ -71,8 +71,9 @@ protected:
 	bool SpawningPointsHaveBeenFilled = false;
 	void FillSpawningPoints();
 
+	//Need to create an MP version of AIController
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ASP_ShooterAIController> ShooterAIController;
+	TSubclassOf<AMP_ShooterAIController> ShooterAIController;
 	
 private:
 	FTimerHandle RestartTimer;

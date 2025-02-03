@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTService_UpdateHealthInfo.h"
 
 #include "AIController.h"
-#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTService_UpdateHealthInfo::UBTService_UpdateHealthInfo()
@@ -24,7 +24,7 @@ void UBTService_UpdateHealthInfo::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 
 float UBTService_UpdateHealthInfo::GetHealthPercent()
 {
-	const ASP_ShooterCharacter* AICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+	const ABaseShooterCharacter* AICharacter = Cast<ABaseShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 	if (AICharacter == nullptr)
 	{
 		return 0.0f;
