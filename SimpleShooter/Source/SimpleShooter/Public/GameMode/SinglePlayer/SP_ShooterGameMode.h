@@ -13,11 +13,11 @@
  * 
  */
 
+class ABaseAmmoPack;
+class ABaseHealthPack;
+class ABaseShooterCharacter;
 class UTeamManager;
-class ASP_ShooterCharacter;
-class ASP_AmmoPack;
 class ASP_SpawningPoint;
-class ASP_HealthPack;
 
 UCLASS()
 class SIMPLESHOOTER_API ASP_ShooterGameMode : public AGameModeBase
@@ -31,7 +31,7 @@ public:
 	UFUNCTION()
 	virtual void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter);
 
-	virtual void AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister);
+	virtual void AddShooterCharacterCount(ABaseShooterCharacter* ShooterCharacterToRegister);
 
 	UPROPERTY(EditDefaultsOnly)
 	bool bBasicOHHealthBarAssociation = false;
@@ -39,13 +39,13 @@ public:
 	TArray<ASP_Waypoint*> GetAllWayPoints();
 	void AddWayPoint(ASP_Waypoint* WayPoint);
 	
-	TArray<ASP_AmmoPack*> GetAllAmmoPacks();
-	void AddAmmoPack(ASP_AmmoPack* AmmoPack);
+	TArray<ABaseAmmoPack*> GetAllAmmoPacks();
+	void AddAmmoPack(ABaseAmmoPack* AmmoPack);
 
-	TArray<ASP_HealthPack*> GetAllHealthPacks();
-	void AddHealthPack(ASP_HealthPack* HealthPack);
+	TArray<ABaseHealthPack*> GetAllHealthPacks();
+	void AddHealthPack(ABaseHealthPack* HealthPack);
 
-	void RegisterEvent (ASP_ShooterCharacter* ShooterCharacterRef);
+	void RegisterEvent (ABaseShooterCharacter* ShooterCharacterRef);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
@@ -67,8 +67,8 @@ protected:
 	TArray<ASP_Waypoint*> AllWayPoints;
 	
 	UPROPERTY()
-	TArray<ASP_AmmoPack*> AllAmmoPacks;
+	TArray<ABaseAmmoPack*> AllAmmoPacks;
 	
 	UPROPERTY()
-	TArray<ASP_HealthPack*> AllHealthPacks;
+	TArray<ABaseHealthPack*> AllHealthPacks;
 };

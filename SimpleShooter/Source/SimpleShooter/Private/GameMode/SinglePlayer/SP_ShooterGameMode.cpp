@@ -20,7 +20,7 @@ void ASP_ShooterGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* DeadSho
 	
 }
 
-void ASP_ShooterGameMode::AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister)
+void ASP_ShooterGameMode::AddShooterCharacterCount(ABaseShooterCharacter* ShooterCharacterToRegister)
 {
 }
 
@@ -34,27 +34,27 @@ void ASP_ShooterGameMode::AddWayPoint(ASP_Waypoint* Waypoint)
 	AllWayPoints.Add(Waypoint);
 }
 
-TArray<ASP_AmmoPack*> ASP_ShooterGameMode::GetAllAmmoPacks()
+TArray<ABaseAmmoPack*> ASP_ShooterGameMode::GetAllAmmoPacks()
 {
 	return AllAmmoPacks;
 }
 
-void ASP_ShooterGameMode::AddAmmoPack(ASP_AmmoPack* AmmoPack)
+void ASP_ShooterGameMode::AddAmmoPack(ABaseAmmoPack* AmmoPack)
 {
 	AllAmmoPacks.Add(AmmoPack);
 }
 
-TArray<ASP_HealthPack*> ASP_ShooterGameMode::GetAllHealthPacks()
+TArray<ABaseHealthPack*> ASP_ShooterGameMode::GetAllHealthPacks()
 {
 	return AllHealthPacks;
 }
 
-void ASP_ShooterGameMode::AddHealthPack(ASP_HealthPack* HealthPack)
+void ASP_ShooterGameMode::AddHealthPack(ABaseHealthPack* HealthPack)
 {
 	AllHealthPacks.Add(HealthPack);
 }
 
-void ASP_ShooterGameMode::RegisterEvent(ASP_ShooterCharacter* ShooterCharacterRef)
+void ASP_ShooterGameMode::RegisterEvent(ABaseShooterCharacter* ShooterCharacterRef)
 {
 	ShooterCharacterRef->OnDeadEvent.AddDynamic(this, &ASP_ShooterGameMode::OnShooterCharacterDeath);
 }

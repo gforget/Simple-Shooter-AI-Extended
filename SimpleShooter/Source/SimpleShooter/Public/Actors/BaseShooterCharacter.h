@@ -93,6 +93,10 @@ public:
 	UFUNCTION()
 	void OnReloadAnimationCompleted(FName NotifyName);
 	
+	virtual void Reload();
+	virtual void PullTrigger();
+	virtual void ReleaseTrigger();
+	
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Stimuli")
@@ -176,10 +180,6 @@ protected:
 	
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
-
-	virtual void PullTrigger();
-	virtual void ReleaseTrigger();
-	virtual void Reload();
 
 	UPROPERTY()
 	UPlayMontageCallbackProxy* ProxyReloadPlayMontage;

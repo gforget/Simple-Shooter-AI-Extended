@@ -9,7 +9,7 @@
 /**
  * 
  */
-class ASP_HealthPack;
+class ABaseHealthPack;
 
 UCLASS()
 class SIMPLESHOOTER_API UBTService_SelectHealthPack : public UBTService
@@ -29,6 +29,6 @@ private:
 	UPROPERTY()
 	UWorld* CurrentWorldPtr;
 	
-	ASP_HealthPack* GetClosestHealthPack();
+	ABaseHealthPack* GetClosestHealthPack();
 	
 };

@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTService_CreateEngagementCircleLocation.h"
 
 #include "AIController.h"
-#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTService_CreateEngagementCircleLocation::UBTService_CreateEngagementCircleLocation()
@@ -17,7 +17,7 @@ void UBTService_CreateEngagementCircleLocation::TickNode(UBehaviorTreeComponent&
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
 	UBehaviorTreeComponent* OwnerCompPtr = &OwnerComp;
-	const ASP_ShooterCharacter* EnemyInSight = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+	const ABaseShooterCharacter* EnemyInSight = Cast<ABaseShooterCharacter>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
 	
 	if (EnemyInSight != nullptr)
 	{

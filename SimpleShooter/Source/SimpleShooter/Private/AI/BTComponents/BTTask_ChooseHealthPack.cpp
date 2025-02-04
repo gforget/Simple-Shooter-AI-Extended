@@ -19,21 +19,22 @@ EBTNodeResult::Type UBTTask_ChooseHealthPack::ExecuteTask(UBehaviorTreeComponent
 	{
 		return EBTNodeResult::Failed;
 	}
-	
+
+	//TODO : select between SP and MP shootergame mode, since both don't inherot from the same game mode
 	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
 
-	TArray<ASP_HealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
+	TArray<ABaseHealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
 	FVector CharLocation = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(); 
 
-	ConsideredHealthPacks.Sort([CharLocation](const ASP_HealthPack& A, const ASP_HealthPack& B) {
+	ConsideredHealthPacks.Sort([CharLocation](const ABaseHealthPack& A, const ABaseHealthPack& B) {
 		return FVector::DistSquared(A.GetActorLocation(), CharLocation) < FVector::DistSquared(B.GetActorLocation(), CharLocation);
 	});
 
-	ASP_HealthPack* SelectedHealthPack = nullptr;
+	ABaseHealthPack* SelectedHealthPack = nullptr;
 	for (int i=0; i<ConsideredHealthPacks.Num(); i++)
 	{
 		if (!ConsideredHealthPacks[i]->IsRecharging())

@@ -19,7 +19,7 @@ public:
 	ASP_FFADeathMatchGameMode();
 	
 	void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter) override;
-	void AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister) override;
+	void AddShooterCharacterCount(ABaseShooterCharacter* ShooterCharacterToRegister) override;
 
 	UPROPERTY(BlueprintReadOnly)
 	int NbShooterAlive;

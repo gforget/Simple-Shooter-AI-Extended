@@ -6,6 +6,7 @@
 #include "BehaviorTree/BTService.h"
 #include "BTService_SelectAmmoPack.generated.h"
 
+class ABaseAmmoPack;
 /**
  * 
  */
@@ -27,5 +28,5 @@ private:
 	UPROPERTY()
 	UWorld* CurrentWorldPtr;
 	
-	ASP_AmmoPack* GetClosestAmmoPack();
+	ABaseAmmoPack* GetClosestAmmoPack();
 };

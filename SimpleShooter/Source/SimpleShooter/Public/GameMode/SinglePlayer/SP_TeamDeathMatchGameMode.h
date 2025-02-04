@@ -19,7 +19,7 @@ public:
 	ASP_TeamDeathMatchGameMode();
 	
 	void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter) override;
-	void AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister) override;
+	void AddShooterCharacterCount(ABaseShooterCharacter* ShooterCharacterToRegister) override;
 
 	UPROPERTY(BlueprintReadOnly)
 	TMap<TEnumAsByte<ETeam>, int> TeamCount;

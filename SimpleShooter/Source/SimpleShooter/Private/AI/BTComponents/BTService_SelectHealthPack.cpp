@@ -26,16 +26,16 @@ void UBTService_SelectHealthPack::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 	}
 }
 
-ASP_HealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
+ABaseHealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
 {
-	ASP_HealthPack* SelectedHealthPack = nullptr;
+	ABaseHealthPack* SelectedHealthPack = nullptr;
 	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
 	if (GameMode == nullptr)
 	{
 		return SelectedHealthPack;
 	}
 
-	TArray<ASP_HealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
+	TArray<ABaseHealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
 	const FVector CharLocation = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation(); 
 
 	float HighestDistance = 999999999999.99f;

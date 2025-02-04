@@ -3,20 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/BaseWaypoint.h"
 #include "GameFramework/Actor.h"
-#include "SP_Waypoint.generated.h"
+#include "BaseWaypoint.generated.h"
 
 UCLASS()
-class SIMPLESHOOTER_API ASP_Waypoint : public ABaseWaypoint
+class SIMPLESHOOTER_API ABaseWaypoint : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASP_Waypoint();
+	ABaseWaypoint();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 };

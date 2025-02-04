@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Actors/BaseWaypoint.h"
 #include "GameFramework/Actor.h"
 #include "MP_Waypoint.generated.h"
 
 UCLASS()
-class SIMPLESHOOTER_API AMP_Waypoint : public AActor
+class SIMPLESHOOTER_API AMP_Waypoint : public ABaseWaypoint
 {
 	GENERATED_BODY()
 
@@ -18,8 +19,4 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 };

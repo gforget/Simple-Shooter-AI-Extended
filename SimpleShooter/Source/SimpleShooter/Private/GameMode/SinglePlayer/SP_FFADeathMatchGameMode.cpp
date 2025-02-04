@@ -87,7 +87,7 @@ void ASP_FFADeathMatchGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* D
 	}
 }
 
-void ASP_FFADeathMatchGameMode::AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister)
+void ASP_FFADeathMatchGameMode::AddShooterCharacterCount(ABaseShooterCharacter* ShooterCharacterToRegister)
 {
 	Super::AddShooterCharacterCount(ShooterCharacterToRegister);
 	NbShooterAlive++;

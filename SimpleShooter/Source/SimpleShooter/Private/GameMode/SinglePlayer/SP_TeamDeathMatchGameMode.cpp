@@ -26,7 +26,7 @@ void ASP_TeamDeathMatchGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* 
 	}
 }
 
-void ASP_TeamDeathMatchGameMode::AddShooterCharacterCount(ASP_ShooterCharacter* ShooterCharacterToRegister)
+void ASP_TeamDeathMatchGameMode::AddShooterCharacterCount(ABaseShooterCharacter* ShooterCharacterToRegister)
 {
 	Super::AddShooterCharacterCount(ShooterCharacterToRegister);
 	

@@ -4,8 +4,8 @@
 #include "AI/BTComponents/BTService_SelectAmmoPack.h"
 
 #include "AIController.h"
-#include "Actors/SinglePlayer/SP_AmmoPack.h"
-#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/BaseAmmoPack.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
@@ -27,16 +27,18 @@ void UBTService_SelectAmmoPack::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 	}
 }
 
-ASP_AmmoPack* UBTService_SelectAmmoPack::GetClosestAmmoPack()
+ABaseAmmoPack* UBTService_SelectAmmoPack::GetClosestAmmoPack()
 {
-	ASP_AmmoPack* SelectedAmmoPack = nullptr;
-	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
-	if (GameMode == nullptr)
+	ABaseAmmoPack* SelectedAmmoPack = nullptr;
+	
+	//TODO: Since SP and MP gamemode do not inherit from the same game mode, we need to check both
+	ASP_ShooterGameMode* SP_GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
+	if (SP_GameMode == nullptr)
 	{
 		return SelectedAmmoPack;
 	}
 
-	TArray<ASP_AmmoPack*> ConsideredAmmoPacks = GameMode->GetAllAmmoPacks();
+	TArray<ABaseAmmoPack*> ConsideredAmmoPacks = SP_GameMode->GetAllAmmoPacks();
 	const FVector CharLocation = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation(); 
 
 	float HighestDistance = 999999999999.99f;
@@ -45,7 +47,7 @@ ASP_AmmoPack* UBTService_SelectAmmoPack::GetClosestAmmoPack()
 	{
 		if (!ConsideredAmmoPacks[i]->IsRecharging())
 		{
-			const ASP_ShooterCharacter* AICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+			const ABaseShooterCharacter* AICharacter = Cast<ABaseShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 			const float CurrentDistance = AICharacter->NavMeshUtility->GetPathLength(CharLocation, ConsideredAmmoPacks[i]->GetActorLocation(), CurrentWorldPtr);
 			if (CurrentDistance < HighestDistance)
 			{
