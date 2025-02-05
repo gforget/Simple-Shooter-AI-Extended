@@ -3,9 +3,9 @@
 
 #include "GameMode/SinglePlayer/SP_FFADeathMatchGameMode.h"
 
+#include "Actors/BaseSpawningPoint.h"
 #include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "Actors/SinglePlayer/SP_ShooterSpectatorPawn.h"
-#include "Actors/SinglePlayer/SP_SpawningPoint.h"
 #include "Controllers/SinglePlayer/SP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -28,7 +28,7 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 	{
 		for (int i=0; i<AllActors.Num(); i++)
 		{
-			if (ASP_SpawningPoint* SpawningPoint = Cast<ASP_SpawningPoint>(AllActors[i]))
+			if (ABaseSpawningPoint* SpawningPoint = Cast<ABaseSpawningPoint>(AllActors[i]))
 			{
 				AllSpawnPoints.Add(SpawningPoint);
 			}
@@ -41,7 +41,7 @@ void ASP_FFADeathMatchGameMode::BeginPlay()
 		for (int i=0; i<(1+MainGameInstance->NbRedBots); i++)
 		{
 			const int SpawnIndex = FMath::RandRange(0, AllSpawnPoints.Num()-1);
-			const ASP_SpawningPoint* CurrentSpawningPoint = AllSpawnPoints[SpawnIndex];
+			const ABaseSpawningPoint* CurrentSpawningPoint = AllSpawnPoints[SpawnIndex];
 			
 			if (i==0) // put the spawned player at a spawn position
 			{

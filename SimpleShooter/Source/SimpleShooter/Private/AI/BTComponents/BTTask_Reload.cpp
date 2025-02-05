@@ -4,7 +4,7 @@
 #include "AI/BTComponents/BTTask_Reload.h"
 
 #include "AIController.h"
-#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/BaseShooterCharacter.h"
 
 UBTTask_Reload::UBTTask_Reload()
 {
@@ -19,7 +19,7 @@ EBTNodeResult::Type UBTTask_Reload::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 	}
 	
-	ASP_ShooterCharacter* Character = Cast<ASP_ShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	ABaseShooterCharacter* Character = Cast<ABaseShooterCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	if (Character == nullptr)
 	{
 		return EBTNodeResult::Failed;

@@ -2,8 +2,8 @@
 
 #include "GameMode/Multiplayer/ShooterGameMode/MP_TeamDeathMatchGameMode.h"
 
+#include "Actors/BaseSpawningPoint.h"
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
-#include "Actors/Multiplayer/MP_SpawningPoint.h"
 #include "Controllers/Multiplayer/MP_ShooterAIController.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
@@ -29,7 +29,7 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 			if (BotData.Team == ETeam::BlueTeam)
 			{
 				const int SpawnIndex = FMath::RandRange(0, AllBlueSpawnPoints.Num()-1);
-				const AMP_SpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
+				const ABaseSpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
 		
 				ShooterCharacter = WorldPtr->SpawnActor<AMP_ShooterCharacter>(
 					CurrentSpawningPoint->BlueTeamShooterCharacterClass,
@@ -42,7 +42,7 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 			else if (BotData.Team == ETeam::RedTeam)
 			{
 				const int SpawnIndex = FMath::RandRange(0, AllRedSpawnPoints.Num()-1);
-				const AMP_SpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
+				const ABaseSpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
 		
 				ShooterCharacter = WorldPtr->SpawnActor<AMP_ShooterCharacter>(
 					CurrentSpawningPoint->RedTeamShooterCharacterClass,
@@ -87,7 +87,7 @@ void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 		if (PlayerState->Team == ETeam::BlueTeam)
 		{
 			const int SpawnIndex = FMath::RandRange(0, AllBlueSpawnPoints.Num()-1);
-			const AMP_SpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
+			const ABaseSpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
 		
 			ShooterCharacter = WorldPtr->SpawnActor<AMP_ShooterCharacter>(
 				CurrentSpawningPoint->BlueTeamShooterCharacterClass,
@@ -100,7 +100,7 @@ void AMP_TeamDeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 		else if (PlayerState->Team == ETeam::RedTeam)
 		{
 			const int SpawnIndex = FMath::RandRange(0, AllRedSpawnPoints.Num()-1);
-			const AMP_SpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
+			const ABaseSpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
 		
 			ShooterCharacter = WorldPtr->SpawnActor<AMP_ShooterCharacter>(
 				CurrentSpawningPoint->RedTeamShooterCharacterClass,

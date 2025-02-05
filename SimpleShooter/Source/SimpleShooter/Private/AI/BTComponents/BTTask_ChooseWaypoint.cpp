@@ -2,8 +2,10 @@
 
 
 #include "AI/BTComponents/BTTask_ChooseWaypoint.h"
-#include "Actors/SinglePlayer/SP_Waypoint.h"
+
+#include "Actors/BaseWaypoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 UBTTask_ChooseWaypoint::UBTTask_ChooseWaypoint()
@@ -14,25 +16,29 @@ UBTTask_ChooseWaypoint::UBTTask_ChooseWaypoint()
 EBTNodeResult::Type UBTTask_ChooseWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
-	if (GameMode == nullptr)
+	
+	ASP_ShooterGameMode* SP_GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
+	AMP_ShooterGameMode* MP_GameMode = GetWorld()->GetAuthGameMode<AMP_ShooterGameMode>();
+
+	if (SP_GameMode == nullptr && MP_GameMode == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
-
-	TArray<ASP_Waypoint*> ConsideredWaypoints = GameMode->GetAllWayPoints();
+	
+	TArray<ABaseWaypoint*> ConsideredWaypoints = SP_GameMode != nullptr ? SP_GameMode->GetAllWayPoints() : MP_GameMode->GetAllWayPoints();
 	if (ConsideredWaypoints.Num() == 0)
 	{
 		return EBTNodeResult::Failed;
 	}
 	
-	ASP_Waypoint* LastSelectedPoint = Cast<ASP_Waypoint>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey()));
+	ABaseWaypoint* LastSelectedPoint = Cast<ABaseWaypoint>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(GetSelectedBlackboardKey()));
 	if (LastSelectedPoint != nullptr)
 	{
 		ConsideredWaypoints.Remove(LastSelectedPoint);
 	}
 	
-	ASP_Waypoint* Waypoint = GameMode->GetAllWayPoints()[FMath::RandRange(0, ConsideredWaypoints.Num()-1)];
+	TArray<ABaseWaypoint*> AllWayPoints = SP_GameMode != nullptr ? SP_GameMode->GetAllWayPoints() : MP_GameMode->GetAllWayPoints();
+	ABaseWaypoint* Waypoint = AllWayPoints[FMath::RandRange(0, ConsideredWaypoints.Num()-1)];
 	if (Waypoint == nullptr)
 	{
 		return EBTNodeResult::Failed;

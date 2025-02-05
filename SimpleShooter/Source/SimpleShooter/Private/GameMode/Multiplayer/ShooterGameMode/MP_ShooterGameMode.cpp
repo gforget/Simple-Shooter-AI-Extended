@@ -74,37 +74,37 @@ void AMP_ShooterGameMode::OnShooterCharacterDeath(ABaseShooterCharacter* DeadSho
 	
 }
 
-TArray<AMP_Waypoint*> AMP_ShooterGameMode::GetAllWayPoints()
+TArray<ABaseWaypoint*> AMP_ShooterGameMode::GetAllWayPoints()
 {
 	return AllWayPoints;
 }
 
-void AMP_ShooterGameMode::AddWayPoint(AMP_Waypoint* Waypoint)
+void AMP_ShooterGameMode::AddWayPoint(ABaseWaypoint* Waypoint)
 {
 	AllWayPoints.Add(Waypoint);
 }
 
-TArray<AMP_AmmoPack*> AMP_ShooterGameMode::GetAllAmmoPacks()
+TArray<ABaseAmmoPack*> AMP_ShooterGameMode::GetAllAmmoPacks()
 {
 	return AllAmmoPacks;
 }
 
-void AMP_ShooterGameMode::AddAmmoPack(AMP_AmmoPack* AmmoPack)
+void AMP_ShooterGameMode::AddAmmoPack(ABaseAmmoPack* AmmoPack)
 {
 	AllAmmoPacks.Add(AmmoPack);
 }
 
-TArray<AMP_HealthPack*> AMP_ShooterGameMode::GetAllHealthPacks()
+TArray<ABaseHealthPack*> AMP_ShooterGameMode::GetAllHealthPacks()
 {
 	return AllHealthPacks;
 }
 
-void AMP_ShooterGameMode::AddHealthPack(AMP_HealthPack* HealthPack)
+void AMP_ShooterGameMode::AddHealthPack(ABaseHealthPack* HealthPack)
 {
 	AllHealthPacks.Add(HealthPack);
 }
 
-void AMP_ShooterGameMode::RegisterEvent(AMP_ShooterCharacter* ShooterCharacterRef)
+void AMP_ShooterGameMode::RegisterEvent(ABaseShooterCharacter* ShooterCharacterRef)
 {
 	ShooterCharacterRef->OnDeadEvent.AddDynamic(this, &AMP_ShooterGameMode::OnShooterCharacterDeath);
 }

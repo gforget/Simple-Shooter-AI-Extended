@@ -10,7 +10,7 @@
  * 
  */
 
-class ASP_Waypoint;
+class ABaseWaypoint;
 UCLASS()
 class SIMPLESHOOTER_API UBTService_SelectFleeWaypoint : public UBTService
 {
@@ -20,7 +20,7 @@ public:
 	UBTService_SelectFleeWaypoint();
 	
 private:
-	ASP_Waypoint* GetClosestValidFleePoint();
+	ABaseWaypoint* GetClosestValidFleePoint();
 	
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;

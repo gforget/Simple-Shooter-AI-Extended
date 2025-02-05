@@ -5,8 +5,10 @@
 
 #include "AIController.h"
 #include "NavigationPath.h"
+#include "Actors/BaseWaypoint.h"
 #include "Actors/SinglePlayer/SP_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
@@ -28,9 +30,9 @@ void UBTService_SelectFleeWaypoint::TickNode(UBehaviorTreeComponent& OwnerComp, 
 	}
 }
 
-ASP_Waypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
+ABaseWaypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 {
-	ASP_Waypoint* SelectedFleePoint = nullptr;
+	ABaseWaypoint* SelectedFleePoint = nullptr;
 	const bool bLastKnownEnemyLocationIsSet = OwnerCompPtr->GetBlackboardComponent()->IsVectorValueSet(FName("LastKnownEnemyLocation"));
 
 	if (!bLastKnownEnemyLocationIsSet)
@@ -43,16 +45,24 @@ ASP_Waypoint* UBTService_SelectFleeWaypoint::GetClosestValidFleePoint()
 	
 	const FVector LastKnownEnemyLocation = OwnerCompPtr->GetBlackboardComponent()->GetValueAsVector(FName("LastKnownEnemyLocation"));
 	const FVector2D LastKnownEnemyLocation2D = FVector2D(LastKnownEnemyLocation.X, LastKnownEnemyLocation.Y);
+
+	//Since SP and MP GameMode do not inherit from the same base, we need to check both
+	ASP_ShooterGameMode* SP_GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
+	AMP_ShooterGameMode* MP_GameMode = GetWorld()->GetAuthGameMode<AMP_ShooterGameMode>();
+
+	if (SP_GameMode == nullptr && MP_GameMode == nullptr)
+	{
+		return nullptr;
+	}
 	
-	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
-	TArray<ASP_Waypoint*> ConsideredWaypoints = GameMode->GetAllWayPoints();
+	TArray<ABaseWaypoint*> ConsideredWaypoints = SP_GameMode != nullptr ? SP_GameMode->GetAllWayPoints() : MP_GameMode->GetAllWayPoints();
 
 	float HighestDistance = 0.0f;
 	int NbValidFleePoint = 0;
 	
 	for (int i=0; i<ConsideredWaypoints.Num(); i++)
 	{
-		const ASP_ShooterCharacter* AICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+		const ABaseShooterCharacter* AICharacter = Cast<ABaseShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 
 		if (AICharacter != nullptr)
 		{

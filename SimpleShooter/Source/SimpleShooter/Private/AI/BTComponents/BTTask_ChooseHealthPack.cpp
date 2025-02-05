@@ -4,8 +4,12 @@
 #include "AI/BTComponents/BTTask_ChooseHealthPack.h"
 
 #include "AIController.h"
+#include "Actors/BaseHealthPack.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
+
+class AMP_ShooterGameMode;
 
 UBTTask_ChooseHealthPack::UBTTask_ChooseHealthPack()
 {
@@ -20,14 +24,16 @@ EBTNodeResult::Type UBTTask_ChooseHealthPack::ExecuteTask(UBehaviorTreeComponent
 		return EBTNodeResult::Failed;
 	}
 
-	//TODO : select between SP and MP shootergame mode, since both don't inherot from the same game mode
-	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
-	if (GameMode == nullptr)
+	//Since SP and MP GameMode do not inherit from the same base, we need to check both
+	ASP_ShooterGameMode* SP_GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
+	AMP_ShooterGameMode* MP_GameMode = GetWorld()->GetAuthGameMode<AMP_ShooterGameMode>();
+
+	if (SP_GameMode == nullptr && MP_GameMode == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
 
-	TArray<ABaseHealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
+	TArray<ABaseHealthPack*> ConsideredHealthPacks = SP_GameMode!= nullptr ? SP_GameMode->GetAllHealthPacks() : MP_GameMode->GetAllHealthPacks() ;
 	FVector CharLocation = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(); 
 
 	ConsideredHealthPacks.Sort([CharLocation](const ABaseHealthPack& A, const ABaseHealthPack& B) {

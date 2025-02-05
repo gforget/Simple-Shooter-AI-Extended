@@ -6,8 +6,8 @@
 #include "AIController.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
-#include "Actors/SinglePlayer/SP_AmmoPack.h"
-#include "Actors/SinglePlayer/SP_HealthPack.h"
+#include "Actors/BaseAmmoPack.h"
+#include "Actors/BaseHealthPack.h"
 #include "Actors/BaseShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -165,7 +165,7 @@ float UBTService_UMMaster::LookForHealthPackC_HealthPackDistance()
 		return 0.0f;
 	}
 
-	const ASP_HealthPack* SelectedHealthPack = Cast<ASP_HealthPack>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("SelectedHealthPack")));
+	const ABaseHealthPack* SelectedHealthPack = Cast<ABaseHealthPack>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("SelectedHealthPack")));
 	if (SelectedHealthPack == nullptr)
 	{
 		return 0.0f;
@@ -189,7 +189,7 @@ float UBTService_UMMaster::LookForAmmoPackC_AmmoReservePercent()
 		return 0.0f;
 	}
 
-	const ASP_AmmoPack* SelectedAmmoPack = Cast<ASP_AmmoPack>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("SelectedAmmoPack")));
+	const ABaseAmmoPack* SelectedAmmoPack = Cast<ABaseAmmoPack>(OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("SelectedAmmoPack")));
 	
 	if (SelectedAmmoPack == nullptr)
 	{

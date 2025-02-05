@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "Actors/BaseAmmoPack.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 
 UBTTask_ChooseAmmoPack::UBTTask_ChooseAmmoPack()
@@ -21,14 +22,16 @@ EBTNodeResult::Type UBTTask_ChooseAmmoPack::ExecuteTask(UBehaviorTreeComponent& 
 		return EBTNodeResult::Failed;
 	}
 	
-	//TODO : select between SP and MP shootergame mode, since both don't inherot from the same game mode
-	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
-	if (GameMode == nullptr)
+	//Since SP and MP GameMode do not inherit from the same base, we need to check both
+	ASP_ShooterGameMode* SP_GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
+	AMP_ShooterGameMode* MP_GameMode = GetWorld()->GetAuthGameMode<AMP_ShooterGameMode>();
+
+	if (SP_GameMode == nullptr && MP_GameMode == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
 
-	TArray<ABaseAmmoPack*> ConsideredAmmoPacks = GameMode->GetAllAmmoPacks();
+	TArray<ABaseAmmoPack*> ConsideredAmmoPacks = SP_GameMode != nullptr ? SP_GameMode->GetAllAmmoPacks() : MP_GameMode->GetAllAmmoPacks();
 	FVector CharLocation = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(); 
 
 	ConsideredAmmoPacks.Sort([CharLocation](const ABaseAmmoPack& A, const ABaseAmmoPack& B) {

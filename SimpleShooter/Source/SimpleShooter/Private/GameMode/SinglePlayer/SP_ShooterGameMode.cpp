@@ -24,14 +24,14 @@ void ASP_ShooterGameMode::AddShooterCharacterCount(ABaseShooterCharacter* Shoote
 {
 }
 
-TArray<ASP_Waypoint*> ASP_ShooterGameMode::GetAllWayPoints()
+TArray<ABaseWaypoint*> ASP_ShooterGameMode::GetAllWayPoints()
 {
 	return AllWayPoints;
 }
 
-void ASP_ShooterGameMode::AddWayPoint(ASP_Waypoint* Waypoint)
+void ASP_ShooterGameMode::AddWayPoint(ABaseWaypoint* WayPoint)
 {
-	AllWayPoints.Add(Waypoint);
+	AllWayPoints.Add(WayPoint);
 }
 
 TArray<ABaseAmmoPack*> ASP_ShooterGameMode::GetAllAmmoPacks()

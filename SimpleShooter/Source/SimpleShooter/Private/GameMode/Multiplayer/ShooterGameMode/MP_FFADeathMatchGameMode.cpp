@@ -1,7 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GameMode/Multiplayer/ShooterGameMode/MP_FFADeathMatchGameMode.h"
-#include "Actors/Multiplayer/MP_SpawningPoint.h"
+
+#include "Actors/BaseSpawningPoint.h"
 #include "Actors/Multiplayer/MP_ShooterCharacter.h"
 #include "Controllers/Multiplayer/MP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
@@ -24,7 +25,7 @@ void AMP_FFADeathMatchGameMode::OnPostLogin(AController* NewPlayer)
 	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
 	{
 		const int SpawnIndex = FMath::RandRange(0, AllSpawnPoints.Num()-1);
-		const AMP_SpawningPoint* CurrentSpawningPoint = AllSpawnPoints[SpawnIndex];
+		const ABaseSpawningPoint* CurrentSpawningPoint = AllSpawnPoints[SpawnIndex];
 	
 		AMP_ShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<AMP_ShooterCharacter>(
 			CurrentSpawningPoint->RedTeamShooterCharacterClass,

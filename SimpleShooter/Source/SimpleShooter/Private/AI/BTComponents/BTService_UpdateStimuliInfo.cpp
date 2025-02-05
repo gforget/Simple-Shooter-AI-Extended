@@ -4,14 +4,15 @@
 #include "AI/BTComponents/BTService_UpdateStimuliInfo.h"
 
 #include "AIController.h"
-#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "Stimuli/SoundStimuli.h"
 #include "Stimuli/VisualStimuli.h"
 #include "Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
 #include "Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
 #include "Stimuli/VisualStimuli/VisualStimuli_ShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Controllers/SinglePlayer/SP_ShooterAIController.h"
+#include "Controllers/BaseShooterAIController.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Stimuli/TouchStimuli/HurtStimuli.h"
@@ -28,7 +29,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	OwnerCompPtr = &OwnerComp;
 
 	//initiate blackboard value
-	if (ASP_ShooterAIController* AIController = Cast<ASP_ShooterAIController>(OwnerCompPtr->GetAIOwner()))
+	if (ABaseShooterAIController* AIController = Cast<ABaseShooterAIController>(OwnerCompPtr->GetAIOwner()))
 	{
 		if (!AIController->bStimuliServiceInitiated)
 		{
@@ -44,8 +45,8 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		OwnerCompPtr->GetBlackboardComponent()->ClearValue(FName("LastKnownEnemyLocation"));
 	}
 	
-	ASP_ShooterAIController* ShooterAIController = Cast<ASP_ShooterAIController>(OwnerCompPtr->GetAIOwner());
-	ASP_ShooterCharacter* ShooterAICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+	ABaseShooterAIController* ShooterAIController = Cast<ABaseShooterAIController>(OwnerCompPtr->GetAIOwner());
+	ABaseShooterCharacter* ShooterAICharacter = Cast<ABaseShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 	
 	if (OwnerCompPtr != nullptr && ShooterAICharacter != nullptr && ShooterAIController != nullptr)
 	{
@@ -91,7 +92,7 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		bool bHaveSeenAnEnemy = false;
 		if (bVSHasHit)
 		{
-			const ASP_ShooterCharacter* ShooterInSight = Cast<ASP_ShooterCharacter> (OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
+			const ABaseShooterCharacter* ShooterInSight = Cast<ABaseShooterCharacter> (OwnerCompPtr->GetBlackboardComponent()->GetValueAsObject(FName("EnemyInSight")));
 			
 			for (int i=0; i<VSFound.Num(); i++)
 			{
@@ -109,8 +110,25 @@ void UBTService_UpdateStimuliInfo::TickNode(UBehaviorTreeComponent& OwnerComp, u
 					}
 					
 					//Check if it is an enemy
-					const ASP_ShooterGameMode* GameMode = Cast<ASP_ShooterGameMode>(GetWorld()->GetAuthGameMode());
-					const ETeamRelation TargetTeamRelation = GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterAICharacter->GetTeam());
+					
+					//Since SP and MP GameMode do not inherit from the same base, we need to check both
+					ASP_ShooterGameMode* SP_GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
+					AMP_ShooterGameMode* MP_GameMode = GetWorld()->GetAuthGameMode<AMP_ShooterGameMode>();
+
+					if (SP_GameMode == nullptr && MP_GameMode == nullptr)
+					{
+						return;
+					}
+					
+					ETeamRelation TargetTeamRelation;
+					if (SP_GameMode != nullptr)
+					{
+						TargetTeamRelation = SP_GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterAICharacter->GetTeam());
+					}
+					else
+					{
+						TargetTeamRelation = MP_GameMode->FactionManagerComponent->GetTeamRelation(VS_Shooter->GetShooterCharacterRef()->GetTeam(), ShooterAICharacter->GetTeam());
+					}
 
 					if (TargetTeamRelation == ETeamRelation::Ally)
 					{

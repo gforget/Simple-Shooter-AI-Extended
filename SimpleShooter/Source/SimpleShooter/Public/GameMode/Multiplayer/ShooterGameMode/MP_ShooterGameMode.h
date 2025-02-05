@@ -7,15 +7,12 @@
 #include "ActorComponents/TeamManager.h"
 #include "MP_ShooterGameMode.generated.h"
 
-/**
- * 
- */
+class ABaseSpawningPoint;
+class ABaseHealthPack;
+class ABaseAmmoPack;
+class ABaseWaypoint;
 class UTeamManager;
-class AMP_ShooterCharacter;
-class AMP_AmmoPack;
-class AMP_SpawningPoint;
-class AMP_HealthPack;
-class AMP_Waypoint;
+class ABaseShooterCharacter;
 class AMP_ShooterAIController;
 
 UCLASS()
@@ -29,16 +26,16 @@ public:
 	UFUNCTION()
 	virtual void OnShooterCharacterDeath(ABaseShooterCharacter* DeadShooterCharacter);
 	
-	TArray<AMP_Waypoint*> GetAllWayPoints();
-	void AddWayPoint(AMP_Waypoint* WayPoint);
+	TArray<ABaseWaypoint*> GetAllWayPoints();
+	void AddWayPoint(ABaseWaypoint* WayPoint);
 	
-	TArray<AMP_AmmoPack*> GetAllAmmoPacks();
-	void AddAmmoPack(AMP_AmmoPack* AmmoPack);
+	TArray<ABaseAmmoPack*> GetAllAmmoPacks();
+	void AddAmmoPack(ABaseAmmoPack* AmmoPack);
 
-	TArray<AMP_HealthPack*> GetAllHealthPacks();
-	void AddHealthPack(AMP_HealthPack* HealthPack);
+	TArray<ABaseHealthPack*> GetAllHealthPacks();
+	void AddHealthPack(ABaseHealthPack* HealthPack);
 
-	void RegisterEvent (AMP_ShooterCharacter* ShooterCharacterRef);
+	void RegisterEvent (ABaseShooterCharacter* ShooterCharacterRef);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Global Object")
 	UTeamManager* FactionManagerComponent;
@@ -51,22 +48,22 @@ protected:
 	virtual void OnPostLogin(AController* NewPlayer) override;
 	
 	UPROPERTY()
-	TArray<AMP_SpawningPoint*> AllSpawnPoints;
+	TArray<ABaseSpawningPoint*> AllSpawnPoints;
 
 	UPROPERTY()
-	TArray<AMP_SpawningPoint*> AllRedSpawnPoints;
+	TArray<ABaseSpawningPoint*> AllRedSpawnPoints;
 
 	UPROPERTY()
-	TArray<AMP_SpawningPoint*> AllBlueSpawnPoints;
+	TArray<ABaseSpawningPoint*> AllBlueSpawnPoints;
 	
 	UPROPERTY()
-	TArray<AMP_Waypoint*> AllWayPoints;
+	TArray<ABaseWaypoint*> AllWayPoints;
 	
 	UPROPERTY()
-	TArray<AMP_AmmoPack*> AllAmmoPacks;
+	TArray<ABaseAmmoPack*> AllAmmoPacks;
 	
 	UPROPERTY()
-	TArray<AMP_HealthPack*> AllHealthPacks;
+	TArray<ABaseHealthPack*> AllHealthPacks;
 
 	bool SpawningPointsHaveBeenFilled = false;
 	void FillSpawningPoints();

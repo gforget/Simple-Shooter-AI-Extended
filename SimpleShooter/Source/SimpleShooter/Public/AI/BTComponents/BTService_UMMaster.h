@@ -10,10 +10,6 @@
  * 
  */
 
-class ASP_Waypoint;
-class ASP_HealthPack;
-class ASP_AmmoPack;
-
 UENUM(BlueprintType)
 enum EAIStateEnum
 {

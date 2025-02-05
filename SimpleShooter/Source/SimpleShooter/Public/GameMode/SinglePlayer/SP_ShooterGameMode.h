@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "ActorComponents/TeamManager.h"
-#include "Actors/SinglePlayer/SP_HealthPack.h"
-#include "Actors/SinglePlayer/SP_Waypoint.h"
 #include "GameFramework/GameMode.h"
 #include "SP_ShooterGameMode.generated.h"
 
@@ -17,7 +15,8 @@ class ABaseAmmoPack;
 class ABaseHealthPack;
 class ABaseShooterCharacter;
 class UTeamManager;
-class ASP_SpawningPoint;
+class ABaseWaypoint;
+class ABaseSpawningPoint;
 
 UCLASS()
 class SIMPLESHOOTER_API ASP_ShooterGameMode : public AGameModeBase
@@ -36,8 +35,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	bool bBasicOHHealthBarAssociation = false;
 	
-	TArray<ASP_Waypoint*> GetAllWayPoints();
-	void AddWayPoint(ASP_Waypoint* WayPoint);
+	TArray<ABaseWaypoint*> GetAllWayPoints();
+	void AddWayPoint(ABaseWaypoint* WayPoint);
 	
 	TArray<ABaseAmmoPack*> GetAllAmmoPacks();
 	void AddAmmoPack(ABaseAmmoPack* AmmoPack);
@@ -55,16 +54,16 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY()
-	TArray<ASP_SpawningPoint*> AllSpawnPoints;
+	TArray<ABaseSpawningPoint*> AllSpawnPoints;
 
 	UPROPERTY()
-	TArray<ASP_SpawningPoint*> AllRedSpawnPoints;
+	TArray<ABaseSpawningPoint*> AllRedSpawnPoints;
 
 	UPROPERTY()
-	TArray<ASP_SpawningPoint*> AllBlueSpawnPoints;
+	TArray<ABaseSpawningPoint*> AllBlueSpawnPoints;
 	
 	UPROPERTY()
-	TArray<ASP_Waypoint*> AllWayPoints;
+	TArray<ABaseWaypoint*> AllWayPoints;
 	
 	UPROPERTY()
 	TArray<ABaseAmmoPack*> AllAmmoPacks;

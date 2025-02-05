@@ -4,8 +4,10 @@
 #include "AI/BTComponents/BTService_SelectHealthPack.h"
 
 #include "AIController.h"
-#include "Actors/SinglePlayer/SP_ShooterCharacter.h"
+#include "Actors/BaseHealthPack.h"
+#include "Actors/BaseShooterCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameMode/Multiplayer/ShooterGameMode/MP_ShooterGameMode.h"
 #include "GameMode/SinglePlayer/SP_ShooterGameMode.h"
 #include "Utility/NavMeshUtility.h"
 
@@ -29,13 +31,17 @@ void UBTService_SelectHealthPack::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 ABaseHealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
 {
 	ABaseHealthPack* SelectedHealthPack = nullptr;
-	ASP_ShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
-	if (GameMode == nullptr)
+	
+	//Since SP and MP GameMode do not inherit from the same base, we need to check both
+	ASP_ShooterGameMode* SP_GameMode = GetWorld()->GetAuthGameMode<ASP_ShooterGameMode>();
+	AMP_ShooterGameMode* MP_GameMode = GetWorld()->GetAuthGameMode<AMP_ShooterGameMode>();
+
+	if (SP_GameMode == nullptr && MP_GameMode == nullptr)
 	{
-		return SelectedHealthPack;
+		return nullptr;
 	}
 
-	TArray<ABaseHealthPack*> ConsideredHealthPacks = GameMode->GetAllHealthPacks();
+	TArray<ABaseHealthPack*> ConsideredHealthPacks = SP_GameMode != nullptr ? SP_GameMode->GetAllHealthPacks() : MP_GameMode->GetAllHealthPacks();
 	const FVector CharLocation = OwnerCompPtr->GetAIOwner()->GetPawn()->GetActorLocation(); 
 
 	float HighestDistance = 999999999999.99f;
@@ -44,7 +50,7 @@ ABaseHealthPack* UBTService_SelectHealthPack::GetClosestHealthPack()
 	{
 		if (!ConsideredHealthPacks[i]->IsRecharging())
 		{
-			const ASP_ShooterCharacter* AICharacter = Cast<ASP_ShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
+			const ABaseShooterCharacter* AICharacter = Cast<ABaseShooterCharacter>(OwnerCompPtr->GetAIOwner()->GetPawn());
 			const float CurrentDistance = AICharacter->NavMeshUtility->GetPathLength(CharLocation, ConsideredHealthPacks[i]->GetActorLocation(), CurrentWorldPtr);
 			
 			if (CurrentDistance < HighestDistance)

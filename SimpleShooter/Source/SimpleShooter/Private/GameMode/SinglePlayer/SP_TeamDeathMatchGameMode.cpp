@@ -3,8 +3,8 @@
 
 #include "GameMode/SinglePlayer/SP_TeamDeathMatchGameMode.h"
 
+#include "Actors/BaseSpawningPoint.h"
 #include "Actors/SinglePlayer/SP_ShooterCharacter.h"
-#include "Actors/SinglePlayer/SP_SpawningPoint.h"
 #include "Controllers/SinglePlayer/SP_ShooterPlayerController.h"
 #include "GameMode/MainGameInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -51,7 +51,7 @@ void ASP_TeamDeathMatchGameMode::BeginPlay()
 	{
 		for (int i=0; i<AllActors.Num(); i++)
 		{
-			if (ASP_SpawningPoint* SpawningPoint = Cast<ASP_SpawningPoint>(AllActors[i]))
+			if (ABaseSpawningPoint* SpawningPoint = Cast<ABaseSpawningPoint>(AllActors[i]))
 			{
 				if (SpawningPoint->Team == ETeam::RedTeam)
 				{
@@ -71,7 +71,7 @@ void ASP_TeamDeathMatchGameMode::BeginPlay()
 		for (int i=0; i<(1+MainGameInstance->NbBlueBots); i++)
 		{
 			const int SpawnIndex = FMath::RandRange(0, AllBlueSpawnPoints.Num()-1);
-			const ASP_SpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
+			const ABaseSpawningPoint* CurrentSpawningPoint = AllBlueSpawnPoints[SpawnIndex];
 			
 			if (i==0) // put the spawned player at a spawn position
 			{
@@ -108,7 +108,7 @@ void ASP_TeamDeathMatchGameMode::BeginPlay()
 		for (int i=0; i<MainGameInstance->NbRedBots; i++)
 		{
 			const int SpawnIndex = FMath::RandRange(0, AllRedSpawnPoints.Num()-1);
-			const ASP_SpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
+			const ABaseSpawningPoint* CurrentSpawningPoint = AllRedSpawnPoints[SpawnIndex];
 
 			ASP_ShooterCharacter* ShooterCharacter = WorldPtr->SpawnActor<ASP_ShooterCharacter>(
 				CurrentSpawningPoint->RedTeamShooterCharacterClass,
