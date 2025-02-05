@@ -259,6 +259,7 @@ void ABaseShooterCharacter::Death()
 		ReleaseTrigger();
 		
 		GetCharacterMovement()->GravityScale = 0.0f; //FOR MULTIPLAYER client for some reason pass through floor when no collision
+		GetCharacterMovement()->Velocity = FVector::Zero();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		
 		VSShooterCharacter->Destroy();

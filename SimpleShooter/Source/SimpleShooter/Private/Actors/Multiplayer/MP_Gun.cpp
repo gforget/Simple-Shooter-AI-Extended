@@ -5,6 +5,9 @@
 #include "Actors/RotationViewPointRef.h"
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Stimuli/SoundStimuli/SoundStimuli_BulletImpactSound.h"
+#include "Stimuli/SoundStimuli/SoundStimuli_ShootingSound.h"
 
 // Sets default values
 AMP_Gun::AMP_Gun()
@@ -34,14 +37,17 @@ void AMP_Gun::Fire()
 		UParticleSystemComponent* MuzzleFlashParticle = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
 		UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
 
-		//Create Sound Stimuli for AI
-		// ASoundStimuli_ShootingSound* SoundStimuli_ShootingSound = GetWorld()->SpawnActor<ASoundStimuli_ShootingSound>(
-		// 	SoundStimuli_ShootingSoundClass,
-		// 	CharacterOwner->GetActorLocation(), //want a position that is relevant to the sound, the position of the shooter is more relevant
-		// 	FRotator(0.0f, 0.0f, 0.0f)
-		// );
+		if (HasAuthority())
+		{
+			//Create Sound Stimuli for AI
+			ASoundStimuli_ShootingSound* SoundStimuli_ShootingSound = GetWorld()->SpawnActor<ASoundStimuli_ShootingSound>(
+				SoundStimuli_ShootingSoundClass,
+				CharacterOwner->GetActorLocation(), //want a position that is relevant to the sound, the position of the shooter is more relevant
+				FRotator(0.0f, 0.0f, 0.0f)
+			);
 		
-		//SoundStimuli_ShootingSound->SetSoundOwner(CharacterOwner);
+			SoundStimuli_ShootingSound->SetSoundOwner(CharacterOwner);
+		}
 		
 		FHitResult Hit;
 		FVector ShotDirection;
@@ -51,20 +57,20 @@ void AMP_Gun::Fire()
 		if (bSuccess)
 		{
 			UParticleSystemComponent* ImpactParticle = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
-			UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, Hit.Location);
-
-			//Create Sound Stimuli for AI
-			// ASoundStimuli_BulletImpactSound* SoundStimuli_BulletImpactSound = GetWorld()->SpawnActor<ASoundStimuli_BulletImpactSound>(
-			// 	SoundStimuli_BulletImpactSoundClass,
-			// 	ImpactParticle->GetComponentLocation(),
-			// 	FRotator(0.0f, 0.0f, 0.0f)
-			// );
-			
-			//SoundStimuli_BulletImpactSound->SetSoundOwner(CharacterOwner);
-			//SoundStimuli_BulletImpactSound->SetShootingOriginPosition(CharacterOwner->GetActorLocation()); //want a position that is relevant to the sound, the position of the shooter is more relevant
-
 			if (HasAuthority())
 			{
+				UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, Hit.Location);
+
+				//Create Sound Stimuli for AI
+				 ASoundStimuli_BulletImpactSound* SoundStimuli_BulletImpactSound = GetWorld()->SpawnActor<ASoundStimuli_BulletImpactSound>(
+			 		SoundStimuli_BulletImpactSoundClass,
+			 		ImpactParticle->GetComponentLocation(),
+			 		FRotator(0.0f, 0.0f, 0.0f)
+				 );
+				
+				SoundStimuli_BulletImpactSound->SetSoundOwner(CharacterOwner);
+				SoundStimuli_BulletImpactSound->SetShootingOriginPosition(CharacterOwner->GetActorLocation()); //want a position that is relevant to the sound, the position of the shooter is more relevant
+				
 				AActor* HitActor = Hit.GetActor();
 				if (HitActor != nullptr)
 				{

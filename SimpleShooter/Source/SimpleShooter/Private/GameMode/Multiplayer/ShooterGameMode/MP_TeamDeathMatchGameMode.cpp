@@ -22,10 +22,11 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 	UWorld* WorldPtr = GetWorld();
 	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
 	{
-		AMP_ShooterCharacter* ShooterCharacter = nullptr;
+		
 		
 		for (FBotData BotData : GameInstance->BotDataStructs)
 		{
+			AMP_ShooterCharacter* ShooterCharacter = nullptr;
 			if (BotData.Team == ETeam::BlueTeam)
 			{
 				const int SpawnIndex = FMath::RandRange(0, AllBlueSpawnPoints.Num()-1);
@@ -52,20 +53,20 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 			
 				AllRedSpawnPoints.RemoveAt(SpawnIndex);
 			}
-		}
-		
-		if (ShooterCharacter != nullptr)
-		{
-			//Need to create an MP version of AIController
-			AMP_ShooterAIController* BotController = WorldPtr->SpawnActor<AMP_ShooterAIController>(
-				ShooterAIController,
-				FVector::Zero(),
-				FRotator::ZeroRotator
-				);
 			
-			if (BotController)
+			if (ShooterCharacter != nullptr)
 			{
-				BotController->Possess(ShooterCharacter);
+				//Need to create an MP version of AIController
+				AMP_ShooterAIController* BotController = WorldPtr->SpawnActor<AMP_ShooterAIController>(
+					ShooterAIController,
+					FVector::Zero(),
+					FRotator::ZeroRotator
+					);
+			
+				if (BotController)
+				{
+					BotController->Possess(ShooterCharacter);
+				}
 			}
 		}
 	}
