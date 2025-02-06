@@ -7,13 +7,14 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - Added a reload mechanic with an additive animation (the animation was provided with the character, but it had to be modified and implemented to work properly).
 - The primary weapon now functions as an automatic weapon, rather than requiring a click for each shot.
 - Bullets now spread from the gun with a custom radius, simulating the behavior of an automatic weapon, rather than always hitting the same point.
+- Bullet spread over time property
 - Added health packs that the player or the bot can use to heal themselves.
 - Added ammo packs that the player or the bot can use to reload their weapon.
 - Added Overhead healthbar on the bots so the player know how hurt it is
 - Added the notion of team and adapted the victory condition
 - Spectator mode when you die and also to watch AI fight each other by default
 - Intro menu with the ability to setup a number of bots, and if you want a team fight or a free for all.
-- Headshot confirm and damage multiplier.
+- Headshot damage multiplier.
 
 ## AI improvement
 - The bot can explore the entire map rather than being limited to a spawn point.
@@ -29,7 +30,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 ## Multiplayer Support
 - Multiplayer mode is now supported (only in LAN mode for now)
 - FFA and Team death match are supported
-- Bots are not supported in this mode for the moment
+- Bots are fully supported
    
 ## New map
 - A new map was created to allow for shooting from high ground and offer more space to fight in. It is also much lighter than the original exercise map.
