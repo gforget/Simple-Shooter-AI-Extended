@@ -22,8 +22,6 @@ void AMP_TeamDeathMatchGameMode::BeginPlay()
 	UWorld* WorldPtr = GetWorld();
 	if (UMainGameInstance* GameInstance = Cast<UMainGameInstance>(GetGameInstance()))
 	{
-		
-		
 		for (FBotData BotData : GameInstance->BotDataStructs)
 		{
 			AMP_ShooterCharacter* ShooterCharacter = nullptr;
