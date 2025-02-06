@@ -28,7 +28,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - The bot can now jump from ledges when it is appropriate using a custom NavLink that use the same jump mechanic as the player
 
 ## Multiplayer Support
-- Multiplayer mode is now supported (only in LAN mode for now)
+- Multiplayer mode is now supported (only in LAN mode)
 - FFA and Team death match are supported
 - Bots are fully supported
    
@@ -36,7 +36,7 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - A new map was created to allow for shooting from high ground and offer more space to fight in. It is also much lighter than the original exercise map.
 
 ## What was retained from the exercice
-- The core third-person controller was retained (75% of the animation blueprint and the code for the ShooterCharacter class for the main character remain the same).
+- The core third-person controller was retained (around 60% of the animation blueprint and the code for the ShooterCharacter class for the main character remain the same).
 - The character mesh and textures were all kept as is.
 - The sound effects of the gun.
 - Particules effect of the gun.
