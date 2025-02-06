@@ -42,9 +42,6 @@ This project is an extension of the final exercise, 'Simple Shooter,' from the G
 - Particules effect of the gun.
 - The gun itself
 - The character animations were cleaned up to reduce the overall project size.
-  
-## Disclaimer
-<b>The current version of this project is not finished, and development is still ongoing. The current presentation is mainly to showcase what has already been done and how it has been implemented.</b>
 
 # Useful link
 
