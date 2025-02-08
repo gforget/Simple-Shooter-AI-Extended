@@ -31,10 +31,10 @@ public:
 	int PriorityLevel = 0;
 	
 private:
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* Root;
 	
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly)
 	USphereComponent* SphereComponent;
 
 	UPROPERTY()
